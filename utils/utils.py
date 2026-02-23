@@ -1,0 +1,174 @@
+import re
+
+import numpy as np
+import pandas as pd
+
+# ==================
+# Read textual data
+# ==================
+
+
+def get_df(file):
+    df = pd.read_csv(file)
+    cols = df.columns
+    df = df.rename(columns={col: col.lower() for col in cols})
+    return df
+
+
+def join_dfs(dfs, cols_left, cols_right, id_col, cols):
+    df = (
+        pd.concat(
+            [
+                (
+                    dfs["m"][cols_left]
+                    .merge(dfs["c"][cols_right], on=id_col, how="left")
+                    .merge(dfs["g"][cols_right], on=id_col, how="left")
+                ),
+                (
+                    dfs["a"][cols_left]
+                    .merge(dfs["r"][cols_right], on=id_col, how="left")
+                    .merge(dfs["n"][cols_right], on=id_col, how="left")
+                ),
+            ]
+        )
+        .reset_index()
+        .drop("index", axis=1)
+    )
+    for col in cols:
+        df[col + "_soft"] = np.round((df[col] + df[col + "_x"] + df[col + "_y"]) / 3, 2)
+        df[col] = (df[col + "_soft"] > 0.5).astype(int)
+        df = df.drop(columns=[col + "_x", col + "_y"])
+
+    df = df.rename(columns={id_col: "id"})
+    return df
+
+
+# ==================
+# Clean text
+# ==================
+
+
+def clean_one_speaker_tag(content, remove_all=False):
+    speaker_tags = re.findall(r"(\[SPEAKER_\d{2}\]: )", content)
+
+    if remove_all or len(set(speaker_tags)) == 1:
+        return re.sub(r"\[SPEAKER_\d{2}\]: ", "", content)
+    return content
+
+
+def clean_speaker_tags(content, remove_all=False):
+    speaker_tags = re.findall(r"(\[SPEAKER_\d{2}\]: )", content)
+
+    if remove_all or len(set(speaker_tags)) == 1:
+        return re.sub(r"\[SPEAKER_\d{2}\]: ", "", content)
+
+    # Initialize variables to track the previous tag and the result content
+    previous_tag = None
+    result_content = ""
+    last_index = 0
+
+    for tag in speaker_tags:
+        # Find the position of the current tag in the content
+        tag_index = content.find(tag, last_index)
+
+        # Add the segment of content up to the current tag to the result
+        result_content += content[last_index:tag_index]
+
+        # If the current tag is different from the previous one, add it to the result
+        if tag != previous_tag:
+            result_content += tag
+            previous_tag = tag
+
+        # Update the last index to continue searching after the current tag
+        last_index = tag_index + len(tag)
+
+    # Add the remaining content after the last tag
+    result_content += content[last_index:]
+
+    return result_content
+
+
+def clean_text(text):
+    """Remove time stamps and line breaks"""
+    texts = text.strip().split("\n")
+    text = "".join([t.split(maxsplit=4)[-1] for t in texts]).replace("\r", "")
+    text = clean_speaker_tags(text)
+    return text
+
+
+# ==================================================
+# Offset annotations to agree with clean text
+# ==================================================
+
+
+def build_offset_mapping(original: str, cleaned: str) -> dict:
+    """
+    Maps each character index in the original string to the
+    corresponding index in the cleaned string using SequenceMatcher.
+    Returns {old_index: new_index} for all matched characters.
+    """
+    from difflib import SequenceMatcher
+
+    matcher = SequenceMatcher(None, original, cleaned, autojunk=False)
+
+    mapping = {}
+    for op, i1, i2, j1, j2 in matcher.get_opcodes():
+        if op == "equal":
+            for old, new in zip(range(i1, i2), range(j1, j2)):
+                mapping[old] = new
+    return mapping
+
+
+def remap_span(start: int, end: int, mapping: dict) -> tuple[int, int] | None:
+    if not mapping:
+        return None
+
+    sorted_keys = sorted(mapping.keys())
+    max_key = sorted_keys[-1]
+
+    # Find nearest valid start (expand RIGHT)
+    new_start = None
+    for i in range(start, max_key + 1):
+        if i in mapping:
+            new_start = mapping[i]
+            break
+
+    # Find nearest valid end (expand LEFT)
+    new_end = None
+    for i in range(end - 1, start - 1, -1):
+        if i in mapping:
+            new_end = mapping[i] + 1
+            break
+
+    if new_start is None or new_end is None or new_start >= new_end:
+        return None
+    return new_start, new_end
+
+
+def clean_text_with_mapping(text: str) -> tuple[str, dict]:
+    """
+    Returns (cleaned_text, offset_mapping).
+    """
+    cleaned = clean_text(text)
+    cleaned = clean_one_speaker_tag(cleaned)
+    mapping = build_offset_mapping(text, cleaned)
+    return cleaned, mapping
+
+
+def clean(row):
+    cleaned_text, mapping = clean_text_with_mapping(row["text"])
+
+    new_labels = []
+    for annotation in row["label"]:  # each is a dict with "start", "end", "labels", etc.
+        result = remap_span(int(annotation["start"]), int(annotation["end"]), mapping)
+        if result:
+            new_start, new_end = result
+            new_labels.append({**annotation, "start": new_start, "end": new_end})
+        # if result is None, the annotation was in a deleted region — drop it
+
+    return pd.Series(
+        {
+            "text_clean": cleaned_text,
+            "label_clean": new_labels,
+        }
+    )

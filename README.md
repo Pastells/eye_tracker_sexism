@@ -20,6 +20,9 @@ Total fixation duration can correlate both with difficulty and likeability -> As
 2. Press space
 3. Annotate on excel. Fields: sexist (binary, scale?), difficult (binary, scale?)
 
+
+@conklinEyeTrackingGuideApplied2018:
+
 ## Sentences
 
 - How many sentences (total/per individual)? Limited time ~10 min.
@@ -28,6 +31,8 @@ Total fixation duration can correlate both with difficulty and likeability -> As
 
 - How many control sentences?
 - Can they be from the same dataset? If so, should they be read first and then explain the task for the rest?
+
+Can all sentences be control sentences?
 
 ## Compiling this document
 
@@ -38,7 +43,9 @@ Total fixation duration can correlate both with difficulty and likeability -> As
 Interface sucks for text. You can only use a "Screen" project type and add the texts one by one manually if you want to automatically get charachters/words as AOI. The "Advanced screen" project lets you upload a csv with the experiments, but not for text.
 So the alternatives to automate the experiments are 1) E-Prime, 2) Use images and map coordinates to words when postprocessing the data.
 
-For now, I'm testing manually. Before exporting, you have to use Analyze/AOI Tool to define the words AOI.
+For now, I'm testing manually.
+
+Before exporting, you have to use Analyze/AOI Tool to define the words AOI.
 
 # Data analysis
 
@@ -53,13 +60,29 @@ Which features?
 - First fixation duration (FFD)
 - Total fixation duration (TFD)
 
+## Notes
+
+Stimulated recall: mirar les anotacions amb el participant per veure (preguntar) en què estaven pensant. Aturar mínim cada 30s.
+
+Escala sexisme [0-2] + confiança
+
+Paraula - primera passada
+
+Recalibrar cada 15min
+
+TODO:
+- instruccions detallades
+- qüestionari participants
+
+
+
 # Bibliography
 
-@ikhwantri_looking_2023 does an exhaustive study of eye tracking tasks vs models. They do sentiment analysis, relation classification and question answering, test different interpretability methods and compare with LSTM, CNN and vanilla transformers.
+@ikhwantriLookingDeepEyes2023 does an exhaustive study of eye tracking tasks vs models. They do sentiment analysis, relation classification and question answering, test different interpretability methods and compare with LSTM, CNN and vanilla transformers.
 
 **Datasets**: They use two English datasets:
 
-- MQA-RC [@sood_interpreting_2020]
+- MQA-RC [@soodInterpretingAttentionModels2020]
 
 - ZuCo [@hollenstein_zuco_2018] (newer version @hollenstein_zuco_2020)
 
