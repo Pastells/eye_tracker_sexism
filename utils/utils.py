@@ -15,7 +15,7 @@ def get_df(file):
     return df
 
 
-def join_dfs(dfs, cols_left, cols_right, id_col, cols):
+def join_dfs(dfs, cols_left, cols_right, id_col, binary_cols, num_cols):
     df = (
         pd.concat(
             [
@@ -34,9 +34,13 @@ def join_dfs(dfs, cols_left, cols_right, id_col, cols):
         .reset_index()
         .drop("index", axis=1)
     )
-    for col in cols:
+    for col in binary_cols:
         df[col + "_soft"] = np.round((df[col] + df[col + "_x"] + df[col + "_y"]) / 3, 2)
         df[col] = (df[col + "_soft"] > 0.5).astype(int)
+        df = df.drop(columns=[col + "_x", col + "_y"])
+
+    for col in num_cols:
+        df[col] = np.round((df[col] + df[col + "_x"] + df[col + "_y"]) / 3, 2)
         df = df.drop(columns=[col + "_x", col + "_y"])
 
     df = df.rename(columns={id_col: "id"})
@@ -92,6 +96,8 @@ def clean_text(text):
     """Remove time stamps and line breaks"""
     texts = text.strip().split("\n")
     text = "".join([t.split(maxsplit=4)[-1] for t in texts]).replace("\r", "")
+    text = re.sub(r"<\/?OCR>", "", text)
+    text = text.replace("SPEAKER_", "HABLANTE_")
     text = clean_speaker_tags(text)
     return text
 
