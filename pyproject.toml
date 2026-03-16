@@ -5,15 +5,20 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "jupyterlab-lsp>=5.2.0",
+    "jupyter>=1.1.1",
     "jupyterlab>=4.5.0",
     "matplotlib>=3.10.7",
     "mystmd>=1.6.6",
+    "numpy>=2.3.5",
     "pandas>=2.3.3",
+    "pyarrow>=22.0.0",
     "ruff>=0.14.8",
     "scipy>=1.16.3",
     "jupyterlab-code-formatter>=3.0.3",
     "black>=26.1.0",
     "isort>=8.0.0",
     "spacy>=3.8.11",
+    "jupyterlab-lsp>=5.2.0",
+    "jupyterlab-vim>=4.1.4",
+    "python-lsp-server[all]>=1.14.0",
 ]
