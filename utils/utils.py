@@ -1,4 +1,5 @@
 import re
+from operator import itemgetter
 
 import numpy as np
 import pandas as pd
@@ -15,7 +16,7 @@ def get_df(file):
     return df
 
 
-def join_dfs(dfs, cols_left, cols_right, id_col, binary_cols, num_cols):
+def join_dfs(dfs, cols_left, cols_right, id_col, binary_cols, num_cols, label_col):
     df = (
         pd.concat(
             [
@@ -42,6 +43,10 @@ def join_dfs(dfs, cols_left, cols_right, id_col, binary_cols, num_cols):
     for col in num_cols:
         df[col] = np.round((df[col] + df[col + "_x"] + df[col + "_y"]) / 3, 2)
         df = df.drop(columns=[col + "_x", col + "_y"])
+
+    df[label_col] = df[label_col] + df[label_col + "_x"] + df[label_col + "_y"]
+    df[label_col] = df[label_col].apply(lambda x: sorted(x, key=itemgetter("start")))
+    df = df.drop(columns=[label_col + "_x", label_col + "_y"])
 
     df = df.rename(columns={id_col: "id"})
     return df
@@ -97,7 +102,8 @@ def clean_text(text):
     texts = text.strip().split("\n")
     text = "".join([t.split(maxsplit=4)[-1] for t in texts]).replace("\r", "")
     text = re.sub(r"<\/?OCR>", "", text)
-    text = text.replace("SPEAKER_", "HABLANTE_")
+    text = re.sub(r"\[SPEAKER_0([0-9])\]", r"\n[HABLANTE \1]", text).strip()
+    text = text.replace("SPEAKER_0[0-9]", "HABLANTE_")
     text = clean_speaker_tags(text)
     return text
 
@@ -169,7 +175,14 @@ def clean(row):
         result = remap_span(int(annotation["start"]), int(annotation["end"]), mapping)
         if result:
             new_start, new_end = result
-            new_labels.append({**annotation, "start": new_start, "end": new_end})
+            new_labels.append(
+                {
+                    **annotation,
+                    "text": cleaned_text[new_start:new_end],
+                    "start": new_start,
+                    "end": new_end,
+                }
+            )
         # if result is None, the annotation was in a deleted region — drop it
 
     return pd.Series(
