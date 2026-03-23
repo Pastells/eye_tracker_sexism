@@ -97,14 +97,16 @@ def clean_speaker_tags(content, remove_all=False):
     return result_content
 
 
-def clean_text(text):
+def clean_text(text, hablante=True):
     """Remove time stamps and line breaks"""
     texts = text.strip().split("\n")
-    text = "".join([t.split(maxsplit=4)[-1] for t in texts]).replace("\r", "")
-    text = re.sub(r"<\/?OCR>", "", text)
-    text = re.sub(r"\[SPEAKER_0([0-9])\]", r"\n[HABLANTE \1]", text).strip()
-    text = text.replace("SPEAKER_0[0-9]", "HABLANTE_")
+    text = "".join(
+        [t.split(maxsplit=4)[-1] if not t.startswith("<OCR>") else t for t in texts]
+    ).replace("\r", "")
+    text = re.sub(r"<\/?OCR>", "", text).strip()
     text = clean_speaker_tags(text)
+    if hablante:
+        text = re.sub(r"\[SPEAKER_0([0-9])\]", r"\n[HABLANTE \1]", text).strip()
     return text
 
 
@@ -162,9 +164,88 @@ def clean_text_with_mapping(text: str) -> tuple[str, dict]:
     Returns (cleaned_text, offset_mapping).
     """
     cleaned = clean_text(text)
-    cleaned = clean_one_speaker_tag(cleaned)
+    # cleaned = clean_one_speaker_tag(cleaned)
     mapping = build_offset_mapping(text, cleaned)
     return cleaned, mapping
+
+
+TIMESTAMP_PATTERN = re.compile(r"\d+\s+\d{2}:\d{2},\d+\s+-->\s+\d{2}:\d{2},\d+\s+")
+PATTERN = re.compile(r"<\/?OCR>|\[SPEAKER_0([0-9])\]:")
+
+
+def clean_text_with_mapping_new(text: str, hablante: bool = True) -> tuple[str, dict[int, int]]:
+    """
+    Clean subtitle-like text while building a mapping from original indices
+    to cleaned indices.
+
+    Instead of 1) cleaning, and 2) building the offset mapping, this does it together
+    The main beneffit would be to have a mapping from SPEAKER to HABLANTE, but it's not
+    working great, so for now I stick with the old one, even if this tag is lost on the spans
+    """
+
+    mapping: dict[int, int] = {}
+    cleaned = []
+
+    clean_i = 0
+    orig_i = 0
+    n = len(text)
+
+    def map_span(start, end, target):
+        for i in range(start, end):
+            mapping[i] = target
+
+    while orig_i < n:
+        # --- 1. Remove timestamp prefix (only at line starts) ---
+        if orig_i == 0 or text[orig_i - 1] == "\n":
+            m = TIMESTAMP_PATTERN.match(text, orig_i)
+            if m:
+                start, end = m.span()
+                map_span(start, end, clean_i)
+                orig_i = end
+                continue
+
+        # --- 2. Apply structured replacements ---
+        m = PATTERN.match(text, orig_i)
+        if m:
+            start, end = m.span()
+            matched = m.group(0)
+
+            # OCR tags → delete
+            if matched.startswith("<OCR") or matched.startswith("</OCR"):
+                map_span(start, end, clean_i)
+
+            # Speaker tags
+            elif matched.startswith("[SPEAKER_0"):
+                if hablante:
+                    replacement = f"\n[HABLANTE {m.group(1)}]"
+                    cleaned.append(replacement)
+                    map_span(start, end, clean_i)
+                    clean_i += len(replacement) - 1
+                else:
+                    # keep original
+                    for i in range(start, end):
+                        mapping[i] = clean_i
+                        cleaned.append(text[i])
+                        clean_i += 1
+
+            orig_i = end
+            continue
+
+        # --- 3. Copy normal character ---
+        mapping[orig_i] = clean_i
+        cleaned.append(text[orig_i])
+        orig_i += 1
+        clean_i += 1
+
+    final_text = (
+        "".join(cleaned)
+        .strip()
+        .replace("\n\n", "__newline__")
+        .replace("\n", " ")
+        .replace("__newline__", "\n")
+    )
+
+    return final_text, mapping
 
 
 def clean(row):
@@ -183,7 +264,7 @@ def clean(row):
                     "end": new_end,
                 }
             )
-        # if result is None, the annotation was in a deleted region — drop it
+        # if result is None, the annotation was in a deleted region -> drop it
 
     return pd.Series(
         {
