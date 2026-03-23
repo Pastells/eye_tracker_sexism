@@ -9,16 +9,18 @@ geometry: margin=3cm
 
 # General
 
-- En quin idioma es fa el TFG? Anglès -> paper; però també pot està bé fer-lo en català.
+TFG en català.
 
 # Experimental design
 
 Total fixation duration can correlate both with difficulty and likeability -> Ask if the text was difficult.
 
-0. Demographics questionaire: age, sex, field?
+0. Demographics questionaire: edat i sexe i prou
 1. Read text
 2. Press space
 3. Annotate on excel. Fields: sexist (binary, scale?), difficult (binary, scale?)
+
+Primer binari -> escala 0-2
 
 @conklinEyeTrackingGuideApplied2018:
 
@@ -29,6 +31,11 @@ Total fixation duration can correlate both with difficulty and likeability -> As
 ## Control sentences
 
 - How many control sentences?
+
+20 textos, 4 de control
+
+Control, preguntes sobre el text
+
 - Can they be from the same dataset? If so, should they be read first and then explain the task for the rest?
 
 Can all sentences be control sentences?
@@ -94,6 +101,11 @@ TODO:
 
 - instruccions detallades
 - qüestionari participants
+
+## Possibles experiments
+
+- Llegir en veu alta
+- Llegir mentre s'escolta l'àudio
 
 # Bibliography
 

@@ -23,4 +23,6 @@ dependencies = [
     "python-lsp-server[all]>=1.14.0",
     "seaborn>=0.13.2",
     "weasyprint>=68.1",
+    "emoji>=2.15.0",
+    "nb-clean>=4.0.1",
 ]
