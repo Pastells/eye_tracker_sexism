@@ -1,0 +1,79 @@
+% =====================================
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[
+a4paper, 
+% showframe,
+left=30mm,
+right=30mm,
+top=25mm,
+bottom=25mm,
+]{geometry}
+\usepackage{setspace}
+\onehalfspacing % Interlineat 
+% =====================================
+\usepackage{todonotes}
+% \setuptodonotes{inline}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{csquotes}
+% =====================================
+% Taules i figures per defecte centrades i amb posició htbp (here, top, bottom, page)
+\makeatletter
+    \g@addto@macro\@floatboxreset\centering
+    \def\fps@figure{htbp}
+    \def\fps@table{htbp}
+\makeatother
+
+\usepackage{graphicx}
+\usepackage{tabularx, booktabs}
+\usepackage{multirow, multicol}
+\usepackage{siunitx} % unitats en SI
+\usepackage{placeins} % FloatBarrier
+\usepackage{subcaption}
+% =====================================
+
+% Matemàtiques
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\newcommand{\e}[1]{\times 10^{#1}}  % Notació científica 
+\renewcommand{\vec}[1]{\mathbf{#1}}  % Vectors en negreta 
+\newcommand{\tss}[1]{\textsuperscript{#1}} % May 13\tss{th}
+\renewcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
+% =====================================
+% IPA
+\usepackage{tipa}
+\let\ipa\textipa
+\newcommand{\fipa}[1]{\ipa{[#1]}} % Fonètica
+\newcommand{\lipa}[1]{\ipa{/#1/}} % fonoLogia
+
+\usepackage{linguex}
+\renewcommand{\eachwordone}{\itshape}
+\renewcommand{\eachwordtwo}{\footnotesize}
+
+\usepackage[style=apa]{biblatex}
+\addbibresource{biblatex.bib}
+
+% Referències
+\usepackage[capitalize, nameinlink]{cleveref}
+% rangs per exemples
+\crefname{ExNo}{}{}
+\crefname{SubExNo}{}{}
+\renewcommand{\theExNo}{\arabic{ExNo}}
+\renewcommand{\theSubExNo}{\theExNo\alph{SubExNo}}
+\creflabelformat{SubExNo}{(#2#1#3)}
+\creflabelformat{ExNo}{(#2#1#3)}
+\crefrangelabelformat{SubExNo}{(#3#1#4--#5\crefstripprefix{#1}{#2}#6)}
+\crefrangelabelformat{ExNo}{(#3#1#4--#5#2#6)}
+
+\renewcommand{\figurename}{Fig.}
+%\renewcommand{\tablename}{Table}
+
+% CATALÀ
+\usepackage[catalan]{babel}
+\crefname{table}{Taula}{Taules}
+\Crefname{table}{Taula}{Taules}
+\crefname{section}{Secció}{Seccions}
+\Crefname{section}{Secció}{Seccions}
+\newcommand\crefpairconjunction{ i }

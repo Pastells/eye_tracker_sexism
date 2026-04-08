@@ -1,0 +1,56 @@
+\section{Context i justificació}
+
+El sexisme és una forma de discriminació basada en el sexe o el gènere que
+afecta tots els àmbits de la societat. Amb l'auge de les xarxes socials, el
+contingut sexista s'ha amplificat i diversificat, fent que la seva detecció
+automàtica sigui una necessitat creixent en l'àmbit de la moderació de
+continguts \cite{mused}.
+
+En paral·lel, els models de processament del llenguatge natural (PLN) basats
+en l'arquitectura \textit{transformer} \cite{vaswaniAttentionAllYou2017} han
+assolit resultats notables en tasques de classificació de text, inclosa la
+detecció de discurs d'odi i sexisme
+\cite{chiuDetectingHateSpeech2021,plazadelarcoBriefOverviewApproaches2023}.
+Aquests models incorporen mecanismes d'atenció que determinen quines parts del
+text reben més pes durant el processament. Tanmateix, fins a quin punt aquests
+patrons d'atenció reflecteixen els processos cognitius humans continua sent una
+qüestió oberta
+\cite{## jainAttentionNotExplanation2019,wiegreffeAttentionNotNot2019}.
+
+La tecnologia de seguiment ocular (\textit{eye-tracking}) ofereix una finestra
+directa als processos atencionals humans durant la lectura
+\cite{raynerEyeMovementsReading1998}. Mètriques com la durada total de
+fixació, el temps de primera passada o el nombre de regressions permeten
+identificar quins elements lingüístics capten l'atenció del lector i quins
+requereixen un processament més profund
+\cite{cliftonEyeMovementsReading2016}.
+
+La intersecció entre l'atenció humana ---mesurada amb \textit{eye-tracking}---
+i l'atenció computacional ---extreta dels mecanismes d'atenció dels
+\textit{transformers}--- constitueix un camp emergent que pot aportar llum tant
+a la interpretabilitat dels models com a la comprensió dels processos cognitius
+subjacents a la detecció de contingut ofensiu.
+
+\section{Objectius}
+
+L'objectiu principal d'aquest treball és comparar els patrons d'atenció humans
+i computacionals durant la tasca de detecció de sexisme en textos. Concretament,
+es plantegen els objectius següents:
+
+\begin{enumerate}
+    \item Recollir dades de seguiment ocular de participants humans durant la
+    lectura de textos amb contingut sexista i no sexista.
+    \item Extraure els pesos d'atenció de models \textit{transformer}
+    preentrenats davant els mateixos textos.
+    \item Analitzar i comparar els patrons d'atenció humans i computacionals
+    per determinar el grau d'alineació entre ambdós.
+    \item Explorar si les divergències entre atenció humana i computacional
+    es relacionen amb les dificultats de classificació dels models.
+\end{enumerate}
+
+L'article s'estructura de la manera següent: al capítol~\ref{ch:related}
+presentem el treball relacionat; al capítol~\ref{ch:design} descrivim el
+disseny experimental; al capítol~\ref{ch:analysis} detallem la metodologia
+d'anàlisi; i finalment, al capítol~\ref{ch:conclusions} exposem les
+conclusions i el treball futur.
+

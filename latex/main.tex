@@ -1,0 +1,89 @@
+\documentclass[a4paper,12pt,oneside]{report}
+\usepackage{subfiles}
+
+% --- PAQUETS PERSONALITZATS ---
+\usepackage{ub-lingu-tfg} % Carrega el full d’estil UB
+\input{aux/config_curs} % fa que el curs academic surti automàtic
+
+% --- PAQUETS LINGUISTICA ---
+% \usepackage{tipa} % activa per escriure en AFI
+% \usepackage{phonrule} % regles fonològiques
+% \usepackage{expex} %glosses leipzig
+
+% --- METADADES ---
+\title{Títol del Treball de Fi de Grau}
+\author{Pol Pastells i Vilà}
+\date{Curs 2025--2026}
+
+\hypersetup{
+  pdftitle={Títol del Treball de Fi de Grau},
+  pdfauthor={Pol Pastells i Vilà},
+  pdfsubject={Treball de Fi de Grau, Universitat de Barcelona},
+  pdfkeywords={TFG, Universitat de Barcelona, Llengua, Recerca}
+}
+
+
+\begin{document}
+% --- AFEGIM LA COBERTA ---
+\input{1-coberta} % <-- aquí inclous la coberta des d'un altre arxiu. Canvia les dades a l'arxiu 1-coberta
+
+% --- AFEGIM EL FULL D'AUTORIA ---
+\includepdf[pages=-]{autoria_tfg.pdf} % - = totes les pàgines
+
+
+% --- Índex automàgic ---
+\tableofcontents
+\newpage
+
+% --- RESUMS ---
+\chapter*{Resums:}
+\addcontentsline{toc}{chapter}{Resums} %això és perquè surti a l'index perquè només surten els elements numerats
+\input{2-resums} % <-- aquí els resums
+\newpage
+
+% ---------------------------
+% --- CAPÍTOLS PRINCIPALS ---
+% ---------------------------
+
+\chapter{Introducció}
+\subfile{capitols/intro}
+
+\chapter{Marc teòric}
+\subfile{capitols/marc}
+
+
+\chapter{Metodologia}
+\subfile{capitols/metodologia}
+
+\chapter{Resultats}
+    Presentació i descripció dels resultats obtinguts (taules, figures, gràfics...).
+    
+    La taula~\ref{tab:freq} mostra la distribució de freqüències per categoria.
+    
+        % exemple de taula
+        \ubtable{tab:freq}{Distribució de freqüències per categoria.}{
+        \begin{tabular}{lccc}
+        \toprule
+        \textbf{Categoria} & \textbf{$F_0$ (Hz)} & \textbf{Durada (ms)} & \textbf{N} \\
+        \midrule
+        Vocàliques & 210 & 180 & 45 \\
+        Consonàntiques & 190 & 160 & 52 \\
+        \bottomrule
+        \end{tabular}
+        }
+
+\chapter{Discussió}
+    % Si no tens moltes coses a dir aquesta secció pot anar fusionada amb les conclusions
+    Interpretació dels resultats i comparació amb la literatura existent.
+
+\chapter{Conclusions}
+    Resum dels resultats principals, limitacions i possibles línies futures de recerca.
+
+\chapter{Referències}
+
+    \printbibliography[heading=none] % el titol i numero de seccio el decidim nosaltres
+
+% \chapter{Annexos}
+
+\end{document}
+
