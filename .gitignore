@@ -1,7 +1,11 @@
+*.pdf
+data/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
+.virtual_documents/
 
 # C extensions
 *.so
