@@ -52,6 +52,7 @@ def visualize_annotations(
                 "JOKE",
             ],
             palette,
+            strict=False,
         )
     )
 
@@ -82,4 +83,4 @@ def visualize_annotations(
         .replace("display: inline-block;", "display: inline-block; margin-right: -10px;")
         .replace("margin-bottom: 6rem", "margin-bottom: 2rem")
     )
-    HTML(string=html).write_pdf(file)
+    HTML(string=html).write_pdf(f"pdfs_anotacions/{file}")
