@@ -51,7 +51,7 @@ So the alternatives to automate the experiments are 1) E-Prime, 2) Use images an
 
 For now, I'm testing manually.
 
-Before exporting, you have to use Analyze/AOI Tool to define the words AOI.
+Before exporting, you have to use Analyze/AOI Tool to define the words AOI for each stimulus.
 For qualitative analysis it is better to manually define AOIs. For example the region that contains sexism, as well as the pre-critical and spillover regions.
 
 # Metrics
@@ -113,10 +113,22 @@ TODO:
 
 **Datasets**: They use two English datasets:
 
-- MQA-RC [@soodInterpretingAttentionModels2020]
+# References
+
+- MQA-RC [@soodInterpretingAttentionModels2020] not only introduces a dataset, but also interprets the results.
+
+- [@sood_interpreting_2020] has a nice example picture.
+
+## ZuCo
 
 - ZuCo [@hollenstein_zuco_2018] (newer version @hollenstein_zuco_2020)
 
-[@sood_interpreting_2020] has a nice example picture.
+Only 12 participants, 400 sentiment sentences, 300 QA sentences, 407 relation class. sentences.
 
-# References
+They do a linguistic assessment of the participants.
+
+### Experimental design
+
+### ZuCo 2.0
+
+@hollenstein_zuco_2020 has 18 participants
