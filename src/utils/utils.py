@@ -52,6 +52,25 @@ def join_dfs(dfs, cols_left, cols_right, id_col, binary_cols, num_cols, label_co
     return df
 
 
+def get_lens(_df, IDS, sentiment="SEXIST"):
+    """
+    filter (no-)sexist texts and add spans
+    """
+    df = _df.copy()
+    df["len"] = df.text.str.len()
+    df = df[(df.sentiment == sentiment) & (df.video_id.isin(IDS)) & (df.len < 2000)]
+    # df = df[(df.video_id.isin(IDS))].sort_values(by="len")
+
+    df["label"] = df["label"].apply(
+        lambda x: eval(x) if isinstance(x, str) else (x if isinstance(x, list) else [])
+    )
+    df[["text_clean", "label_clean"]] = df.apply(clean, axis=1)
+    df["span_len"] = df.label_clean.apply(lambda x: sum([ann["end"] - ann["start"] for ann in x]))
+    df["span_num"] = df.label_clean.str.len()
+    df["span_lens"] = df.label_clean.apply(lambda x: [ann["end"] - ann["start"] for ann in x])
+    return df
+
+
 # ==================
 # Clean text
 # ==================
@@ -179,7 +198,7 @@ def clean_text_with_mapping_new(text: str, hablante: bool = True) -> tuple[str, 
     to cleaned indices.
 
     Instead of 1) cleaning, and 2) building the offset mapping, this does it together
-    The main beneffit would be to have a mapping from SPEAKER to HABLANTE, but it's not
+    The main benefit would be to have a mapping from SPEAKER to HABLANTE, but it's not
     working great, so for now I stick with the old one, even if this tag is lost on the spans
     """
 
