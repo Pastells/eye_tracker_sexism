@@ -25,4 +25,5 @@ dependencies = [
     "weasyprint>=68.1",
     "emoji>=2.15.0",
     "nb-clean>=4.0.1",
+    "transformers[torch]>=5.5.4",
 ]
