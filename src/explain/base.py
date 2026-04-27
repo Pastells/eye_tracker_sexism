@@ -24,7 +24,7 @@ Aquest mòdul defineix:
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from dataclasses import dataclass, field
 from typing import Literal, Protocol
 
@@ -201,7 +201,7 @@ class ModelWrapper:
 # =============================================================================
 
 
-class Explainer(ABC):
+class Explainer:
     """
     Classe base. Un `Explainer` pren un `ModelWrapper` i produeix `Explanation`s.
 
