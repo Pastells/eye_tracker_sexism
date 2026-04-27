@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from explain.gradient import InputXGradient, SimpleGradient
 from explain.ig import IntegratedGradients
 from models.mlm import MLMClozeWrapper
 
@@ -52,8 +53,8 @@ def print_explanation(exp):
 def mlm():
     wrapper = MLMClozeWrapper(model_name=MODEL_NAME)
 
-    # grad_explainer = SimpleGradient(wrapper, aggregation="sum", normalize=True)
-    # ixg_explainer = InputXGradient(wrapper, aggregation="sum", normalize=True)
+    grad_explainer = SimpleGradient(wrapper, aggregation="sum", normalize=True)
+    ixg_explainer = InputXGradient(wrapper, aggregation="sum", normalize=True)
     ig_explainer = IntegratedGradients(
         wrapper,
         n_steps=50,
@@ -86,12 +87,12 @@ def mlm():
             inputs, mask_pos = wrapper.build_inputs(text, prompt_idx=prompt_idx)
             inputs = {k: v.to(DEVICE) for k, v in inputs.items()}
 
-            # exp_grad = grad_explainer.explain(text, mask_pos=mask_pos)
-            # exp_ixg = ixg_explainer.explain(text, mask_pos=mask_pos)
+            exp_grad = grad_explainer.explain(text, prompt_idx=prompt_idx)
+            exp_ixg = ixg_explainer.explain(text, prompt_idx=prompt_idx)
             exp_ig = ig_explainer.explain(text, prompt_idx=prompt_idx)
             print(f"\n  [Prompt {prompt_idx}]", end="")
-            # print_explanation(exp_grad)
-            # print_explanation(exp_ixg)
+            print_explanation(exp_grad)
+            print_explanation(exp_ixg)
             print_explanation(exp_ig)
             gap = exp_ig.extra.get("completeness_gap", float("nan"))
             print(f"    IG completeness gap: {gap:.4f}")
