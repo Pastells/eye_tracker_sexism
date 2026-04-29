@@ -1,5 +1,8 @@
 \documentclass[a4paper,12pt,oneside]{report}
+\usepackage{todonotes}
+\setuptodonotes{inline}
 \usepackage{subfiles}
+\usepackage{multirow, multicol}
 
 % --- PAQUETS PERSONALITZATS ---
 \usepackage{ub-lingu-tfg} % Carrega el full d’estil UB
@@ -57,9 +60,9 @@
 
 \chapter{Resultats}
     Presentació i descripció dels resultats obtinguts (taules, figures, gràfics...).
-    
+
     La taula~\ref{tab:freq} mostra la distribució de freqüències per categoria.
-    
+
         % exemple de taula
         \ubtable{tab:freq}{Distribució de freqüències per categoria.}{
         \begin{tabular}{lccc}
@@ -86,4 +89,3 @@
 % \chapter{Annexos}
 
 \end{document}
-

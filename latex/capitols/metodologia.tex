@@ -1,4 +1,3 @@
-
 Descripció del corpus, procediment, materials i mètodes utilitzats.
 
 \section{Materials}\label{sec:materials}
@@ -7,15 +6,13 @@ Es detallen els instruments, eines i recursos utilitzats per a la recollida de d
 \subsection{Corpus d'origen: MuSeD}\label{sec:mused}
 
 El corpus utilitzat en aquest treball prové de MuSeD (\textit{Multimodal Sexism
-Detection Dataset})~\cite{muSeDMultimodalSexism}, un conjunt de dades per a la
-detecció de sexisme en vídeos en castellà, publicat com a article de conferència
-a COLM 2025. MuSeD conté 400 vídeos extrets de dues plataformes de xarxes
-socials: TikTok i BitChute. La inclusió de les dues plataformes és deliberada:
+Detection Dataset})~\cite{mused}, un conjunt de dades per a la
+detecció de sexisme en vídeos en castellà.
+MuSeD conté 400 vídeos extrets de dues xarxes socials: TikTok i BitChute.
 TikTok, tot i prohibir explícitament la misogínia a les seves directrius
 comunitàries, continua allotjant contingut sexista de manera explícita i
-implícita; BitChute, en canvi, és una plataforma de baixa moderació que no
-pren mesures per prevenir el discurs d'odi. El conjunt de dades és
-aproximadament equilibrat, amb un 48,5\% de vídeos etiquetats com a sexistes
+implícita; BitChute, en canvi, és una plataforma de baixa moderació.
+El conjunt de dades és aproximadament equilibrat, amb un 48,5\% de vídeos etiquetats com a sexistes
 i un 51,5\% com a no sexistes.
 
 \subsubsection{Recollida de dades}
@@ -27,21 +24,18 @@ raó de sexe i orientació sexual (per exemple, \textit{\#brechasalarial},
 \textit{\#violenciamachista} o \textit{\#lgbt}). Per a BitChute, es van
 adaptar alguns d'aquests \textit{hashtags} com a paraules clau de cerca.
 Aproximadament el 90\% dels vídeos provenen de TikTok. Les transcripcions
-textuals es van obtenir automàticament amb Whisper i van ser revisades i
-corregides per un lingüista professional.
+textuals es van obtenir automàticament amb Whisper~\cite{whisper} i van ser revisades i
+corregides per una lingüista professional.
 
 \subsubsection{Procés d'anotació}
 
-L'anotació es va dur a terme en tres nivells: text (transcripció i OCR),
+L'anotació es va dur a terme en tres nivells: text (transcripció i OCR---text escrit als vídeos),
 àudio i vídeo complet. Sis anotadors amb formació en lingüística, dividits en
-dos equips, van classificar cada ítem com a sexista o no sexista, i
-addicionalment van marcar els \textit{spans} textuals o segments de vídeo que
-motivaven la classificació. Per mitigar biaixos d'anotació es va reclutar un
-equip divers en gènere i edat, es va dur a terme una fase d'entrenament
-prèvia, i es van fer reunions setmanals moderades per una experta en sexisme
-en xarxes socials.
+dos equips, van classificar cada ítem com a sexista o no sexista.
+Addicionalment van etiquetar els \textit{spans} textuals o segments de vídeo que
+motivaven la classificació.
 
-El marc d'anotació distingeix quatre tipus de contingut sexista:
+El marc d'anotació distingia quatre tipus de contingut sexista:
 \begin{itemize}
     \item \textbf{Estereotip} (\textit{Stereotype}): afirmacions sobre
     propietats que suposadament diferencien homes i dones a partir de creences
@@ -72,11 +66,10 @@ als criteris de selecció descrits a la Secció~\ref{sec:filtratge}:
     \item \texttt{sexist\_video}: etiqueta binària equivalent, però basada
     en el contingut multimodal complet (vídeo, àudio i text).
     \item \texttt{sexist\_soft}: valor continu entre 0 i 1 que reflecteix
-    el grau d'acord entre anotadors; valors propers a 0,5 indiquen
-    desacord.
+    el grau d'acord entre anotadors, té 4 valors possibles: 0, 0,33, 0,67, 1.
     \item Anotacions a nivell de \textit{span}: fragments concrets del text
     marcats com a sexistes per part dels anotadors, que permeten identificar
-    quines porcions textuals motiven l'etiqueta global.
+    quines porcions textuals motiven l'etiqueta global. % TODO: explicar més, no sempre és span sexista
 \end{itemize}
 
 \subsubsection{Acord entre anotadors}
@@ -95,6 +88,8 @@ coherència entre modalitats descrit a continuació.
 
 \subsection{Filtratge del corpus}\label{sec:filtratge}
 
+A partir del corpus filtrat, es van seleccionar 40 textos (20 sexistes i 20
+no sexistes) seguint els criteris següents:
 Atès que l'objectiu de l'experiment és analitzar els patrons d'atenció durant
 la lectura de textos clarament sexistes o clarament no sexistes, es va aplicar
 un filtratge sobre el corpus original amb dos criteris:
@@ -102,64 +97,81 @@ un filtratge sobre el corpus original amb dos criteris:
 \begin{enumerate}
     \item \textbf{Coherència entre modalitats}: només es van conservar les
     instàncies en què l'etiqueta textual i la multimodal coincideixen
-    (\texttt{sexist\_text} $=$ \texttt{sexist\_video}). Això garanteix que el
-    caràcter sexista (o no) del text no depèn de senyals no verbals com
-    l'entonació, els gestos o la imatge, i que el text és interpretable de
-    manera autònoma.
-    \item \textbf{Alt consens entre anotadors}: es van descartar les
+    (\texttt{sexist\_text} $=$ \texttt{sexist\_video}).
+    \item \textbf{Acord total entre anotadors}: es van descartar les
     instàncies amb valors intermedis de \texttt{sexist\_soft}, mantenint
-    només aquelles amb alt consens ($\texttt{sexist\_soft} \in \{0, 1\}$).
-    Això elimina casos ambigus o limítrofes que podrien introduir soroll en
-    l'anàlisi.
-\end{enumerate}
-
-
-\subsection{Selecció final dels textos experimentals}\label{sec:seleccio}
-
-A partir del corpus filtrat, es van seleccionar 20 textos (10 sexistes i 10
-no sexistes) seguint els criteris addicionals següents:
-
-\begin{itemize}
-    \item \textbf{Longitud}: es van prioritzar els textos més curts per tal de
-    mantenir una durada raonable de la sessió experimental. Considerant una
-    velocitat de lectura aproximada de 1.000 caràcters per minut, els 20
-    textos seleccionats suposen aproximadament 7 minuts de lectura neta, als
-    quals cal afegir el temps de calibratge i de \textit{stimulated recall}.
+    només aquelles amb consens ($\texttt{sexist\_soft} \in \{0, 1\}$).
+    \item \textbf{Longitud}: es van prioritzar els textos més curts o amb spans anotats més curts per tal de
+    mantenir una durada raonable de la sessió experimental i tenir major explicabilitat a l'hora de fer l'anàlisi. Considerant una
+    velocitat de lectura aproximada de 1.000 caràcters per minut, els 40
+    textos seleccionats suposen aproximadament 17 minuts de lectura, als
+    quals cal afegir el temps de calibració i de \textit{stimulated recall}.
     \item \textbf{Comprensibilitat autònoma}: es van descartar textos amb
-    vocabulari estrany o que requerien context audiovisual per ser compresos.
+    vocabulari estrany (per un oient català).
     Quan era necessari, es van fer petites edicions per millorar-ne la
     llegibilitat (afegir cometes, indicar qui parla en fragments dialogats,
     etc.).
     \item \textbf{Validació manual}: cada text candidat es va revisar
     individualment, escoltant l'àudio original i inspeccionant visualment les
     anotacions de \textit{span} per confirmar-ne l'adequació.
-\end{itemize}
+\end{enumerate}
 
-La Taula~\ref{tab:corpus_stats} resumeix les estadístiques descriptives dels
-textos seleccionats. Cal remarcar que els textos sexistes tendeixen a ser més
+
+Cal remarcar que els textos sexistes tendeixen a ser més
 llargs que els no sexistes, i que les anotacions de \textit{span} cobreixen
 una proporció considerable del text en ambdós grups.
+
+Les taules~\ref{tab:corpus_stats} i~\ref{tab:corpus_labels} resumeixen les estadístiques descriptives i la distribució de categories
+dels textos seleccionats.
+\todo{La distribució detallada dels \textit{soft labels} es recull a l'Apèndix~\ref{app:soft_labels}.}
 
 \begin{table}[ht]
     \centering
     \begin{tabular}{lcccc}
         \toprule
-        & \multicolumn{2}{c}{No sexistes ($n = 10$)}
-        & \multicolumn{2}{c}{Sexistes ($n = 10$)} \\
+        & \multicolumn{2}{c}{No sexistes} &
+          \multicolumn{2}{c}{Sexistes} \\
         \cmidrule(lr){2-3} \cmidrule(lr){4-5}
         & Mitjana & D.E. & Mitjana & D.E. \\
         \midrule
-        Longitud (caràcters)      & 279,8 & 103,0 & 440,4 & 241,8 \\
-        Nombre de \textit{spans}  &   1,0 &   0,6 &   1,7 &   0,6 \\
-        Longitud dels \textit{spans} (car.) & 231,0 & 136,6 & 303,6 & 247,5 \\
+        Longitud (caràcters)      & 388,9 & 137,9 & 439,4 & 173,4 \\
+        Nombre de \textit{spans}  & 0,95  & 0,50  & 1,83  & 0,75  \\
+        Longitud dels \textit{spans} & 255,7 & 139,6 & 362,7 & 205,3 \\
         \bottomrule
     \end{tabular}
-    \caption{Estadístiques descriptives dels 20 textos seleccionats (D.E.:
-    desviació estàndard). Els \textit{spans} dels textos no sexistes
-    corresponen a les anotacions del corpus original, que en aquest cas
-    marquen fragments rellevants tot i no ser sexistes.}
-    \label{tab:corpus_stats}
+    \caption{Estadístiques descriptives dels 40 textos seleccionats (D.E.:
+    desviació estàndard).}\label{tab:corpus_stats}
 \end{table}
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{llc}
+        \toprule
+        & Categoria & $n$ \\
+        \midrule
+        \multirow{4}{*}{\rotatebox[origin=c,y=1cm]{90}{No sex.}}
+        & Crítica/denúncia  & 11 \\
+        & Ironia            &  1 \\
+        & Humor             &  2 \\
+        %& Sexisme reportat  &  0 \\
+        \midrule
+        \multirow{8}{*}{\rotatebox[origin=c]{90}{Sexistes}}
+        & Estereotips       & 11 \\
+        & Desigualtat       &  7 \\
+        & Discriminació     &  6 \\
+        & Sexisme implícit  &  2\textsuperscript{a} \\
+        & Sexisme reportat  &  1 \\
+        & Ironia            &  2\\
+        & Humor             &  2\textsuperscript{b} \\
+        & Objectificació    &  0 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Distribució de categories dels textos seleccionats.
+    \textsuperscript{a}~Els 2 textos amb sexisme implícit també presenten estereotips.
+    \textsuperscript{b}~Els 2 textos sexistes amb humor també presenten discriminació.
+    }\label{tab:corpus_labels}
+\end{table}
+
 
 Addicionalment, es van incloure 4 textos de pràctica (no comptabilitzats a
 la Taula~\ref{tab:corpus_stats}) que no s'empren en l'anàlisi principal, sinó
