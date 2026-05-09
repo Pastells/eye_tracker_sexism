@@ -1,21 +1,18 @@
 Descripció del corpus, procediment, materials i mètodes utilitzats.
 
-\section{Materials}\label{sec:materials}
-Es detallen els instruments, eines i recursos utilitzats per a la recollida de dades. Típicament, el corpus o protocol.
-
-\subsection{Corpus d'origen: MuSeD}\label{sec:mused}
+\section{Corpus d'origen: MuSeD}\label{sec:mused}
 
 El corpus utilitzat en aquest treball prové de MuSeD (\textit{Multimodal Sexism
 Detection Dataset})~\cite{mused}, un conjunt de dades per a la
 detecció de sexisme en vídeos en castellà.
-MuSeD conté 400 vídeos extrets de dues xarxes socials: TikTok i BitChute.
+MuSeD consta de 400 vídeos extrets de dues xarxes socials: TikTok i BitChute.
 TikTok, tot i prohibir explícitament la misogínia a les seves directrius
 comunitàries, continua allotjant contingut sexista de manera explícita i
 implícita; BitChute, en canvi, és una plataforma de baixa moderació.
 El conjunt de dades és aproximadament equilibrat, amb un 48,5\% de vídeos etiquetats com a sexistes
 i un 51,5\% com a no sexistes.
 
-\subsubsection{Recollida de dades}
+\subsection{Recollida de dades}
 
 Els vídeos es van recollir entre maig i octubre de 2024. Per a TikTok, es va
 elaborar una llista de 187 \textit{hashtags} en castellà que cobreix temàtiques
@@ -27,9 +24,9 @@ Aproximadament el 90\% dels vídeos provenen de TikTok. Les transcripcions
 textuals es van obtenir automàticament amb Whisper~\cite{whisper} i van ser revisades i
 corregides per una lingüista professional.
 
-\subsubsection{Procés d'anotació}
+\subsection{Procés d'anotació}
 
-L'anotació es va dur a terme en tres nivells: text (transcripció i OCR---text escrit als vídeos),
+L'anotació es va dur a terme en tres nivells: text (transcripció i OCR\footnote{Optical character recognition.}---text escrit al vídeo),
 àudio i vídeo complet. Sis anotadors amb formació en lingüística, dividits en
 dos equips, van classificar cada ítem com a sexista o no sexista.
 Addicionalment van etiquetar els \textit{spans} textuals o segments de vídeo que
@@ -56,7 +53,7 @@ i Desigualtat (39,2\%), seguits de Discriminació (15,5\%) i Objectificació
 (3,6\%). Cal destacar que si un ítem conté una denúncia o un relat d'una
 experiència sexista, s'etiqueta com a no sexista.
 
-\subsubsection{Estructura del corpus}
+\subsection{Estructura del corpus}
 
 Cada instància del corpus proporciona les variables següents, rellevants per
 als criteris de selecció descrits a la Secció~\ref{sec:filtratge}:
@@ -72,7 +69,7 @@ als criteris de selecció descrits a la Secció~\ref{sec:filtratge}:
     quines porcions textuals motiven l'etiqueta global. % TODO: explicar més, no sempre és span sexista
 \end{itemize}
 
-\subsubsection{Acord entre anotadors}
+\subsection{Acord entre anotadors}
 
 La fiabilitat de les anotacions es va mesurar amb la kappa de Fleiss. Per a
 l'anotació textual, s'obté una kappa de 0,719 (equip~1) i 0,717 (equip~2),
@@ -86,13 +83,10 @@ contingut verbal i el no verbal. Precisament aquest fet motiva el criteri de
 coherència entre modalitats descrit a continuació.
 
 
-\subsection{Filtratge del corpus}\label{sec:filtratge}
+\section{Selecció de textos de MuSeD}\label{sec:filtratge}
 
-A partir del corpus filtrat, es van seleccionar 40 textos (20 sexistes i 20
+A partir del corpus original, es van seleccionar 40 textos (20 sexistes i 20
 no sexistes) seguint els criteris següents:
-Atès que l'objectiu de l'experiment és analitzar els patrons d'atenció durant
-la lectura de textos clarament sexistes o clarament no sexistes, es va aplicar
-un filtratge sobre el corpus original amb dos criteris:
 
 \begin{enumerate}
     \item \textbf{Coherència entre modalitats}: només es van conservar les
@@ -105,7 +99,7 @@ un filtratge sobre el corpus original amb dos criteris:
     mantenir una durada raonable de la sessió experimental i tenir major explicabilitat a l'hora de fer l'anàlisi. Considerant una
     velocitat de lectura aproximada de 1.000 caràcters per minut, els 40
     textos seleccionats suposen aproximadament 17 minuts de lectura, als
-    quals cal afegir el temps de calibració i de \textit{stimulated recall}.
+        quals cal afegir el temps de calibració i de \textit{stimulated recall} (vegeu secció~\ref{sec:procediment}).
     \item \textbf{Comprensibilitat autònoma}: es van descartar textos amb
     vocabulari estrany (per un oient català).
     Quan era necessari, es van fer petites edicions per millorar-ne la
@@ -117,10 +111,9 @@ un filtratge sobre el corpus original amb dos criteris:
 \end{enumerate}
 
 
-Cal remarcar que els textos sexistes tendeixen a ser més
+Cal dir que els textos sexistes tendeixen a ser més
 llargs que els no sexistes, i que les anotacions de \textit{span} cobreixen
 una proporció considerable del text en ambdós grups.
-
 Les taules~\ref{tab:corpus_stats} i~\ref{tab:corpus_labels} resumeixen les estadístiques descriptives i la distribució de categories
 dels textos seleccionats.
 \todo{La distribució detallada dels \textit{soft labels} es recull a l'Apèndix~\ref{app:soft_labels}.}
@@ -173,11 +166,12 @@ dels textos seleccionats.
 \end{table}
 
 
-Addicionalment, es van incloure 4 textos de pràctica (no comptabilitzats a
-la Taula~\ref{tab:corpus_stats}) que no s'empren en l'anàlisi principal, sinó
-que serveixen per familiaritzar els participants amb la dinàmica de la sessió
-i permetre el calibratge de l'eye-tracker abans de l'inici de l'experiment
-(vegeu la Secció~\ref{sec:procediment}).
+% TODO: no es va fer, però té sentit per més endavant
+% Addicionalment, es van incloure 4 textos de pràctica (no comptabilitzats a
+% la Taula~\ref{tab:corpus_stats}) que no s'empren en l'anàlisi principal, sinó
+% que serveixen per familiaritzar els participants amb la dinàmica de la sessió
+% i permetre el calibratge de l'eye-tracker abans de l'inici de l'experiment
+% (vegeu la Secció~\ref{sec:procediment}).
 
 % todo: triar figura
 % \begin{figure}[ht]
@@ -191,11 +185,23 @@ i permetre el calibratge de l'eye-tracker abans de l'inici de l'experiment
 
 
 
-\section{Participants}
-S’expliquen les característiques de les persones involucrades en l’estudi. Típicament parlants o oients.
 
-\section{Procediment}
-Es descriuen els passos seguits per dur a terme l'experiment o estudi. Explicació de les entrevistes, gravacions, lloc, etc.
+\section{Procediment}\label{sec:procediment}
 
-\section{Anàlisis}
-S’expliquen els mètodes estadístics o qualitatius aplicats a les dades recollides.
+% \section{Participants}
+L'estudi va tenir un total de 10 participants voluntaris (5 homes i 5 dones). Tots treballadors o estudiants de la Universitat de Barcelona majors d'edat.
+\todo{Agafar edats}
+
+
+\todo{Detalls eye tracker: font Noto Sans?, mida 34 en una pantalla de X polzades.}
+
+Cada participant va ser informat dels objectius de l'estudi abans de llegir els textos.
+La sessió consistia en explicar que havien de llegir 40 textos amb la intenció de determinar si eren sexistes.
+Podien llegir cada text les vegades que els fós necessari i un cop sabien la resposta premien 0 per no sexista o 1 per sexista en un teclat d'ordinador.
+Seguidament es mostrava una altra pantalla on es preguntava quina confiança tenien en la seva elecció (1 - poca confiança, 2 - confiança mitja, 3- molta confiança).
+Abans de mostrar el següent text, apareixia una pantalla buida durant 500ms.
+
+Un cop acabada la lectura es procedia a revisar 7 textos prèviament seleccionats (\textit{stimulated recall}).
+Es grabava la pantalla d'ordinador i l'àudio de la conversa mentre es mostrava el procés de lectura amb Tobii Pro Lab, on es veuen les fixacions i regressions.
+Durant aquest procés es preguntava si el participant s'havia fixat en alguna paraula o frase en concret per algun motiu, què havia pensat sobre el text, etc.
+
