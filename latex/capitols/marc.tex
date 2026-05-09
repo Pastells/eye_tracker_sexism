@@ -1,9 +1,214 @@
-Revisió de la literatura i fonaments conceptuals.
+% Revisió de la literatura i fonaments conceptuals
 
-% Com es pot observar a la Figura~\ref{fig:ladeprova}, els vocatius tenen una configuració nuclear L+H* !H\% i allargament de l'última síl·laba. 
-%
-% % exemple de cites bibliogràfiques
-% Segons \textcite{pierrehumbert1989}  els patrons d'entonació varien segons el context lingüístic \parencite{pierrehumbert1989}.
-%
-% % exemple de figures
-% \ubfigure[fig:ladeprova]{figs/fig0.png}{Un espectrograma del vocatiu de \textit{Mari!}.}
+\section{Comparació entre atenció humana i computacional}
+
+La intersecció entre els patrons d'atenció humans i els mecanismes d'atenció dels models 
+computacionals ha emergit com un camp de recerca crític en la interpretabilitat de l'IA 
+i la lingüística cognitiva. Aquest enfocament busca no només millorar la transparència 
+dels models de processament del llenguatge natural (PLN), sinó també obtenir 
+\textit{insights} sobre els processos cognitius humans subjacents a la comprensió del llenguatge.
+
+\subsection{Variabilitat en les explicacions: humans vs. models}
+
+Un estudi recent de \textcite{bogaert_explanation_2026} ha 
+explorat sistemàticament les diferències en la variabilitat de les explicacions entre humans 
+i models de llenguatge gran (LLMs) en tasques de classificació de text. Els autors 
+comparen anotacions humanes (en forma de tokens ressaltats) amb explicacions generades 
+mitjançant \textit{Layer-wise Relevance Propagation} (LRP) de models \textit{transformer} 
+finetunejats, revelant patrons fonamentals que informen el nostre treball.
+
+\begin{itemize}
+    \item \textbf{Granularitat de l'atenció}: Els humans tendeixen a destacar menys tokens però 
+    en segments més llargs i lingüísticament salients, mentre que els models produeixen 
+    atribucions més difuses a nivell individual de token. Aquesta diferència suggereix 
+    que els processos atencionals humans operen a un nivell més semàntic i contextual, 
+    mentre que els models es fixen en detalls lexicals més locals.
+    
+    \item \textbf{Acord en els elements més importants}: Els humans mostren major 
+    consens en els tokens que consideren més rellevants per a la seva decisió, mentre 
+    que els models tendeixen a estar més d'acord quan es consideren tots els tokens. 
+    Aquest patró, observat per Bogaert et al., podria reflectir diferències fonamentals 
+    en com humans i models prioritzen la informació.
+    
+    \item \textbf{Sensibilitat a la classe de text}: La estabilitat de les explicacions 
+    varia segons el tipus de contingut. En el cas de Bogaert et al., els humans 
+    s'acordaven més en textos d'opinió, mentre que els models mostraven major 
+    consistència en textos de notícies. En el nostre context de detecció de sexisme, 
+    aquesta troballa suggereix que podríem esperar patrons similars de variabilitat 
+    segons el grau de subtilesa o explicitació del contingut sexista.
+\end{itemize}
+
+\subsection{L'efecte Rashomon en la interpretabilitat}
+
+Un concepte clau introduït per Breiman (2001) i aplicat per Bogaert et al. (2023) al 
+context dels LLMs és l'\textit{efecte Rashomon}: la observació que múltiples models amb 
+rendiment similar poden produir explicacions radicalment diferents per a la mateixa 
+predicció. Aquest fenomen té implicacions profundes per a la interpretabilitat:
+
+\begin{itemize}
+    \item \textbf{No-unicitat de les explicacions}: L'existència de múltiples explicacions 
+    plausibles per a una mateixa decisió qüestiona la noció de "la" explicació correcta 
+    d'un model. En el nostre treball, això significa que hem de ser cautelosos en 
+    interpretar les atribucions dels models com a reflex directe del seu "raonament".
+    
+    \item \textbf{Relació entre precisió i consistència explicativa}: Bogaert et al. 
+    demostren que models funcionals equivalents (amb precisió estadísticament 
+    indistinguishable) poden divergir significativament en les seves explicacions. 
+    Això subratlla la necessitat de complementar les mètriques de rendiment amb 
+    anàlisis de la qualitat i estabilitat de les explicacions.
+    
+    \item \textbf{Implicacions per a l'alineament humà-model}: Si els models poden 
+    arribar a la mateixa conclusió per camins diferents, l'alineament amb els 
+    processos humans es converteix en un criteri de disseny explícit, més que en 
+    una propietat emergent del rendiment.
+\end{itemize}
+
+\section{Mètodes d'interpretabilitat: de LRP a Captum}
+
+La nostra metodologia s'inspira en els enfocaments establerts per Bogaert et al. (2026) 
+pero els expandeix per incluir múltiples fonts de dades i mètodes d'atribució.
+
+\subsection{Layer-wise Relevance Propagation (LRP)}
+
+LRP (Bach et al. 2015; Chefer, Gur, and Wolf 2021) és un mètode post-hoc d'explicació 
+que atribueix la predicció d'un model a característiques d'entrada específiques mitjançant 
+la redistribució de puntuacions de rellevància des de la capa de sortida fins a la 
+d'entrada. Com demostra Bogaert et al., LRP ofereix diverses avantatges per al nostre 
+estudi:
+
+\begin{itemize}
+    \item \textbf{Determinisme}: Per a una mateixa entrada i paràmetres de model, LRP 
+    sempre produeix la mateixa explicació, permetent aïllar l'efecte de la variabilitat 
+    introduïda durant l'entrenament.
+    
+    \item \textbf{Fidelitat}: Tot i no ser perfecte, LRP es considera suficientment 
+    fidel per proporcionar \textit{insights} significatius sobre el procés de decisió del model 
+    a nivell de token (Lyu, Apidianaki, and Callison-Burch 2024).
+    
+    \item \textbf{Compatibilitat}: LRP és especialment adequat per a models basats en 
+    \textit{transformers}, com els que utilitzem nosaltres (BERT, RoBERTa), ja que 
+    permet analitzar la sensibilitat de les explicacions als hiperparàmetres i a la 
+    inicialització aleatòria durant l'entrenament.
+\end{itemize}
+
+En el nostre treball, implementarem LRP utilitzant la llibreria \textit{captum} 
+\cite{captum}, que proporciona una interfície unificada per a diversos mètodes 
+d'atribució, incloent LRP, \textit{Integrated Gradients}, i \textit{Saliency Maps}. Això 
+ens permetrà comparar sistemàticament diferents enfocaments d'interpretabilitat i 
+avaluar la seva consistència.
+
+\section{El nostre enfocament tripartit: models, anotacions i eye-tracking}
+
+Mentre que Bogaert et al. (2026) es limiten a comparar explicacions humanes (en forma 
+d'anotacions) amb explicacions de models, el nostre treball expandeix aquest marc 
+incorporant una tercera dimensió crucial: les dades d'\textit{eye-tracking} que capturen 
+els patrons d'atenció visual real durant la lectura.
+
+\subsection{Comparacions planejades}
+
+Aquesta aproximació tripartita ens permetrà realitzar tres tipus de comparacions 
+complementàries:
+
+\begin{enumerate}
+    \item \textbf{Models vs. Anotacions}: Similar a Bogaert et al., compararem les 
+    atribucions dels models (utilitzant LRP i altres mètodes de Captum) amb els 
+    \textit{spans} textuals marcats pels anotadors humans com a rellevants per a la 
+    classificació de sexisme. Això ens permetrà avaluar en quina mesura els 
+    models identifiquen les mateixes regions textuals que els humans consideren 
+    decisives.
+    
+    \item \textbf{Models vs. Eye-tracking}: Compararem les atribucions dels models 
+    amb les mètriques d'\textit{eye-tracking} (durada de fixació, nombre de regressions, 
+    etc.) per a cada token o regió textual. Aquesta comparació revelarà si els 
+    models "miren" les mateixes parts del text que els lectors humans, i si ho 
+    fan amb una intensitat proporcional.
+    
+    \item \textbf{Eye-tracking vs. Anotacions}: Analitzarem la relació entre els patrons 
+    d'atenció visual (inconscients i automàtics) i les decisions conscients de 
+    ressaltar certs fragments com a rellevants. Aquesta comparació pot revelar 
+    si els processos atencionals implícits (capturats per l'\textit{eye-tracking}) 
+    s'alineen amb els judicis explícits de rellevància (capturats per les anotacions).
+\end{enumerate}
+
+\subsection{Hipòtesis de treball}
+
+Basant-nos en la literatura existent i en els objectius del nostre estudi, formularem 
+les següents hipòtesis:
+
+\begin{itemize}
+    \item \textbf{H1 - Alineament parcial}: Esperem que els models finetunejats mostrin 
+    un alineament moderat amb els patrons humans (tant d'anotació com d'\textit{eye-tracking}), 
+    però amb diferències significatives en la granularitat, tal com observa Bogaert et al.
+    
+    \item \textbf{H2 - Efecte de la subtilesa}: Prediem que l'alineament serà major per a 
+    casos de sexisme explícit (on humans i models s'acorden més) i menor per a 
+    casos subtils o implícits (on la variabilitat humana i computacional serà major).
+    
+    \item \textbf{H3 - Complementarietat}: Esperem que les tres fonts de dades 
+    (models, anotacions, \textit{eye-tracking}) proporcionin informació complementària, 
+    amb cada enfocament capturant diferents aspectes de la rellevància textual.
+    
+    \item \textbf{H4 - Impacte de l'entrenament}: Prediem que models entrenats amb 
+    diferents \textit{seeds} aleatòries mostrin variabilitat en les seves explicacions 
+    (efecte Rashomon), però que aquesta variabilitat serà menor que la variabilitat 
+    inter-annotador humana.
+\end{itemize}
+
+\section{Plausibilitat vs. Fidelitat: un marc per a l'avaluació}
+
+En dissenyar la nostra metodologia, adoptarem el marc conceptual proposat per Jacovi 
+and Goldberg (2020), que distingeix entre dos criteris fonamentals per a les explicacions 
+dels models:
+
+\begin{itemize}
+    \item \textbf{Plausibilitat}: En quina mesura una explicació és convincent per a 
+    un observador humà. Les explicacions plausibles s'alineen amb les expectatives 
+    humanes sobre quins factors haurien de ser rellevants.
+    
+    \item \textbf{Fidelitat}: En quina mesura una explicació reflecteix amb precisió 
+    el procés real de presa de decisions del model. Les explicacions fidels 
+    proporcionen \textit{insights} reals sobre el funcionament intern del model.
+\end{itemize}
+
+El nostre enfocament tripartit ens permet abordar ambdós criteris:
+
+\begin{itemize}
+    \item La comparació amb anotacions humanes (\textit{spans} ressaltats) avalua la 
+    \textbf{plausibilitat} de les explicacions dels models.
+    
+    \item La comparació amb patrons d'\textit{eye-tracking} proporciona una mesura més 
+    objectiva de la \textbf{fidelitat}, ja que els moviments oculars reflecteixen 
+    processos cognitius implícits menys subjectius que les anotacions conscients.
+    
+    \item La combinació de tots tres enfocaments ens permet explorar si és possible 
+    aconseguir explicacions que siguin \textbf{tant plausibles com fidels}, o si 
+    aquests objectius entren en tensió en la pràctica.
+\end{itemize}
+
+\section{Conclusions del marc teòric}
+
+La literatura revisada, i en particular l'estudi seminal de Bogaert et al. (2026), 
+proporciona un marc sòlid per al nostre treball. Les principals conclusions que guien 
+la nostra investigació són:
+
+\begin{itemize}
+    \item La comparació entre patrons d'atenció humans i computacionals és un camp 
+    emergent amb potencial per millorar tant la interpretabilitat dels models com la 
+    nostra comprensió dels processos cognitius.
+    
+    \item La variabilitat en les explicacions (tant humanes com computacionals) és 
+    una propietat inherent que cal quantificar i analitzar, més que un "soroll" 
+    a eliminar.
+    
+    \item Mètodes com LRP, combinats amb llibreries com Captum, ofereixen eines 
+    poderoses per explorar aquesta variabilitat de manera sistemàtica.
+    
+    \item El nostre enfocament tripartit (models + anotacions + \textit{eye-tracking}) 
+    expandeix l'estat de l'art proporcionant una visió més completa i robusta de 
+    l'alineament entre atenció humana i computacional.
+\end{itemize}
+
+Aquest marc teòric no només justifica la nostra metodologia sinó que també proporciona 
+un conjunt d'expectatives i hipòtesis que guiaran l'anàlisi i discussió dels nostres 
+resultats, permetent-nos situar les nostres troballes en el context més ampli de la 
+recerca en interpretabilitat i lingüística cognitiva computacional.
