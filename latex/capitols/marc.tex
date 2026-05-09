@@ -1,12 +1,342 @@
 % Revisió de la literatura i fonaments conceptuals
 
-\section{Comparació entre atenció humana i computacional}
+\section{Categorització del sexisme en continguts multimèdia}
+
+Abans d'abordar la comparació entre atenció humana i computacional, és essencial establir un marc 
+conceptual sòlid per a la categorització del sexisme, especialment en el context de les 
+xarxes socials i els continguts multimèdia. El treball de Grazia et al. (2025) \cite{mused} 
+proporciona un marc teòric i metodològic fonamental per a aquesta tasca.
+
+\subsection{Definició i abast del sexisme}
+
+Grazia et al. (2025) adopten una definició ampla del sexisme com a "prejudici i discriminació 
+basats en el sexe o el gènere" que afecta tots els àmbits de la societat. Aquesta definició 
+s'amplia per incloure la discriminació basada en l'orientació sexual i la identitat de 
+gènere, seguint l'enfocament de O'Brien (2009) que conceptualitza el sexisme com una 
+ideologia que reproduir i marginalitza subjectivitats no conformes amb les normes 
+heteropatriarcals.
+
+Aquesta ampliació és crucial per al nostre treball, ja que reflecteix la complexitat del 
+fenomen en les xarxes socials contemporànies, on el discurs d'odi es manifesta a 
+través de la intersecció de múltiples eixos d'opressió.
+
+\subsection{Desafiaments en la detecció de sexisme}
+
+El treball de Grazia et al. (2025) identifica diversos desafiaments rellevants per a la 
+nostra recerca:
+
+\begin{itemize}
+    \item \textbf{Sexisme implícit vs. explícit}: La detecció de formes implícites 
+    (com estereotips subtils) és inherentment més subjectiva i dependent del 
+    context cultural, mostrant menor acord entre anotadors humans.
+    
+    \item \textbf{Importància del context multimodal}: Certs tipus de sexisme 
+    (com l'objectificació) només es poden detectar adequadament analitzant 
+    múltiples modalitats, no només el text.
+    
+    \item \textbf{Contradiccions entre modalitats}: Continguts amb missatges 
+    textuals neutrals acompanyats d'elements visuals sexistes presenten 
+    desafiaments significatius per a la classificació.
+    
+    \item \textbf{Dependència cultural}: La identificació de sexisme depèn 
+    fortament del context social i cultural, el que pot generar variabilitat 
+    en els patrons d'atenció entre participants.
+\end{itemize}
+
+Aquests desafiaments tenen implicacions directes per al nostre estudi, ja que 
+podrien manifestar-se com a diferències en els patrons d'atenció entre humans 
+i models, especialment en categories de sexisme més subtils o contextuals.
+
+Aquesta aproximació multimodal al sexisme reflecteix la complexitat del fenomen en 
+les xarxes socials contemporànies, on el discurs d'odi sovint es manifesta a través de la 
+intersecció de múltiples eixos d'opressió.
+
+\subsection{Tipologia del sexisme: les quatre categories de MuSeD}
+
+El marc d'anotació proposat per Grazia et al. (2025) distingeix quatre categories principals 
+de contingut sexista, que adoptarem i adaptarem per al nostre anàlisi:
+
+\begin{description}
+    \item[Estereotip (\textit{Stereotype})] 
+    \hfill \break
+    Continguts que defineixen un conjunt de propietats que suposadament diferencien 
+    homes i dones basant-se en creences estereotipades (Samory et al., 2021). Aquests 
+    estereotips reforcen rols de gènere tradicionals i sovint presenten les diferències com a 
+    "naturals" o biològicament determinades. 
+    \begin{itemize}
+        \item \textbf{Exemple}: "Les nines han de jugar amb planxes i rentadores" 
+        (Taula 1 de Grazia et al., 2025)
+        \item \textbf{Característiques}: Reforç de rols tradicionals, essentialisme biològic, 
+        generalitzacions sobre comportaments de gènere
+        \item \textbf{Desafiaments}: Sovint implícits i culturalment internalitzats, el que 
+        dificulta la seva detecció tant per humans com per models
+    \end{itemize}
+    
+    \item[Desigualtat (\textit{Inequality})] 
+    \hfill \break
+    Continguts que neguen l'existència de desigualtats de gènere o presenten el moviment 
+    feminista com una amenaça per als homes (Samory et al., 2021). Aquesta categoria 
+    inclou discursos que argumenten que els homes són "víctimes" de les polítiques d'igualtat.
+    \begin{itemize}
+        \item \textbf{Exemple}: "Els homes tenim sis anys més de pena pel mateix delicte 
+        comès per una dona" (Grazia et al., 2025)
+        \item \textbf{Característiques}: Victimització masculina, negació de privilegis 
+        masculins, retòrica anti-feminista
+        \item \textbf{Desafiaments}: Sovint utilitza dades selectives o arguments fal·laciosos 
+        que requereixen coneixement contextual per ser identificats
+    \end{itemize}
+    
+    \item[Discriminació (\textit{Discrimination})] 
+    \hfill \break
+    Continguts que discriminen individuals basant-se en la seva orientació sexual o 
+    identitat de gènere, sovint denigrant la comunitat LGBTQ+ (Chakravarthi et al., 2021). 
+    Aquesta categoria és particularment rellevant per a la nostra ampliació del concepte 
+    de sexisme més enllà del binarisme de gènere.
+    \begin{itemize}
+        \item \textbf{Exemple}: "Per què hi ha més gais i lesbianes al món? Perquè 
+        els van vendre la mentida de la identitat sexual" (Grazia et al., 2025)
+        \item \textbf{Característiques}: Ús de llenguatge deshumanitzant, acusacions de 
+        "adoctrinament", referències a "ideologia de gènere"
+        \item \textbf{Desafiaments}: Requerix coneixement sobre discursos anti-LGBTQ+ 
+        contemporanis i codis lingüístics específics d'aquests grups
+    \end{itemize}
+    
+    \item[Objectificació (\textit{Objectification})] 
+    \hfill \break
+    Continguts que representen les dones com a objectes físics valorats principalment per la 
+    seva utilitat o atractiu sexual (Szymanski et al., 2011). Aquesta categoria és 
+    particularment prevalent en format visual, on les imatges intensifiquen la 
+    hipersexualització dels cossos femenins.
+    \begin{itemize}
+        \item \textbf{Exemple}: "Com ser graciós i conquerir sense fer el ridícul? La 
+        malinterpretació intencional és una habilitat clau" (Grazia et al., 2025)
+        \item \textbf{Característiques}: Llenguatge que redueix les persones a la seva 
+        aparença o funcions sexuals, estratègies de seducció presentades com a 
+        "conquesta"
+        \item \textbf{Desafiaments}: Sovint subtil i normalitzat en la cultura popular, 
+        requerint anàlisi del context visual i textual
+    \end{itemize}
+\end{description}
+
+\subsection{Distribució i desafiaments en la detecció}
+
+L'anàlisi de Grazia et al. (2025) de la distribució d'aquestes categories en el dataset MuSeD 
+revela patrons importants que informen el nostre treball:
+
+\begin{itemize}
+    \item \textbf{Prevalença}: Els vídeos sexistes es distribueixen principalment entre 
+    Estereotip (56,2") i Desigualtat (39,2"), seguits de Discriminació (15,5") i 
+    Objectificació (3,6"). Aquesta distribució reflecteix com el sexisme es manifesta 
+    en plataformes com TikTok i BitChute, on els discursos anti-feministes i els 
+    estereotips de gènere són particularment prevalents.
+    
+    \item \textbf{Modalitats}: La categoria d'Objectificació, tot i ser menys freqüent, 
+    és significativament més prevalent en format visual, on les imatges intensifiquen 
+    la hipersexualització. Això subratlla la importància del nostre enfocament 
+    multimodal, ja que certs tipus de sexisme només es poden detectar adequadament 
+    analitzant múltiples modalitats.
+    
+    \item \textbf{Acord entre anotadors}: L'acord inter-annotador (mesurat amb Fleiss' 
+    kappa) varia significativament segons la categoria. Mentre que els casos 
+    explícits (com certs exemples d'Objectificació) aconsegueixen alts nivells 
+    d'acord ($\kappa = 0,853$ per a anotacions de vídeo), els casos implícits (especialment 
+    Estereotips subtils) mostren menor acord ($\kappa = 0,719$ per a anotacions de text). 
+    Aquest patró, observat per Grazia et al., suggereix que la detecció de sexisme 
+    implícit és inherentment més subjectiva i dependent del context cultural.
+\end{itemize}
+
+\subsection{Desafiaments específics per a la nostra recerca}
+
+El marc de Grazia et al. (2025) identifica diversos desafiaments que són directament rellevants 
+per al nostre estudi sobre patrons d'atenció:
+
+\begin{itemize}
+    \item \textbf{Sexisme implícit vs. explícit}: Els models de llenguatge actuals (incloent 
+    els que nosaltres utilitzarem) tenen dificultats significatives amb casos implícits com 
+    estereotips subtils, on els anotadors humans també mostren menor acord. Això 
+    suggereix que podríem esperar patrons d'atenció més divergents entre humans i 
+    models en aquestes categories.
+    
+    \item \textbf{Importància del context multimodal}: Grazia et al. demostren que la 
+    informació visual és crucial per a la classificació correcta, especialment en categories 
+    com Objectificació. Això té implicacions per al nostre anàlisi d'\textit{eye-tracking}, 
+    ja que podríem observar que els participants humans dediquen més atenció als 
+    elements visuals en aquests casos.
+    
+    \item \textbf{Contradiccions entre modalitats}: Un desafiament identificat per Grazia 
+    et al. és la contradicció entre contingut verbal i no verbal (p. ex., un missatge 
+    textual aparentment neutral acompanyat d'imatges sexistes). Aquests casos 
+    són particularment difícils tant per humans com per models, i esperem que 
+    mostrin patrons d'atenció complexos en les nostres dades d'\textit{eye-tracking}.
+    
+    \item \textbf{Dependència del context cultural}: La identificació de sexisme, 
+    especialment en formes implícites, depèn fortament del context social i cultural. 
+    Això pot manifestar-se en les nostres dades com a variabilitat en els patrons 
+    d'atenció entre participants amb diferents perfils demogràfics.
+\end{itemize}
+
+\section{Eye-tracking com a eina per a la comparació humà-model}
+
+El treball seminal d'Ikhwantri et al. (2023) \cite{ikhwantriLookingDeepEyes2023} proporciona 
+el marc teòric i metodològic més complet fins a la data per a la comparació 
+sistemàtica entre patrons d'atenció humans i computacionals en tasques de PLN. 
+Aquest estudi, que analitza tres tasques (anàlisi de sentiment, classificació de 
+relacions i pregunta-resposta), quatre mètodes d'interpretabilitat i tres arquitectures 
+de models, ofereix 	extit{insights} fonamentals per al nostre treball.
+
+\subsection{Mètriques d'\textit{eye-tracking} i la seva interpretació}
+
+Ikhwantri et al. (2023) destaquen dues mètriques clau derivades dels moviments oculars:
+
+\begin{itemize}
+    \item \textbf{First Fixation Duration (FFD)}: Durada de la primera fixació en una 
+    paraula o àrea d'interès. Aquesta mètrica captura la reacció inicial i 
+    implícita al contingut, sense la influència de re-lectures o processament 
+    estratègic posterior.
+    
+    \item \textbf{Fixation Count (FC)}: Nombre total de fixacions en una paraula o 
+    àrea. Aquesta mètrica reflecteix l'atenció acumulada, incloent re-lectures 
+    i processament més deliberat.
+\end{itemize}
+
+La comparació entre aquestes mètriques revela diferències fonamentals entre 
+processos humans i computacionals:
+
+\begin{itemize}
+    \item \textbf{FFD vs. FC en la comparació humà-model}: Ikhwantri et al. troben 
+    que les SD (	extit{Saliency Distance}) són generalment més petites amb FFD que 
+    amb FC. Això suggereix que la primera impressió humana (FFD) s'assembla 
+    més al processament dels models, que no tornen a llegir el text múltiples 
+    vegades com fan els humans.
+    
+    \item \textbf{Implicacions per al nostre estudi}: En la detecció de sexisme, 
+    podríem esperar que:
+    \begin{itemize}
+        \item Els casos explícits mostrin major alineament amb FFD (processament 
+        ràpid i intuitiu)
+        \item Els casos implícits requereixin FC (processament més deliberat i 
+        contextual)
+        \item Els models mostrin major conformitat amb FFD que amb FC, 
+        especialment en sexisme explícit
+    \end{itemize}
+\end{itemize}
+
+\subsection{Troballes clau d'Ikhwantri et al. (2023)}
+
+El seu estudi sistemàtic revela patrons importants que informen el nostre treball:
+
+\begin{itemize}
+    \item \textbf{Variabilitat segons l'arquitectura}: 
+    \begin{itemize}
+        \item Els models Transformer mostren generalment la menor SD (major 
+        alineament amb patrons humans) en la majoria de tasques i mètodes
+        \item Excepció: En tasques de QA amb resposta múltiple, els models LSTM 
+        amb mètodes d'atenció mostren major conformitat
+        \item \textbf{Implicació}: Per a la nostra tasca de classificació binària (sexista/no 
+        sexista), esperem que els models Transformer mostrin major alineament 
+        amb els patrons d'\textit{eye-tracking}, especialment amb mètodes basats en 
+        gradients
+    \end{itemize}
+    
+    \item \textbf{Efecte del mètode d'interpretabilitat}:
+    \begin{itemize}
+        \item Els mètodes basats en gradients (Grad, IG) mostren SD més petites 
+        en tasques de classificació i anàlisi de sentiment
+        \item Els mètodes basats en atenció (Attn) funcionen millor en tasques 
+        de QA amb contextos llargs
+        \item Els mètodes de pertorbació d'entrada (IP) mostren consistentment 
+        les SD més grans (menor alineament)
+        \item \textbf{Implicació}: Per al nostre estudi, els mètodes basats en gradients 
+        (com els que implementarem amb Captum) són els més prometedors 
+        per a l'alineament amb patrons humans
+    \end{itemize}
+    
+    \item \textbf{Relació entre alineament i rendiment}:
+    \begin{itemize}
+        \item No sempre hi ha correlació directa entre major alineament humà-model 
+        i millor rendiment del model
+        \item En tasques de classificació, els models amb major conformitat 
+        (menor SD) tendeixen a tenir millor rendiment
+        \item En tasques complexes com QA, aquesta relació és més feble
+        \item \textbf{Implicació}: En la nostra tasca de detecció de sexisme, esperem 
+        que els models amb major alineament amb patrons humans mostrin 
+        també millor precisió, especialment en casos explícits
+    \end{itemize}
+    
+    \item \textbf{Anàlisi per categories lingüístiques}:
+    \begin{itemize}
+        \item En anàlisi de sentiment, humans i models se centren en adjectius, 
+        noms propis i adverbis
+        \item En classificació de relacions, els models no capturen bé la 
+        importància dels verbs que indiquen relacions entre entitats
+        \item \textbf{Implicació}: Per al sexisme, esperem que:
+        \begin{itemize}
+            \item Humans i models se centrin en paraules amb càrrega semàntica 
+            forta (insults, estereotips explícits)
+            \item Els humans dediquin més atenció a verbs i context que els 
+            models poden passar per alt (especialment en sexisme implícit)
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection{SD-Performance Curve: Una eina per a l'anàlisi}
+
+Ikhwantri et al. (2023) proposen una metodologia innovadora per analitzar la relació 
+entre l'alineament humà-model i el rendiment: les corbes SD-Performance (SDPC). 
+Aquesta eina permet:
+
+\begin{itemize}
+    \item Ordenar les instàncies de prova segons la seva SD (de menor a major alineament)
+    \item Analitzar com el rendiment del model varia al llarg d'aquest continuum
+    \item Identificar si les instàncies amb major alineament tendeixen a ser 
+    classificades correctament
+\end{itemize}
+
+Les seves troballes mostren:
+
+\begin{itemize}
+    \item En tasques de classificació, les corbes SDPC tendeixen a ser decreixents: 
+    major alineament es correlaciona amb millor rendiment
+    \item En tasques complexes com QA, les corbes són més planes o irregulars
+    \item \textbf{Aplicació al nostre estudi}: Utilitzarem aquesta metodologia per 
+    analitzar si:
+    \begin{itemize}
+        \item Els textos sexistes explícits (amb major alineament esperat) 
+        mostren millor rendiment del model
+        \item Els textos sexistes implícits (amb menor alineament esperat) 
+        són els que més errors generen
+        \item L'alineament varia segons la categoria de sexisme (estereotips vs. 
+        objectificació vs. discriminació)
+    \end{itemize}
+\end{itemize}
+
+Aquest marc teòric estableix expectatives clares i mètriques concretes per a 
+la nostra anàlisi, permetent-nos situar els nostres resultats en el context més 
+ampli de la recerca en interpretabilitat i lingüística cognitiva computacional.
+
+\section{Comparació entre atenció humana i computacional en detecció de sexisme}
 
 La intersecció entre els patrons d'atenció humans i els mecanismes d'atenció dels models 
 computacionals ha emergit com un camp de recerca crític en la interpretabilitat de l'IA 
 i la lingüística cognitiva. Aquest enfocament busca no només millorar la transparència 
 dels models de processament del llenguatge natural (PLN), sinó també obtenir 
 \textit{insights} sobre els processos cognitius humans subjacents a la comprensió del llenguatge.
+
+El treball d'Ikhwantri et al. (2023) \cite{ikhwantriLookingDeepEyes2023} estableix un 
+precedent important per al nostre estudi, demostrant que l'alineament entre 
+atenció humana i computacional varia significativament segons:
+
+\begin{itemize}
+    \item El tipus de tasca de PLN (anàlisi de sentiment vs. classificació vs. QA)
+    \item L'arquitectura del model (LSTM vs. CNN vs. Transformer)
+    \item El mètode d'interpretabilitat utilitzat (gradients vs. atenció vs. pertorbació)
+    \item La mètrica d'\textit{eye-tracking} analitzada (FFD vs. FC)
+\end{itemize}
+
+Aquesta variabilitat subratlla la importància de dissenyar el nostre estudi amb 
+una metodologia rigorosa que consideri aquestes dimensions i que permeti 
+comparacions significatives entre els patrons d'atenció en la detecció de 
+sexisme.
 
 \subsection{Variabilitat en les explicacions: humans vs. models}
 
