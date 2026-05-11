@@ -1,5 +1,6 @@
 import os
 import warnings
+import glob
 from pathlib import Path
 
 import numpy as np
@@ -87,8 +88,11 @@ def convert_to_parquet(tsv_file):
     return parquet_file
 
 
-def read_data(tsv_file):
-    parquet_file = convert_to_parquet(tsv_file)
+def read_data(tsv_file: str):
+    if tsv_file.endswith(".parquet"):
+        parquet_file = tsv_file
+    else:
+        parquet_file = convert_to_parquet(tsv_file)
 
     cols = pq.read_schema(parquet_file).names
     aoi_size = [col for col in cols if "AOI size" in col]
@@ -170,12 +174,48 @@ def read_data(tsv_file):
     return aoi_hit, calibration_df, participants, df
 
 
+def read_all_data(parquet_folder: str = "all_parquets"):
+    """
+    Reads all parquet files from a folder by calling `read_data` on each one
+    Returns lists aggregated across all files.
+
+    Returns:
+        flat_aoi_hit: deduplicated flat list of all AOI hit column names
+        all_calibration_dfs: list of calibration DataFrames (one per file)
+        all_participants: list of participant lists (one per file)
+        all_dfs: list of filtered DataFrames (one per file)
+    """
+    parquet_files = sorted(glob.glob(os.path.join(parquet_folder, "*.parquet")))
+
+    all_aoi_hit = []
+    all_calibration_dfs = []
+    all_participants = []
+    all_dfs = []
+
+    for parquet_file in parquet_files:
+        # `read_data` expects a tsv path, but internally calls `convert_to_parquet`.
+        # We pass the parquet path; assuming `convert_to_parquet` is idempotent
+        # (returns the parquet path if it already exists), this works.
+        # Otherwise, pass the corresponding .tsv path instead.
+        aoi_hit, calibration_df, participants, df = read_data(parquet_file)
+
+        all_aoi_hit.append(aoi_hit)
+        all_calibration_dfs.append(calibration_df)
+        all_participants.append(participants)
+        all_dfs.append(df)
+
+    # Flatten aoi_hit into a deduplicated list across all files
+    flat_aoi_hit = list(dict.fromkeys(col for sublist in all_aoi_hit for col in sublist))
+
+    return flat_aoi_hit, all_calibration_dfs, all_participants, all_dfs
+
+
 # ======================================
 # process raw data into list of dfs
 # ======================================
 
 
-def split_by_text(df):
+def split_by_text(df) -> dict["str", pd.DataFrame]:
     """
     Split the main DataFrame into a list of DataFrames,
     one per unique stimulus in 'Presented Stimulus name'.
@@ -249,12 +289,18 @@ def collapse_aoi_columns(text_df, aoi_cols):
     return text_df
 
 
-def process_all_texts(df, aoi_hit):
+def process_all_texts(dfs: pd.DataFrame | list[pd.DataFrame], aoi_hit):
     """
     Full pipeline: split by text, then clean AOI columns per text.
     Returns a list of clean DataFrames.
     """
-    text_dfs = split_by_text(df)
+    if isinstance(dfs, list):
+        text_dfs = {}
+        for df in dfs:
+            text_dfs = {**text_dfs, **split_by_text(df)}
+    else:
+        text_dfs = split_by_text(dfs)
+
     aoi_cols_dict = {}
 
     for stimulus, text_df in text_dfs.items():

@@ -13,16 +13,16 @@ TODO:
 import os
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 os.environ["NCCL_P2P_DISABLE"] = "1"
 os.environ["NCCL_IB_DISABLE"] = "1"
 
 import argparse
 import html as html_lib
 import json
+from tqdm import tqdm
 
 import numpy as np
-import pandas as pd
 import torch
 from captum.attr import (
     DeepLift,
@@ -38,13 +38,7 @@ from captum.attr import (
 from IPython.display import HTML, display
 from transformers import AutoConfig, AutoModelForSequenceClassification, AutoTokenizer
 
-
-def load_data(path="../data/mused_all_clean.csv", chosen_path="../data/mused_chosen_data.csv"):
-    joined = pd.read_csv(path)[["id", "text_clean", "sexist", "sexist_soft"]]
-    chosen = pd.read_csv(chosen_path)
-    chosen_ids = chosen.id.to_list()
-    df_test = joined[joined.id.isin(chosen_ids)]
-    return df_test
+from utils.mused import load_data
 
 
 def get_tokenizer_model(model_id, checkpoint=None, dropout=0.0, num_labels=2):
@@ -273,7 +267,7 @@ class NoiseTunnelMethod(AttributionMethod):
 METHODS = {
     "saliency": SaliencyMethod,
     "input_x_gradient": InputXGradientMethod,
-    "integrated_gradients": IntegratedGradientsMethod,
+    "ig": IntegratedGradientsMethod,
     "deep_lift": DeepLiftMethod,
     "guided_backprop": GuidedBackpropMethod,
     "layer_gradcam": LayerGradCamMethod,
@@ -299,14 +293,76 @@ def format_token(token):
     return token
 
 
-def print_attributions(tokens, scores, top_k=10):
-    pairs = list(zip(tokens, scores))
-    pairs = [(format_token(t), s) for t, s in pairs]
-    pairs_sorted = sorted(pairs, key=lambda x: abs(x[1]), reverse=True)
+def build_token_to_word(tokens: list[str], words: list[str]) -> list[int]:
+    """
+    Alinea tokens BERT (amb prefix ##) a paraules del text original.
+    Retorna llista de longitud len(tokens), amb -1 per tokens especials.
+    """
+    special = {"[CLS]", "[SEP]", "[PAD]", "[MASK]", "<s>", "</s>"}
+    token_to_word = []
+    word_idx = 0
+    char_pos_in_word = 0
 
-    print(f"\nTop {top_k} most important tokens:")
-    for i, (tok, score) in enumerate(pairs_sorted[:top_k]):
-        print(f"  {i + 1}. {tok:30s} {score:+.6f}")
+    for tok in tokens:
+        if tok in special:
+            token_to_word.append(-1)
+            continue
+
+        is_continuation = tok.startswith("##")
+        tok_clean = tok[2:] if is_continuation else tok.lstrip("▁Ġ")
+
+        if not is_continuation and char_pos_in_word > 0:
+            # Nou token que comença paraula nova
+            word_idx += 1
+            char_pos_in_word = 0
+
+        # Avança word_idx si el token no encaixa a la paraula actual
+        while word_idx < len(words) and not words[word_idx][char_pos_in_word:].startswith(
+            tok_clean
+        ):
+            word_idx += 1
+            char_pos_in_word = 0
+
+        if word_idx >= len(words):
+            token_to_word.append(-1)
+            continue
+
+        token_to_word.append(word_idx)
+        char_pos_in_word += len(tok_clean)
+        if char_pos_in_word >= len(words[word_idx]):
+            # Paraula completada, però no avancem fins al pròxim token no-##
+            pass
+
+    return token_to_word
+
+
+def aggregate_to_words(
+    tokens: list[str],
+    scores: list[float],
+    words: list[str],
+    reduce: str = "sum",
+) -> tuple[list[str], list[float]]:
+    """Agrega scores de tokens a paraules. Retorna (words, word_scores)."""
+    scores = np.abs(scores)
+    token_to_word = build_token_to_word(tokens, words)
+    word_scores = np.zeros(len(words), dtype=float)
+    counts = np.zeros(len(words), dtype=int)
+
+    for i, w_idx in enumerate(token_to_word):
+        if w_idx < 0:
+            continue
+        word_scores[w_idx] += scores[i]
+        counts[w_idx] += 1
+
+    if reduce == "mean":
+        word_scores = np.where(counts > 0, word_scores / np.maximum(counts, 1), 0.0)
+
+    # Normalitza a [0, 1]
+    max_s = word_scores.max()
+    if max_s > 0:
+        word_scores = word_scores / max_s
+
+    return words, word_scores.tolist()
 
 
 def visualize_attributions(tokens, scores, cmap_intensity=1.0):
@@ -378,14 +434,16 @@ def run_all_methods(wrapper, text, methods=None):
                 scores = result
 
             scores_list = scores.tolist() if hasattr(scores, "tolist") else list(scores)
+            text_words = text.split()
+            word_names, word_scores = aggregate_to_words(tokens, scores_list, text_words)
             results[method_name] = {
                 "tokens": tokens,
                 "scores": scores_list,
+                "words": word_names,
+                "word_scores": word_scores,
                 "pred_class": pred_class,
                 "pred_prob": pred_prob,
             }
-
-            print_attributions(tokens, scores_list)
 
         except Exception as e:
             print(f"Error with {method_name}: {e}")
@@ -404,11 +462,13 @@ def main():
     parser = argparse.ArgumentParser(description="Captum interpretability suite for BERT models")
     parser.add_argument("--model_id", type=str, default="BSC-LT/MrBERT-es")
     parser.add_argument("--checkpoint", type=str, default="baseline_es/checkpoint-20")
-    parser.add_argument("--text", type=str, default=None)
-    parser.add_argument("--text_index", type=int, default=0, help="Index of text from test set")
     parser.add_argument("--methods", type=str, nargs="+", default=None, help="Methods to run")
-    parser.add_argument("--output", type=str, default=None, help="Output JSON path")
-    parser.add_argument("--layer", type=str, default=None, help="Layer for gradcam methods")
+    parser.add_argument(
+        "--output", type=str, default="captum_results.json", help="Output JSON path"
+    )
+    parser.add_argument(
+        "--n_texts", type=int, default=None, help="Limit number of texts (default: all)"
+    )
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -420,17 +480,31 @@ def main():
 
     wrapper = ModelWrapper(model, tokenizer, device)
 
-    if args.text:
-        text = args.text
-    else:
-        df_test = load_data()
-        texts = df_test.text_clean.to_list()
-        text = texts[args.text_index]
+    _, df_test = load_data()
+    texts = df_test.text_clean.str.replace("\n", " ").to_list()
+    if args.n_texts is not None:
+        texts = texts[: args.n_texts]
 
-    results = run_all_methods(wrapper, text, args.methods)
+    all_results = {}
+    for idx, text in tqdm(enumerate(texts)):
+        print(f"\n{'=' * 60}")
+        print(f"Text {idx + 1}/{len(texts)}")
+        print(f"{'=' * 60}")
+        try:
+            results = run_all_methods(wrapper, text, args.methods)
+            all_results[str(idx)] = {
+                "text": text,
+                "methods": results,
+            }
+        except Exception as e:
+            print(f"Error processing text {idx}: {e}")
+            all_results[str(idx)] = {"text": text, "error": str(e)}
 
-    if args.output:
-        save_results(results, args.output)
+        # Guarda incrementalment per no perdre dades si peta
+        with open(args.output, "w") as f:
+            json.dump(all_results, f, indent=2, ensure_ascii=False)
+
+    print(f"\n✓ All results saved to {args.output}")
 
 
 if __name__ == "__main__":
