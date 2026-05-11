@@ -4,6 +4,35 @@ from operator import itemgetter
 import numpy as np
 import pandas as pd
 
+BINARY_COLS = [
+    "sexist",
+    "irony",
+    "humor",
+    "implicit sexism",
+    "stereotypes",
+    "inequality",
+    "discrimination",
+    "objectification",
+    "critique",
+    "reported_sexism",
+    "sexist_irony",
+    "sexist_humor",
+    "no_sexist_irony",
+    "no_sexist_humor",
+]
+SOFT_COLS = [col + "_soft" for col in BINARY_COLS]
+CLASS_COLS = BINARY_COLS + SOFT_COLS
+
+
+def load_data(path="../data/mused_all_clean.csv", chosen_path="../data/mused_chosen_data.csv"):
+    joined = pd.read_csv(path)[["id", "text_clean", "sexist", "sexist_soft"]]
+    chosen = pd.read_csv(chosen_path)
+    chosen_ids = chosen.id.to_list()
+    df_test = joined[joined.id.isin(chosen_ids)]
+    df_train = joined[~joined.id.isin(chosen_ids)].sample(frac=1, random_state=42)
+    return df_train, df_test
+
+
 # ==================
 # Read textual data
 # ==================

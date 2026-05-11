@@ -1,8 +1,16 @@
 from __future__ import annotations
 
-from explain.gradient import InputXGradient, SimpleGradient
+import os
+
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["NCCL_P2P_DISABLE"] = "1"
+os.environ["NCCL_IB_DISABLE"] = "1"
+
+# from explain.gradient import InputXGradient, SimpleGradient
 from explain.ig import IntegratedGradients
 from models.mlm import MLMClozeWrapper
+from utils.mused import load_data
 
 DEVICE = "cuda"
 
@@ -34,12 +42,9 @@ DEVICE = "cuda"
 
 MODEL_NAME = "BSC-LT/MrBERT-es"
 
-TEXTS = [
-    "Las mujeres no deberían trabajar fuera de casa.",
-    "Todos merecen igualdad de oportunidades en el trabajo.",
-    "Las chicas no sirven para las matemáticas.",
-    "El equipo está formado por personas muy competentes.",
-]
+
+_, df_test = load_data()
+texts = df_test.text_clean.str.replace("\n", " ").to_list()
 
 
 def print_explanation(exp):
@@ -53,8 +58,8 @@ def print_explanation(exp):
 def mlm():
     wrapper = MLMClozeWrapper(model_name=MODEL_NAME)
 
-    grad_explainer = SimpleGradient(wrapper, aggregation="sum", normalize=True)
-    ixg_explainer = InputXGradient(wrapper, aggregation="sum", normalize=True)
+    # grad_explainer = SimpleGradient(wrapper, aggregation="sum", normalize=True)
+    # ixg_explainer = InputXGradient(wrapper, aggregation="sum", normalize=True)
     ig_explainer = IntegratedGradients(
         wrapper,
         n_steps=50,
@@ -67,7 +72,7 @@ def mlm():
     print(f"Model: {MODEL_NAME}")
     print("=" * 70)
 
-    for text in TEXTS:
+    for text in texts:
         # --- Classificació (mitjana dels 2 prompts) ---
         scores = wrapper.target_score(text)  # tensor [2]
         mean_score = scores.mean().item()
@@ -87,12 +92,12 @@ def mlm():
             inputs, mask_pos = wrapper.build_inputs(text, prompt_idx=prompt_idx)
             inputs = {k: v.to(DEVICE) for k, v in inputs.items()}
 
-            exp_grad = grad_explainer.explain(text, prompt_idx=prompt_idx)
-            exp_ixg = ixg_explainer.explain(text, prompt_idx=prompt_idx)
+            # exp_grad = grad_explainer.explain(text, prompt_idx=prompt_idx)
+            # exp_ixg = ixg_explainer.explain(text, prompt_idx=prompt_idx)
             exp_ig = ig_explainer.explain(text, prompt_idx=prompt_idx)
             print(f"\n  [Prompt {prompt_idx}]", end="")
-            print_explanation(exp_grad)
-            print_explanation(exp_ixg)
+            # print_explanation(exp_grad)
+            # print_explanation(exp_ixg)
             print_explanation(exp_ig)
             gap = exp_ig.extra.get("completeness_gap", float("nan"))
             print(f"    IG completeness gap: {gap:.4f}")
