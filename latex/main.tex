@@ -1,11 +1,16 @@
 \documentclass[a4paper,12pt,oneside]{report}
+\usepackage[utf8]{inputenc}
 \usepackage{todonotes}
 \setuptodonotes{inline}
 \usepackage{subfiles}
 \usepackage{multirow, multicol}
+\usepackage{csquotes}
+\usepackage{amsmath}
+\usepackage{subcaption}
 
 % --- PAQUETS PERSONALITZATS ---
 \usepackage{ub-lingu-tfg} % Carrega el full d’estil UB
+\usepackage{cleveref}
 \input{aux/config_curs} % fa que el curs academic surti automàtic
 
 % --- PAQUETS LINGUISTICA ---
@@ -57,9 +62,6 @@
 
 \chapter{Metodologia}
 \subfile{capitols/metodologia}
-
-\chapter{Dades i models}
-\subfile{capitols/models}
 
 \chapter{Resultats}
 \subfile{capitols/resultats}
