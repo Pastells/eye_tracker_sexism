@@ -1,19 +1,20 @@
 % Models i mètodes d'interpretabilitat
-\section{Funcionament Tobii}\label{sec:tobii}
+\section{Funcionament Eye-tracker}\label{sec:tobii}
+\todo{Pot ser un apèndix}
 
-El hardware de Tobii (Spectrum) enregistra quina zona de la pantalla miren els ulls a 600Hz.
-El seu software calcula les fixacions, i permet definir cada paraula d'un text com a àrea d'interés (AOI en les seves sigles en anglès).
+Utilitzem l'eye-tracker Tobii Pro Spectrum, que enregistra quina zona de la pantalla s'està mirant a 600Hz.
+El software Tobii Pro Lab calcula les fixacions, i permet definir cada paraula d'un text com a àrea d'interés (AOI en les seves sigles en anglès).
 
 El problema a l'hora d'exportar les dades és que Tobii Pro Lab no optimitza el format.
-En comptes de crear un fitxer per a cada text, crea un fitxer amb tots els temps com a línia i totes les AOI com a columna.
+En comptes de crear un fitxer per a cada text, crea un fitxer amb tots els temps com a fila i totes les AOI com a columna.
 Això fa que el tamany del fitxer creixi quadràticament amb el nombre de textos i el programa es bloquegi.
-Per tal d'optimitzar aquest procés hem exportat diversos fitxers de la següent manera\footnote{Dins el menú Analyze/Data export}.
-Utilitzem sempre el filtre \textit{Tobii I-VT (Fixation)} i \textit{noise reduction} tant per l'obertura de l'ull com per diàmetre de la pupi"la.
+Per tal d'optimitzar aquest procés hem exportat diversos fitxers de la següent manera\footnote{Dins el menú Analyze/Data export},
+utilitzant sempre el filtre \textit{Tobii I-VT (Fixation)} i \textit{noise reduction} tant per l'obertura de l'ull com per diàmetre de la pupi"la:
 
 \begin{enumerate}
-    \item Dades generals, inclou dia, hora i resultats de la calibració. (General, excepte AOI size, timestamp i event value; un sol Time of interest; cap AOI)
-    \item Anotacions. Els inputs per teclat dels participants. (Participant name, Event, Event value; Times of Interest = Media gaze data; cap AOI)
-    \item Dades. Cal seleccionar grups petits d'AOI i els seus respectius temps a Times of interest. Finalment es van fer 4 grups de 10 textos per cada participant. Es poden exportar de cop a fitxers individuals amb \textit{Format=multiple standard files}.
+    \item \textbf{Dades generals}, inclou dia, hora i resultats de la calibració. (Grup General, excepte AOI size, timestamp i event value; un sol Time of interest; cap AOI)
+    \item \textbf{Anotacions.} Els inputs per teclat dels participants. (Participant name, Event, Event value; Times of Interest = Media gaze data; cap AOI)
+    \item \textbf{Dades del sensor.} Cal seleccionar grups petits d'AOI i els seus respectius temps a Times of interest. Finalment es van fer 4 grups de 10 textos per cada participant. Es poden exportar de cop a fitxers individuals amb \textit{Format=multiple standard files}. Finalment, vam convertir els fitxers exportats al format \textit{parquet}, més eficient.
         \begin{itemize}
             \item General: Participant name
             \item Eye tracking data: Pupil diameter, Validity of eye data
@@ -21,6 +22,8 @@ Utilitzem sempre el filtre \textit{Tobii I-VT (Fixation)} i \textit{noise reduct
             \item Eye movement events: eye movement type, duration and index, fixation point, AOI hit
         \end{itemize}
 \end{enumerate}
+
+
 
 \section{Models de llenguatge}
 
@@ -146,6 +149,6 @@ conclusions sobre la similitud entre ambdós tipus d'atenció.
 
 \section{Disponibilitat del codi}
 
-Tot el codi utilitzat en aquest treball, incloent-hi la implementació dels models, els 
-mètodes d'interpretabilitat i els scripts d'anàlisi, està disponible públicament 
+Tot el codi utilitzat en aquest treball, incloent la implementació dels models, els 
+mètodes d'interpretabilitat, els scripts d'anàlisi i aquest treball, estan disponibles públicament 
 al repositori GitHub: \url{https://github.com/Pastells/eye\_tracker\_sexism}. 
