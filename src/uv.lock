@@ -504,6 +504,18 @@ wheels = [
 ]
 
 [[package]]
+name = "cairocffi"
+version = "1.7.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cffi" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/70/c5/1a4dc131459e68a173cbdab5fad6b524f53f9c1ef7861b7698e998b837cc/cairocffi-1.7.1.tar.gz", hash = "sha256:2e48ee864884ec4a3a34bfa8c9ab9999f688286eb714a15a43ec9d068c36557b", size = 88096, upload-time = "2024-06-18T10:56:06.741Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/93/d8/ba13451aa6b745c49536e87b6bf8f629b950e84bd0e8308f7dc6883b67e2/cairocffi-1.7.1-py3-none-any.whl", hash = "sha256:9803a0e11f6c962f3b0ae2ec8ba6ae45e957a146a004697a1ac1bbf16b073b3f", size = 75611, upload-time = "2024-06-18T10:55:59.489Z" },
+]
+
+[[package]]
 name = "captum"
 version = "0.9.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1026,6 +1038,7 @@ dependencies = [
     { name = "captum" },
     { name = "datasets" },
     { name = "emoji" },
+    { name = "eyekit" },
     { name = "isort" },
     { name = "jupyter" },
     { name = "jupyterlab" },
@@ -1057,6 +1070,7 @@ requires-dist = [
     { name = "captum", specifier = ">=0.9.0" },
     { name = "datasets", specifier = ">=4.8.4" },
     { name = "emoji", specifier = ">=2.15.0" },
+    { name = "eyekit", specifier = ">=0.7.1" },
     { name = "isort", specifier = ">=8.0.0" },
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "jupyterlab", specifier = ">=4.5.0" },
@@ -1078,6 +1092,18 @@ requires-dist = [
     { name = "transformers", extras = ["torch"], specifier = ">=5.5.4" },
     { name = "transformers-interpret", specifier = ">=0.10.0" },
     { name = "weasyprint", specifier = ">=68.1" },
+]
+
+[[package]]
+name = "eyekit"
+version = "0.7.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cairocffi" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2d/d8/0825dcaf05986f7244bf6423fefd52c36ecc109d88fcb6a9462fc38d68c7/eyekit-0.7.1.tar.gz", hash = "sha256:56eab623e8c9dd46e14ffbbf0d5cae58563881ecfb69f919a7785bde61d971b1", size = 967065, upload-time = "2025-12-09T17:49:47.162Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5a/90/2c0edd4e39227dca902e4e0c6a1edc6863182fe5625fa664922d2ab44d45/eyekit-0.7.1-py3-none-any.whl", hash = "sha256:1bb59ee660fe5fbfee54246d03f235585b477914cf2cf69da69e897d121e59b1", size = 69137, upload-time = "2025-12-09T17:49:36.788Z" },
 ]
 
 [[package]]
