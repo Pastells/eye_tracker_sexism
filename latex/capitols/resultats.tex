@@ -1,0 +1,79 @@
+Aquest capítol descriu l'anàlisi de les anotacions del sexisme fetes per 10 participants sobre 40 textos, comparades amb el \textit{gold standard} de MuSeD. L'anàlisi cobreix mètriques d'exactitud, concordança entre anotadors, calibratge de la confiança, diferències de gènere, detecció de subcategories i proves de significació estadística.
+
+La gran limitació d'aquest treball és que amb 10 participants i 40 textos, la potència estadística és limitada. Per tant, els resultats s'han d'interpretar amb compte.
+
+\section{Resultats dels participants en l'anotació}
+
+Vuit dels deu participants obtenen resultats significativament superiors a l'atzar ($p < 0.01$). Dos participants no assoleixen la significació, tot i que la seva exactitud (62.5\%) és superior a l'atzar.
+
+
+\begin{table}[h]
+\centering
+\caption{Comparacions basades en el gènere.}
+\label{tab:gender}
+\begin{tabular}{lll}
+\toprule
+Prova & Estadístic & valor $p$ \\
+\midrule
+U de Mann-Whitney (exactitud per text) & $U = 1001.5$ & $0.035$ * \\
+Exacta de Fisher (errors en textos sexistes) & OR $= 0.72$ & $0.468$ ns \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Pel que fa al gènere, la prova U de Mann-Whitney revela una diferència significativa en les distribucions d'exactitud per text: els participants homes superen les participants dones sobre els textos compartits ($p = 0.035$). No obstant això, la prova exacta de Fisher sobre el nombre d'errors específicament en els textos sexistes no assoleix la significació ($p = 0.368$), cosa que suggereix que la diferència de gènere ve donada pel rendiment en els textos no sexistes més que no pas per la detecció de textos sexistes.
+
+\begin{table}[h]
+\centering
+\caption{Proves d'associació entre confiança i exactitud.}
+\label{tab:confidence}
+\begin{tabular}{lll}
+\toprule
+Prova & Estadístic & valor $p$ \\
+\midrule
+Rho de Spearman (confiança vs. encert) & $\rho = 0.29$ & $< 0.001$ ** \\
+Kruskal-Wallis (exactitud $\sim$ nivell de confiança) & $H = 35.9$ & $< 0.001$ ** \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Confirmen que la confiança autoinformada dels participants està significativament calibrada: una confiança més alta s'associa amb una exactitud més gran. La relació és moderada ($\rho = 0.30$) però altament significativa.
+
+Exactitud per nivell de confiança:
+\begin{itemize}
+    \item Confiança 1 (la més baixa): 57\%
+    \item Confiança 2 (mitjana): 74\%
+    \item Confiança 3 (la més alta): 90\%
+\end{itemize}
+
+\subsection{Categories de sexisme}
+
+\begin{table}[h]
+\centering
+\caption{Resultats de la prova binomial per a cada subcategoria ($H_0$: exactitud $= 0.5$, bilateral).}
+\label{tab:subcategory}
+\begin{tabular}{lcccl}
+\toprule
+Subcategoria & Exactitud & $n$ & valor $p$ & Sig. \\
+\midrule
+humor              & 62.5\% &  40 & $= 0.154$ & ns \\
+ironia             & 70.0\% &  30 & $= 0.043$ & * \\
+discriminació      & 76.7\% &  60 & $< 0.001$ & ** \\
+desigualtat        & 77.1\% &  70 & $< 0.001$ & ** \\
+sexisme implícit   & 85.0\% &  20 & $= 0.003$ & ** \\
+estereotips        & 84.5\% & 110 & $< 0.001$ & ** \\
+crítica            & 84.5\% & 110 & $< 0.001$ & ** \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+L'humor és l'única categoria en què l'exactitud dels participants no supera significativament l'atzar ($p = 0.154$). Això concorda amb l'anàlisi d'errors, que mostra que els textos sexistes basats en l'humor són els més difícils de detectar. La ironia és marginalment significativa ($p = 0.043$) un cop es té en compte el context de les proves múltiples.
+
+Les proves exactes de Fisher que comparen les taxes d'error entre totes les parelles de categories es van fer amb la correcció de Bonferroni ($n = 28$ parelles). L'única parella amb $p < 0.05$ en brut:
+
+\begin{itemize}
+    \item Humor vs. Estereotips: $p_{\text{brut}} = 0.006$, $p_{\text{ajust}} = 0.173$ (no significatiu després de la correcció)
+    \item Humor vs. Crítica: $p_{\text{brut}} = 0.006$, $p_{\text{ajust}} = 0.173$ (no significatiu després de la correcció)
+\end{itemize}
+
+Cap diferència per parelles sobreviu a la correcció de Bonferroni, cosa que suggereix que, tot i que la detecció de l'humor és numèricament pitjor, les mides reduïdes de mostra per subcategoria limiten la potència estadística de les comparacions per parelles.

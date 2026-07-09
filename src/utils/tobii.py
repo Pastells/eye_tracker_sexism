@@ -1,6 +1,6 @@
+import glob
 import os
 import warnings
-import glob
 from pathlib import Path
 
 import numpy as np
@@ -412,3 +412,50 @@ def compute_regression_metrics(fixations, regressions):
     }
 
     return metrics
+
+def get_anotacions(tsv_file):
+    anotacions = pd.read_csv(tsv_file, sep="\t").drop(
+        ["Recording timestamp", "Computer timestamp"], axis=1
+    )
+    anotacions = anotacions[anotacions["Event"].isin(["TextStart", "TextEnd", "KeyboardEvent"])]
+    records = []
+
+    for _, row in anotacions.iterrows():
+        event = row["Event"]
+        value = str(row["Event value"])
+
+        if event == "TextStart":
+            # Check if value is a plain number (text ID) or "Text (X)" format
+            if not value.startswith("Text") and value not in ("confidence", "buit"):
+                current_text_num = value
+                keyboard_events = []  # Reset keyboard events for new text number
+
+        elif event == "KeyboardEvent":
+            keyboard_events.append(value)
+            if len(keyboard_events) == 2:
+                records.append(
+                    {
+                        "user": row["Participant name"],
+                        "text": current_text_num,
+                        "sexist": keyboard_events[0],
+                        "confidence": keyboard_events[1],
+                    }
+                )
+        elif len(keyboard_events) > 2:
+            raise ValueError
+
+    anotacions = pd.DataFrame(records, columns=["user", "text", "sexist", "confidence"])
+    anotacions.text = anotacions.text.map({"76)": "76"}).fillna(anotacions.text).astype(int)
+    # map when Numlock wasn't active
+    anotacions.sexist = anotacions.sexist.map({"End": 1, "Insert": 0, "PageDown": 1}).fillna(anotacions.sexist).astype(int)
+    anotacions.confidence = (
+        anotacions.confidence.map({"End": 1, "Down": 2, "PageDown": 3}).fillna(anotacions.confidence).astype(int)
+    )
+    # Correccions manuals
+    anotacions.loc[(anotacions.user == "javi") & (anotacions.text == 78), "sexist"] = 0
+    anotacions.loc[(anotacions.user == "clara") & (anotacions.text == 62), "sexist"] = 1
+    anotacions.loc[(anotacions.user == "alo") & (anotacions.text == 214), "sexist"] = 0
+
+    assert anotacions.shape[0] == anotacions.user.nunique() * anotacions.text.nunique()
+    anotacions = anotacions.sort_values(by=["user", "text"])
+    return anotacions

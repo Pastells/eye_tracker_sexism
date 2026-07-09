@@ -20,7 +20,6 @@ os.environ["NCCL_IB_DISABLE"] = "1"
 import argparse
 import html as html_lib
 import json
-from tqdm import tqdm
 
 import numpy as np
 import torch
@@ -36,6 +35,7 @@ from captum.attr import (
     Saliency,
 )
 from IPython.display import HTML, display
+from tqdm import tqdm
 from transformers import AutoConfig, AutoModelForSequenceClassification, AutoTokenizer
 
 from utils.mused import load_data
