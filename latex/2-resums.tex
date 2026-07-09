@@ -1,20 +1,24 @@
-150 paraules. Això és una prova per provar el format del Resum. Això és una prova per provar el format del Resum Això és una prova per provar el format del Resum Això és una prova per provar el format del Resum Això és una prova per provar el format del Resum Això és una prova per provar el format del Resum Això és una prova per provar el format del Resum Això és una prova per provar el format del Resum Això és una prova per provar el format del Resum Això és una prova per provar el format del Resum Això és una prova per provar el format del Resum Això és una prova per provar el format del Resum Això és una prova per provar el format del Resum Això és una prova per provar el format del Resum. \vspace{0.5cm}
+La detecció del sexisme és una preocupació creixent en el PLN, però poc se sap sobre els patrons que humans i models utilitzen per identificar-lo. Comprendre'ls pot il·luminar processos cognitius i millorar la interpretabilitat dels models.
+
+En aquest estudi comparem la lectura humana amb l'atenció dels models. Hipotetitzem que humans i models es fixen en regions parcialment coincidents però diferents, i que els humans mostren més sensibilitat als indicis pragmàtics, especialment per sexisme implícit.
+
+Dissenyem un experiment d'eye-tracking amb 10 participants que llegeixen textos en castellà d'un corpus multimodal de sexisme. Els participants proporcionen judicis binaris i valoracions de confiança, seguits d'entrevistes de recall estimulat. Computacionalment, extraiem l'atenció de models codificadors (BERT, RoBERTa) i LLMs (Ministral 3, Gemma 4).
+
+Correlacionem les durades de fixació amb els pesos d'atenció, avaluant-los contra els spans de referència. En fonamentar la interpretabilitat en dades cognitives, aquest treball connecta la psicolingüística i el PLN.
+\vspace{0.5cm}
 
 \noindent{{\bfseries \large Paraules clau:} {Detecció de sexisme, eye-tracking, PLN, interpretabilitat}} \vspace{5mm}
 
 \noindent{\bfseries \large Abstract: }
 
-\noindent{150 words.
+\noindent{
+Sexism detection is a growing concern in NLP, yet little is known about how humans and language models allocate attention when identifying it. Understanding these patterns can illuminate cognitive processes, improve interpretability, and inform annotation guidelines.
 
-Sexism detection is a growing concern in NLP and content moderation, yet little is known about how humans and language models allocate attention when identifying sexism. Understanding these attention patterns can shed light on the cognitive processes underlying sexism detection, improve model interpretability, and inform better annotation guidelines and automated moderation systems.
+In this work, we compare human reading behavior with model attention mechanisms. We hypothesize that humans and models attend to partially overlapping but distinct textual regions, with humans showing greater sensitivity to pragmatic cues, particularly in implicit sexism.
 
-In this work-in-progress study, we compare human reading behavior during sexism classification with language model attention mechanisms. We hypothesize that humans and models attend to partially overlapping but distinct textual regions, with humans showing sensitivity to pragmatic and contextual cues that models may underweight, particularly in cases of implicit or subtle sexism.
+We design an eye-tracking experiment with 10 gender-balanced participants reading Spanish texts from MuSeD, a multimodal sexism dataset. Participants provide binary judgments and confidence ratings, followed by stimulated recall interviews. Computationally, we extract attention from encoder models (BERT, RoBERTa) and LLMs (Ministral 3, Gemma 4).
 
-For the human component, we design an eye-tracking experiment using a Tobii eye tracker with approximately 50 participants, balanced for gender. Participants read short Spanish texts drawn from MuSeD (De Grazia et al., 2025), a multimodal Spanish sexism detection dataset of TikTok videos with span-level sexist annotations. We use the transcriptions of these videos, selecting stimuli by text length and span size. We filter texts whose sexism annotation is consistent across textual and video modalities, ensuring the sexist content is fully conveyed through text alone. After reading each text, participants provide a binary sexism judgment, a severity rating (0–2 scale) and a confidence score. We collect standard eye-tracking measures including total fixation duration, fixation count, and regression patterns. At the end of the session, we conduct stimulated recall interviews, where participants verbalize their reasoning, providing a qualitative layer of annotation.
-
-For the computational component, we plan to extract attention patterns from both encoder-based models (BERT, RoBERTa) and state-of-the-art LLMs (Ministral 3, Gemma 4), applying multiple interpretability methods to identify which tokens receive the highest attention during classification.
-
-We compare human and model attention at the token level, correlating total fixation duration with model attention weights, and evaluate both against the gold-standard sexist spans. We present the experimental design and motivations here, with data collection and analysis forthcoming. This work aims to contribute to the intersection of psycholinguistics and NLP by grounding model interpretability in human cognitive data, with implications for bias detection and text comprehension assessment.
+We correlate fixation durations with attention weights, evaluating both against gold-standard sexist spans. By grounding interpretability in cognitive data, this work bridges psycholinguistics and NLP, with implications for bias detection.
 } \vspace{0.5cm}
 
-\noindent{{\bfseries \large Keywords:} {Sexism detection, eye-tracking, NLP, model interpretability}} \vspace{5mm}
+\noindent{{\bfseries \large Keywords:} {Sexism detection, eye-tracking, NLP, interpretability}} \vspace{5mm}
