@@ -99,7 +99,6 @@ def read_data(tsv_file: str):
 
     cols = pq.read_schema(parquet_file).names
     aoi_size = [col for col in cols if "AOI size" in col]
-    aoi_hit = [col for col in cols if "AOI hit" in col]
     calibration_cols = [col for col in cols if "calibration" in col] + [
         col for col in cols if "validation" in col
     ]
@@ -148,13 +147,18 @@ def read_data(tsv_file: str):
         "Fixation point Y": "fix_y",
         "Eye movement event duration": "duration",
         "Participant name": "participant",
+        **{x: x.replace("76)", "76") for x in cols_to_keep if x.startswith("AOI hit [76)")},
     }
+
     raw_df = pd.read_parquet(
         parquet_file,
         engine="pyarrow",
         dtype_backend="numpy_nullable",
         columns=cols_to_keep,
-    ).rename(columns={k: v for k, v in column_mapping.items()})
+    ).rename(columns=column_mapping)
+
+    # Compute aoi_hit after rename (76) -> 76)
+    aoi_hit = [col for col in raw_df.columns if "AOI hit" in col]
 
     # optimize memory a bit
     raw_df[aoi_hit] = raw_df[aoi_hit].astype(pd.BooleanDtype())
@@ -323,7 +327,7 @@ def drop_irrelevant_aois(text_df, stimulus, aoi_hit, text_tokens=None):
     return text_df, list(aois_to_keep.values())
 
 
-def collapse_aoi_columns(text_df, aoi_cols):
+def collapse_aoi_columns(text_df, aoi_cols, stimulus, verbose=False):
     """
     Collapse AOI hit columns into a single 'AOI' column (vectorized).
     """
@@ -350,9 +354,10 @@ def collapse_aoi_columns(text_df, aoi_cols):
     text_df.loc[has_hit, "AOI"] = aoi_data.loc[has_hit].idxmax(axis=1)
     text_df = text_df.drop(columns=aoi_cols)
 
-    n_hits = text_df["AOI"].notna().sum()
-    n_unique = text_df["AOI"].nunique()
-    print(f"  {n_hits} samples with AOI hits across {n_unique} unique AOIs")
+    if verbose:
+        n_hits = text_df["AOI"].notna().sum()
+        n_unique = text_df["AOI"].nunique()
+        print(f"{stimulus}: {n_hits} samples with AOI hits across {n_unique} unique AOIs")
 
     return text_df
 
@@ -392,7 +397,7 @@ def process_all_texts(
         text_df, aoi_cols = drop_irrelevant_aois(
             text_df, stimulus, aoi_hit, text_tokens=tokens
         )
-        text_dfs[stimulus] = collapse_aoi_columns(text_df, aoi_cols)
+        text_dfs[stimulus] = collapse_aoi_columns(text_df, aoi_cols, stimulus)
         aoi_cols_dict[stimulus] = aoi_cols
 
     return text_dfs, aoi_cols_dict
