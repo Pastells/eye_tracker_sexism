@@ -100,7 +100,11 @@ class SeqClassifierWrapper(ModelWrapper):
             # [CLS] text [SEP] hipòtesi [SEP]
             hyp_tokens = self._hypothesis_tokens
             all_tokens = (
-                [tok.cls_token] + text_tokens + [tok.sep_token] + hyp_tokens + [tok.sep_token]
+                [tok.cls_token]
+                + text_tokens
+                + [tok.sep_token]
+                + hyp_tokens
+                + [tok.sep_token]
             )
             text_start, text_end = 1, 1 + len(text_tokens)
 
@@ -131,7 +135,9 @@ class SeqClassifierWrapper(ModelWrapper):
 
         # --- Alineació ---
         token_to_word = [-1] * len(all_tokens)
-        _assign_word_indices_simple(tok, all_tokens, text_start, text_end, words, token_to_word)
+        _assign_word_indices_simple(
+            tok, all_tokens, text_start, text_end, words, token_to_word
+        )
 
         alignment = TokenWordAlignment(
             tokens=all_tokens,

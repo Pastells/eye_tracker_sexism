@@ -159,7 +159,9 @@ class IntegratedGradients:
             # Expandir attention_mask a [b, S]
             attn = attention_mask.expand(b, -1)
 
-            scores = self.wrapper.target_score_from_embeds_batch(interp, attn, mask_pos)  # [b]
+            scores = self.wrapper.target_score_from_embeds_batch(
+                interp, attn, mask_pos
+            )  # [b]
             scores.sum().backward()
 
             grad_accum += interp.grad.sum(dim=0, keepdim=True)  # [1, S, H]
@@ -194,7 +196,9 @@ class IntegratedGradients:
         words = text.split()
 
         before_ids = tokenizer(before, add_special_tokens=False)["input_ids"]
-        before_plus_text_ids = tokenizer(before + text, add_special_tokens=False)["input_ids"]
+        before_plus_text_ids = tokenizer(before + text, add_special_tokens=False)[
+            "input_ids"
+        ]
         n_text_tokens = len(before_plus_text_ids) - len(before_ids)
 
         n_special_start = 1
@@ -323,7 +327,9 @@ class IntegratedGradients:
             valid = [s for s in word_saliency if not math.isnan(s)]
             max_sal = max(valid) if valid else 1.0
             if max_sal > 0:
-                word_saliency = [0.0 if math.isnan(s) else s / max_sal for s in word_saliency]
+                word_saliency = [
+                    0.0 if math.isnan(s) else s / max_sal for s in word_saliency
+                ]
 
         gap = abs(ig[0].sum().item() - (score_real - score_base))
 

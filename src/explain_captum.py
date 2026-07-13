@@ -459,10 +459,14 @@ def save_results(results, output_path):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Captum interpretability suite for BERT models")
+    parser = argparse.ArgumentParser(
+        description="Captum interpretability suite for BERT models"
+    )
     parser.add_argument("--model_id", type=str, default="BSC-LT/MrBERT-es")
     parser.add_argument("--checkpoint", type=str, default="baseline_es/checkpoint-20")
-    parser.add_argument("--methods", type=str, nargs="+", default=None, help="Methods to run")
+    parser.add_argument(
+        "--methods", type=str, nargs="+", default=None, help="Methods to run"
+    )
     parser.add_argument(
         "--output", type=str, default="captum_results.json", help="Output JSON path"
     )

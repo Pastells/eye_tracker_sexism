@@ -126,7 +126,9 @@ class MLMClozeWrapper(ModelWrapper):
         Si prompt_idx és None, retorna tensor [N] amb el score de cada prompt.
         Si prompt_idx és un enter, retorna escalar per aquell prompt.
         """
-        indices = [prompt_idx] if prompt_idx is not None else range(len(self.PROMPT_TEMPLATES))
+        indices = (
+            [prompt_idx] if prompt_idx is not None else range(len(self.PROMPT_TEMPLATES))
+        )
         scores = []
         for i in indices:
             inputs, mask_pos = self.build_inputs(text, prompt_idx=i)
