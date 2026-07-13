@@ -23,7 +23,9 @@ def annotations_to_spacy_doc(text: str, annotations: list[dict]) -> spacy.tokens
             span = doc.char_span(char_start, char_end, label=label, alignment_mode="expand")
 
             if span is None:
-                print(f"ÔÜá´©Å  Could not align span [{char_start}:{char_end}] for label '{label}'")
+                print(
+                    f"ÔÜá´©Å  Could not align span [{char_start}:{char_end}] for label '{label}'"
+                )
                 continue
 
             all_spans.append(span)

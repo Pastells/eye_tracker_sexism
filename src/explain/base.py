@@ -74,7 +74,9 @@ class Explanation:
     model_name: str
     extra: dict = field(default_factory=dict)
 
-    def normalized(self, method: Literal["minmax", "sum", "none"] = "minmax") -> "Explanation":
+    def normalized(
+        self, method: Literal["minmax", "sum", "none"] = "minmax"
+    ) -> "Explanation":
         """Retorna una còpia amb `word_saliency` normalitzat."""
         import numpy as np
 

@@ -24,7 +24,9 @@ SOFT_COLS = [col + "_soft" for col in BINARY_COLS]
 CLASS_COLS = BINARY_COLS + SOFT_COLS
 
 
-def load_data(path="../data/mused_all_clean.csv", chosen_path="../data/mused_chosen_data.csv"):
+def load_data(
+    path="../data/mused_all_clean.csv", chosen_path="../data/mused_chosen_data.csv"
+):
     joined = pd.read_csv(path)[["id", "text_clean", "sexist", "sexist_soft"]]
     chosen = pd.read_csv(chosen_path)
     chosen_ids = chosen.id.to_list()
@@ -94,9 +96,13 @@ def get_lens(_df, IDS, sentiment="SEXIST"):
         lambda x: eval(x) if isinstance(x, str) else (x if isinstance(x, list) else [])
     )
     df[["text_clean", "label_clean"]] = df.apply(clean, axis=1)
-    df["span_len"] = df.label_clean.apply(lambda x: sum([ann["end"] - ann["start"] for ann in x]))
+    df["span_len"] = df.label_clean.apply(
+        lambda x: sum([ann["end"] - ann["start"] for ann in x])
+    )
     df["span_num"] = df.label_clean.str.len()
-    df["span_lens"] = df.label_clean.apply(lambda x: [ann["end"] - ann["start"] for ann in x])
+    df["span_lens"] = df.label_clean.apply(
+        lambda x: [ann["end"] - ann["start"] for ann in x]
+    )
     return df
 
 
@@ -221,7 +227,9 @@ TIMESTAMP_PATTERN = re.compile(r"\d+\s+\d{2}:\d{2},\d+\s+-->\s+\d{2}:\d{2},\d+\s
 PATTERN = re.compile(r"<\/?OCR>|\[SPEAKER_0([0-9])\]:")
 
 
-def clean_text_with_mapping_new(text: str, hablante: bool = True) -> tuple[str, dict[int, int]]:
+def clean_text_with_mapping_new(
+    text: str, hablante: bool = True
+) -> tuple[str, dict[int, int]]:
     """
     Clean subtitle-like text while building a mapping from original indices
     to cleaned indices.

@@ -31,7 +31,9 @@ def get_tokenizer_model(model_id, checkpoint=None, dropout=0.0, labels="hard"):
     if checkpoint:
         model_id = checkpoint
 
-    model = AutoModelForSequenceClassification.from_pretrained(model_id, config=configuration)
+    model = AutoModelForSequenceClassification.from_pretrained(
+        model_id, config=configuration
+    )
     return tokenizer, model
 
 
@@ -45,7 +47,9 @@ def tokenize(examples, tokenizer, max_tokens):
 def preprocessing_data(data, tokenizer, max_tokens):
     dt = Dataset.from_pandas(data)
     tokenized_dt = dt.map(
-        lambda x: tokenize(x, tokenizer, max_tokens), remove_columns=["text_clean"], batched=True
+        lambda x: tokenize(x, tokenizer, max_tokens),
+        remove_columns=["text_clean"],
+        batched=True,
     )
     return tokenized_dt.with_format("torch")
 
