@@ -1,5 +1,6 @@
 import glob
 import os
+import re
 import warnings
 from pathlib import Path
 
@@ -53,7 +54,9 @@ def get_hits_text(df, aoi_hit_text, part_col, normalize=True) -> dict:
     res["z_pupil"] = np.array(z_pupil)
 
     # Create a MultiIndex for all combinations of participants and tokens
-    idx = pd.MultiIndex.from_product([participants, aoi_hit_text], names=[part_col, "token"])
+    idx = pd.MultiIndex.from_product(
+        [participants, aoi_hit_text], names=[part_col, "token"]
+    )
 
     # Calculate z_pupil for each participant and token
     hit_mask = df[aoi_hit_text] == 1
@@ -159,6 +162,12 @@ def read_data(tsv_file: str):
     raw_df[object_columns] = raw_df[object_columns].astype("category")
     float_columns = raw_df.select_dtypes(include="float").columns
     raw_df[float_columns] = raw_df[float_columns].astype(pd.Float32Dtype())
+    raw_df["Presented Stimulus name"] = (
+        raw_df["Presented Stimulus name"]
+        .map({"76)": "76"})
+        .fillna(raw_df["Presented Stimulus name"])
+        .astype(int)
+    )
 
     if not raw_df[calibration_cols].empty:
         calibration_df = raw_df[["participant"] + calibration_cols].drop_duplicates()
@@ -174,18 +183,21 @@ def read_data(tsv_file: str):
     return aoi_hit, calibration_df, participants, df
 
 
-def read_all_data(parquet_folder: str = "all_parquets"):
+def read_all_data(parquet_folder: str = "all_parquets", n_debug=False):
     """
     Reads all parquet files from a folder by calling `read_data` on each one
     Returns lists aggregated across all files.
 
     Returns:
         flat_aoi_hit: deduplicated flat list of all AOI hit column names
-        all_calibration_dfs: list of calibration DataFrames (one per file)
+        all_calibration_dfs: list of calibration DataFrames (one per file),
+                             if exported seperately it will be None
         all_participants: list of participant lists (one per file)
         all_dfs: list of filtered DataFrames (one per file)
     """
     parquet_files = sorted(glob.glob(os.path.join(parquet_folder, "*.parquet")))
+    if n_debug:
+        parquet_files = parquet_files[:n_debug]
 
     all_aoi_hit = []
     all_calibration_dfs = []
@@ -237,20 +249,76 @@ def split_by_text(df) -> dict["str", pd.DataFrame]:
     return text_dfs
 
 
-def drop_irrelevant_aois(text_df, stimulus, aoi_hit):
+def _extract_aoi_token(col):
+    """Extract the token name from an AOI hit column."""
+    idx = col.find(" - ")
+    if idx != -1:
+        string = col[idx + 3 :]
+    else:
+        string = col
+    match = re.search(r"\](?:\.\d+)?$", string)
+    if match:
+        return string[: match.start()]
+    return string
+
+
+def _sort_aois_by_text(aois, text_tokens):
+    """Sort AOI columns by their position in the original text.
+
+    Duplicate tokens are matched to consecutive occurrences in the text.
+    Tokens not found in the text are placed at the end.
+    """
+    token_counters = {}
+    positions = {}
+
+    for col in aois:
+        token = _extract_aoi_token(col)
+        if token not in token_counters:
+            token_counters[token] = 0
+
+        count = token_counters[token]
+        position = None
+        for i, t in enumerate(text_tokens):
+            if t == token:
+                if count == 0:
+                    position = i
+                    break
+                count -= 1
+
+        if position is not None:
+            positions[col] = position
+            token_counters[token] += 1
+        else:
+            positions[col] = len(text_tokens) + len(positions)
+
+    return sorted(aois, key=lambda c: positions[c])
+
+
+def drop_irrelevant_aois(text_df, stimulus, aoi_hit, text_tokens=None):
     """Keep columns for an AOI"""
 
     def clean_affixes(string, idx):
-        string = f"{idx}." + string.removeprefix("AOI hit [" + stimulus + " - ")
-        if string[-1] == "]":
-            return string[:-1]
-        if string[-2].isnumeric():
-            return string[:-4] + string[-3:]
-        return string[:-3] + string[-2:]
+        string = string.removeprefix("AOI hit [" + str(stimulus) + " - ")
+        match = re.search(r"\](?:\.\d+)?$", string)
+        if match:
+            token = string[: match.start()]
+        else:
+            token = string
+        return f"{idx}.{token}"
 
-    aois_to_keep = [a for a in aoi_hit if a.startswith("AOI hit [" + stimulus)]
+    aois_to_keep = [
+        a
+        for a in aoi_hit
+        if a.startswith("AOI hit [" + str(stimulus) + " - ") and a in text_df.columns
+    ]
+
+    if text_tokens is not None:
+        aois_to_keep = _sort_aois_by_text(aois_to_keep, text_tokens)
+
     aois_to_keep = {a: clean_affixes(a, idx) for idx, a in enumerate(aois_to_keep)}
-    cols_to_drop = set(aoi_hit) - set(aois_to_keep.keys())
+    cols_to_drop = [
+        c for c in text_df.columns if c.startswith("AOI hit") and c not in aois_to_keep
+    ]
     text_df = text_df.drop(columns=cols_to_drop).rename(columns=aois_to_keep)
     return text_df, list(aois_to_keep.values())
 
@@ -259,7 +327,7 @@ def collapse_aoi_columns(text_df, aoi_cols):
     """
     Collapse AOI hit columns into a single 'AOI' column (vectorized).
     """
-    aoi_data = text_df[aoi_cols].fillna(0).astype(int)
+    aoi_data = text_df[aoi_cols].fillna(False).astype(bool)
 
     # Check for simultaneous hits
     hits_per_row = aoi_data.sum(axis=1)
@@ -289,10 +357,19 @@ def collapse_aoi_columns(text_df, aoi_cols):
     return text_df
 
 
-def process_all_texts(dfs: pd.DataFrame | list[pd.DataFrame], aoi_hit):
+def process_all_texts(
+    dfs: pd.DataFrame | list[pd.DataFrame],
+    aoi_hit,
+    # TODO: this file is old, should update with the edited texts with "[HABLANTE 0], etc."
+    texts_csv="../data/mused_chosen_data.csv",
+):
     """
     Full pipeline: split by text, then clean AOI columns per text.
     Returns a list of clean DataFrames.
+
+    Args:
+        texts_csv: path to CSV with columns 'id' (e.g. 'video_04') and 'text_clean'.
+                   If provided, AOI columns are sorted by token position in the text.
     """
     if isinstance(dfs, list):
         text_dfs = {}
@@ -301,10 +378,20 @@ def process_all_texts(dfs: pd.DataFrame | list[pd.DataFrame], aoi_hit):
     else:
         text_dfs = split_by_text(dfs)
 
+    text_tokens_map = {}
+    if texts_csv is not None:
+        texts_df = pd.read_csv(texts_csv)
+        texts_df["num_id"] = texts_df["id"].str.replace("video_", "").astype(int)
+        for _, row in texts_df.iterrows():
+            text_tokens_map[str(row["num_id"])] = row["text_clean"].split()
+
     aoi_cols_dict = {}
 
     for stimulus, text_df in text_dfs.items():
-        text_df, aoi_cols = drop_irrelevant_aois(text_df, stimulus, aoi_hit)
+        tokens = text_tokens_map.get(str(stimulus))
+        text_df, aoi_cols = drop_irrelevant_aois(
+            text_df, stimulus, aoi_hit, text_tokens=tokens
+        )
         text_dfs[stimulus] = collapse_aoi_columns(text_df, aoi_cols)
         aoi_cols_dict[stimulus] = aoi_cols
 
@@ -413,11 +500,14 @@ def compute_regression_metrics(fixations, regressions):
 
     return metrics
 
+
 def get_anotacions(tsv_file):
     anotacions = pd.read_csv(tsv_file, sep="\t").drop(
         ["Recording timestamp", "Computer timestamp"], axis=1
     )
-    anotacions = anotacions[anotacions["Event"].isin(["TextStart", "TextEnd", "KeyboardEvent"])]
+    anotacions = anotacions[
+        anotacions["Event"].isin(["TextStart", "TextEnd", "KeyboardEvent"])
+    ]
     records = []
 
     for _, row in anotacions.iterrows():
@@ -447,9 +537,15 @@ def get_anotacions(tsv_file):
     anotacions = pd.DataFrame(records, columns=["user", "text", "sexist", "confidence"])
     anotacions.text = anotacions.text.map({"76)": "76"}).fillna(anotacions.text).astype(int)
     # map when Numlock wasn't active
-    anotacions.sexist = anotacions.sexist.map({"End": 1, "Insert": 0, "PageDown": 1}).fillna(anotacions.sexist).astype(int)
+    anotacions.sexist = (
+        anotacions.sexist.map({"End": 1, "Insert": 0, "PageDown": 1})
+        .fillna(anotacions.sexist)
+        .astype(int)
+    )
     anotacions.confidence = (
-        anotacions.confidence.map({"End": 1, "Down": 2, "PageDown": 3}).fillna(anotacions.confidence).astype(int)
+        anotacions.confidence.map({"End": 1, "Down": 2, "PageDown": 3})
+        .fillna(anotacions.confidence)
+        .astype(int)
     )
     # Correccions manuals
     anotacions.loc[(anotacions.user == "javi") & (anotacions.text == 78), "sexist"] = 0
