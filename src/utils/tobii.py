@@ -145,6 +145,8 @@ def read_data(tsv_file: str):
         "Eye movement type index": "event_index",
         "Fixation point X": "fix_x",
         "Fixation point Y": "fix_y",
+        "Fixation point X (MCSnorm)": "fix_x",
+        "Fixation point Y (MCSnorm)": "fix_y",
         "Eye movement event duration": "duration",
         "Participant name": "participant",
         **{x: x.replace("76)", "76") for x in cols_to_keep if x.startswith("AOI hit [76)")},
@@ -417,20 +419,25 @@ def extract_fixations(df):
         # Tobii already classified events
         fixations = df[df["event_type"] == "Fixation"].dropna(subset=["AOI"]).copy()
 
-        # Group by fixation index to get one row per fixation
-        fixations = (
-            fixations.groupby("event_index")
-            .agg(
-                {
-                    "timestamp": "first",
-                    "fix_x": "mean",
-                    "fix_y": "mean",
-                    "duration": "first",
-                    "AOI": "first",
-                }
+        # Determine position columns: prefer fix_x/fix_y, fall back to gaze_x/gaze_y
+        if "fix_x" in fixations.columns and "fix_y" in fixations.columns:
+            pos_agg = {"fix_x": "mean", "fix_y": "mean"}
+            rename_map = {"fix_x": "x", "fix_y": "y"}
+        elif "gaze_x" in fixations.columns and "gaze_y" in fixations.columns:
+            pos_agg = {"gaze_x": "mean", "gaze_y": "mean"}
+            rename_map = {"gaze_x": "x", "gaze_y": "y"}
+        else:
+            raise KeyError(
+                "No fixation/gaze position columns found. "
+                f"Available: {list(fixations.columns)}"
             )
-            .reset_index()
-        ).rename(columns={"fix_x": "x", "fix_y": "y"})
+
+        agg_dict = {"timestamp": "first", **pos_agg, "duration": "first", "AOI": "first"}
+
+        # Group by fixation index to get one row per fixation
+        fixations = (fixations.groupby("event_index").agg(agg_dict).reset_index()).rename(
+            columns=rename_map
+        )
     else:
         # TODO: check if it happens
         # Use raw gaze points as-is (consider applying I-VT or I-DT filter)
