@@ -1,48 +1,86 @@
+# TFG de Lingüística
+
+## Objectiu
+
+Aquest treball estudia els patrons d'atenció humana (registrats amb eye-tracking) i els patrons d'atenció computacionals (obtinguts amb models de llenguatge) en la tasca de classificació de textos sexistes. Es compara l'alineament entre les anotacions humanes, les mètriques d'eye-tracking i les atribucions de models transformer finetunejats.
+
+## Corpus
+
+Es parteix del corpus  [MuSeD (*Multimodal Sexism Detection Dataset*)](https://github.com/lauradegrazia/MuSeD_sexism_detection_videos), que conté transcripcions de vídeos de TikTok i BitChute. S'han seleccionat 40 texts (20 sexistes i 20 no sexistes) seguint criteris de coherència entre modalitats, acord total entre anotadors i longitud raonable. 10 participants (5 homes i 5 dones) van llegir els texts mentre un eye-tracker Tobii Pro Spectrum (600 Hz) registrava els seus moviments oculars.
+
+## Mètriques d'eye-tracking
+
+S'analitzen tres tipus de mètriques per token (àrea d'interès):
+
+- **TFD** (*Total Fixation Duration*): suma de les durades de totes les fixacions en un token, normalitzada per text.
+- **FFD** (*First Fixation Duration*): durada de la primera fixació en un token.
+- **FC** (*Fixation Count*): nombre total de fixacions en un token.
+- **Regressions**: moviments de la mirada cap enrere (tokens anteriors). Es classifiquen com a *within-line* o *between-line* i s'analitzen amb z-scores respecte a les baselines individuals.
+
+## Anàlisi estadística
+
+- Correlació de Spearman entre TFD/FFD/FC i les anotacions span.
+- Prova de Mann-Whitney per comparar mètriques entre textos sexistes i no sexistes, i entre tokens dins i fora dels spans anotats.
+- Z-scores de regressions amb correcció FDR de Benjamini-Hochberg.
+- Test de permutació (10.000 permutacions) per validar la significació.
+- Prova exacta de Fisher per avaluar el solapament entre tokens significatius i spans anotats.
+- Divergència de Jensen-Shannon per comparar distribucions d'atenció humana vs. anotacions.
+
 ---
-title: "Attention patterns of human annotators and language models when classifying sexist texts"
-author: Pol Pastells
-bibliography: eye_tracking.bib
-output: pdf_document
-toc: true
-geometry: margin=3cm
----
 
-# General
+## Estructura del repositori
 
-TFG en català.
+```
+eye_tracker_sexism/
+├── README.md                          # Aquest fitxer
+├── data/ (omés, contacteu-me si hi voleu accés)
+├── src/
+│   ├── process_tobii_raw_data.ipynb   # Notebook principal: processament dades + anàlisi complet
+│   ├── anotations_analysis.ipynb      # Anàlisi de les anotacions dels participants
+│   ├── create_corpus_from_mused.ipynb # Creació del corpus seleccionat a partir de MuSeD
+│   ├── bert_baseline.ipynb            # Entrenament model BERT baseline
+│   ├── stats.ipynb                    # Estadístiques addicionals
+│   │
+│   ├── utils/
+│   │   ├── tobii.py                   # Processament de dades Tobii: fixacions, regressions, TFD/FFD/FC, AOI
+│   │   ├── regressions.py             # Pipeline complet: z-scores, permutacions, FDR, hotspots, Fisher
+│   │   ├── metrics.py                 # Mètriques de distribució: entropia creuada, KL, JS
+│   │   ├── mused.py                   # Càrrega i processament del corpus MuSeD i spans
+│   │   ├── data_correction.py         # Correccions manuals de dades
+│   │   └── train.py                   # Funcions d'entrenament de models
+│   │
+│   ├── explain/                       # Mètodes d'interpretabilitat (LRP, gradients)
+│   ├── models/                        # Definicions de models (MLM, seq classification)
+│   ├── scripts/                       # Scripts auxiliars (compressió, conversió parquet)
+│   ├── viz/                           # Visualització d'anotacions span
+│   └── pdfs_anotacions/               # PDFs amb les anotacions span per text
+│
+├── latex/
+│   ├── main.tex                       # Document principal del TFG
+│   ├── preamble.tex                   # Configuració LaTeX
+│   ├── capitols/
+│   │   ├── intro.tex                  # Introducció
+│   │   ├── marc.tex                   # Marc teòric
+│   │   ├── metodologia.tex            # Metodologia
+│   │   ├── resultats.tex              # Resultats
+│   │   ├── discussio.tex              # Discussió
+│   │   └── conclusions.tex            # conclusions
+│   └── figs/                          # Figures
+└── .gitignore
+```
 
-# Experimental design
+## Execució
 
-Total fixation duration can correlate both with difficulty and likeability -> Ask if the text was difficult.
+El notebook principal és `src/process_tobii_raw_data.ipynb`. Per executar-lo:
 
-0. Demographics questionaire: edat i sexe i prou
-1. Read text
-2. Press space
-3. Annotate on excel. Fields: sexist (binary, scale?), difficult (binary, scale?)
+```bash
+cd src
+uv run jupyter lab
+```
 
-Primer binari -> escala 0-2
+Les dependències es gestionen amb `uv` (veure `src/pyproject.toml`). Les principals són: `pandas`, `numpy`, `scipy`, `scikit-learn`, `nltk`, `seaborn`, `matplotlib`.
 
 @conklinEyeTrackingGuideApplied2018:
-
-## Sentences
-
-- How many sentences (total/per individual)? Limited time ~10 min.
-
-## Control sentences
-
-- How many control sentences?
-
-20 textos, 4 de control
-
-Control, preguntes sobre el text
-
-- Can they be from the same dataset? If so, should they be read first and then explain the task for the rest?
-
-Can all sentences be control sentences?
-
-## Compiling this document
-
-`pandoc README.md --citepro -V fontsize:11pt -o readme.pdf`
 
 # Tobii pro lab
 
@@ -74,35 +112,7 @@ Regressions can be interesting in both directions: Out(previous text <- X), In(X
 
 Total reading time, number of fixations, re-reading time, second reading time...
 
-# Data analysis
-
-The exported data contains columns `AOI size` (useless as a column, is constant) and `AOI hit` for each AOI.
-For example, for a single word the column name looks like 'AOI size [Text - tu]', if there's repeated words they appear like 'AOI size [Text - tu].1'.
-
-## Eye-gaze features
-
-Which features?
-
-- Fixation count (FC)
-- First fixation duration (FFD)
-- Total fixation duration (TFD)
-
-## Notes
-
-Stimulated recall: mirar les anotacions amb el participant per veure (preguntar) en què estaven pensant. Aturar mínim cada 30s.
-
-Escala sexisme [0-2] + confiança
-
-Paraula - primera passada
-
-Recalibrar cada 15min
-
-TODO:
-
-- instruccions detallades
-- qüestionari participants
-
-## Possibles experiments
+## Possibles experiments (future work)
 
 - Llegir en veu alta
 - Llegir mentre s'escolta l'àudio
@@ -132,3 +142,4 @@ They do a linguistic assessment of the participants.
 ### ZuCo 2.0
 
 @hollenstein_zuco_2020 has 18 participants
+

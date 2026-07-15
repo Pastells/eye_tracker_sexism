@@ -543,6 +543,103 @@ def compute_regression_metrics(fixations, regressions):
     return metrics
 
 
+def compute_token_ffd_fc(fixations):
+    """Compute First Fixation Duration (FFD) and Fixation Count (FC) per token (AOI).
+
+    FFD: duration of the first fixation on a token.
+    FC: total number of fixations on a token.
+
+    Returns:
+        DataFrame with columns: AOI, ffd, fc
+    """
+    fix = fixations.dropna(subset=["AOI"]).copy()
+    if len(fix) == 0:
+        return pd.DataFrame(columns=["AOI", "ffd", "fc"])
+
+    # FC: count of fixations per AOI
+    fc = fix.groupby("AOI").size().reset_index(name="fc")
+
+    # FFD: duration of first fixation per AOI (first by timestamp)
+    fix_sorted = fix.sort_values("timestamp")
+    ffd = fix_sorted.groupby("AOI")["duration"].first().reset_index(name="ffd")
+
+    result = pd.merge(ffd, fc, on="AOI")
+    return result
+
+
+def compute_all_token_ffd_fc(text_dfs, text_ids):
+    """Compute per-token FFD and FC for all participant × text pairs.
+
+    Returns:
+        DataFrame with columns: participant, text_id, AOI, ffd, fc
+    """
+    all_records = []
+    for participant in list(text_dfs.keys()):
+        for text_id in text_ids:
+            if text_id not in text_dfs.get(participant, {}):
+                continue
+            df = text_dfs[participant][text_id]
+            fixations = extract_fixations(df)
+            token_ffd_fc = compute_token_ffd_fc(fixations)
+            if len(token_ffd_fc) > 0:
+                token_ffd_fc = token_ffd_fc.copy()
+                token_ffd_fc["participant"] = participant
+                token_ffd_fc["text_id"] = text_id
+                all_records.append(token_ffd_fc)
+    return pd.concat(all_records, ignore_index=True) if all_records else pd.DataFrame()
+
+
+def compute_all_token_metrics(text_dfs, text_ids):
+    """Compute per-token TFD, FFD and FC for all participant × text pairs.
+
+    TFD: total fixation duration (normalized per participant × text).
+    FFD: first fixation duration.
+    FC: fixation count.
+
+    Returns:
+        DataFrame with columns: participant, text_id, AOI, token_idx, tfd, ffd, fc
+    """
+    all_records = []
+    for participant in list(text_dfs.keys()):
+        for text_id in text_ids:
+            if text_id not in text_dfs.get(participant, {}):
+                continue
+            df = text_dfs[participant][text_id]
+            fixations = extract_fixations(df)
+            fix = fixations.dropna(subset=["AOI"]).copy()
+            if len(fix) == 0:
+                continue
+
+            # TFD: sum of durations per AOI, normalized
+            tfd = fix.groupby("AOI")["duration"].sum()
+            tfd_sum = tfd.sum()
+            tfd = (tfd / tfd_sum) if tfd_sum > 0 else tfd * 0
+
+            # FC: count of fixations per AOI
+            fc = fix.groupby("AOI").size()
+
+            # FFD: duration of first fixation per AOI
+            fix_sorted = fix.sort_values("timestamp")
+            ffd = fix_sorted.groupby("AOI")["duration"].first()
+
+            # Combine
+            combined = pd.DataFrame(
+                {
+                    "AOI": tfd.index,
+                    "tfd": tfd.values,
+                    "ffd": ffd.reindex(tfd.index).values,
+                    "fc": fc.reindex(tfd.index).values,
+                }
+            )
+            # token_idx from AOI name
+            combined["token_idx"] = combined["AOI"].str.split(".", n=1).str[0].astype(int)
+            combined["participant"] = participant
+            combined["text_id"] = text_id
+            all_records.append(combined)
+
+    return pd.concat(all_records, ignore_index=True) if all_records else pd.DataFrame()
+
+
 def get_anotacions(tsv_file):
     anotacions = pd.read_csv(tsv_file, sep="\t").drop(
         ["Recording timestamp", "Computer timestamp"], axis=1
