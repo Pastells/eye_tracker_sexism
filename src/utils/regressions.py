@@ -55,7 +55,9 @@ def compute_all_regressions(text_dfs, text_ids):
             metrics["text_id"] = text_id
             all_reg_metrics.append(metrics)
 
-    all_regressions_df = pd.concat(all_regressions, ignore_index=True)
+    all_regressions_df = (
+        pd.concat(all_regressions, ignore_index=True) if all_regressions else pd.DataFrame()
+    )
     all_reg_metrics_df = pd.DataFrame(all_reg_metrics)
 
     all_regressions_df["target_idx"] = (
@@ -643,3 +645,96 @@ def compute_span_hotspots(per_label_annotations, zscore_target_df, zscore_source
                     )
 
     return pd.DataFrame(span_hotspot_results)
+
+
+def get_top_hotspots_per_text(
+    zscore_target_df,
+    zscore_source_df,
+    salient_target_tokens,
+    salient_source_tokens,
+    texts,
+    text_ids,
+    n_top=10,
+):
+    """Get top N significant regression tokens per text (TO and FROM combined).
+
+    Filters stopwords and reports the percentage.
+
+    Returns:
+        hotspots_df: DataFrame with text_id, direction, token, position, z_score, is_stopword
+        stopword_pct: float, percentage of significant tokens that are stopwords
+    """
+    import nltk
+
+    nltk.download("stopwords", quiet=True)
+    es_stopwords = set(nltk.corpus.stopwords.words("spanish"))
+
+    records = []
+    for text_id in text_ids:
+        tokens = texts[text_id].split()
+
+        # Merge target and source significant tokens for this text
+        tgt = salient_target_tokens[salient_target_tokens["text_id"] == text_id][
+            ["token_idx", "z_score"]
+        ].copy()
+        tgt["direction"] = "TO"
+        src = salient_source_tokens[salient_source_tokens["text_id"] == text_id][
+            ["token_idx", "z_score"]
+        ].copy()
+        src["direction"] = "FROM"
+
+        combined = pd.concat([tgt, src], ignore_index=True)
+        if len(combined) == 0:
+            continue
+
+        # Merge TO and FROM for the same token: keep the one with higher |z|
+        combined["abs_z"] = combined["z_score"].abs()
+        combined = combined.sort_values("abs_z", ascending=False).drop_duplicates(
+            subset="token_idx", keep="first"
+        )
+
+        # Add token text and stopword flag
+        combined["token"] = combined["token_idx"].apply(
+            lambda i: tokens[i] if i < len(tokens) else "?"
+        )
+        combined["is_stopword"] = (
+            combined["token"].str.lower().str.strip(".,;:!?()\"'¿¡").isin(es_stopwords)
+        )
+        combined["text_id"] = text_id
+
+        records.append(
+            combined[
+                ["text_id", "direction", "token", "token_idx", "z_score", "is_stopword"]
+            ]
+        )
+
+    if not records:
+        return pd.DataFrame(), 0.0
+
+    all_hotspots = pd.concat(records, ignore_index=True)
+
+    # Compute stopword percentage across ALL significant tokens
+    total_sig = len(all_hotspots)
+    total_sw = all_hotspots["is_stopword"].sum()
+    stopword_pct = 100 * total_sw / max(total_sig, 1)
+
+    # For each text, take top n_top non-stopword tokens (if available), else top n_top overall
+    top_records = []
+    for text_id in text_ids:
+        text_all = all_hotspots[all_hotspots["text_id"] == text_id].copy()
+        if len(text_all) == 0:
+            continue
+
+        # Prefer lexical words
+        lexical = text_all[~text_all["is_stopword"]].head(n_top)
+        if len(lexical) < n_top:
+            # Fill remaining with stopwords if needed
+            remaining = text_all[text_all["is_stopword"]].head(n_top - len(lexical))
+            lexical = pd.concat([lexical, remaining])
+
+        top_records.append(lexical)
+
+    hotspots_df = (
+        pd.concat(top_records, ignore_index=True) if top_records else pd.DataFrame()
+    )
+    return hotspots_df, stopword_pct
