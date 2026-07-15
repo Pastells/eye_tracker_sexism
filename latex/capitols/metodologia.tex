@@ -33,22 +33,18 @@ El marc d'anotació distingia quatre tipus de contingut sexista:
 \begin{itemize}
     \item \textbf{Estereotip} (\textit{Stereotype}): afirmacions sobre
     propietats que suposadament diferencien homes i dones a partir de creences
-    estereotipades.
+    estereotipades~\cite{samory2021call}. Reforça rols de gènere tradicionals i presenta diferències com a ``naturals'' o biològicament determinades.
     \item \textbf{Desigualtat} (\textit{Inequality}): discurs que nega
     l'existència de desigualtats de gènere o presenta el moviment feminista
-    com una amenaça per als homes.
+    com una amenaça per als homes. Inclou la victimització masculina en politiques d'igualtat.
     \item \textbf{Discriminació} (\textit{Discrimination}): contingut que
     discrimina per orientació sexual o identitat de gènere i que denigra la
-    comunitat LGBTQ+.
-    \item \textbf{Objectificació} (\textit{Objectification}): representació
-    de les dones com a objectes físics valorats principalment per la seva
-    utilitat.
+    comunitat LGBTQ+~\cite{chakravarthi2021dataset}.
+    \item \textbf{Objectificació} (\textit{Objectification}): representació de les dones com a objectes físics valorats principalment per la seva utilitat~\cite{szymanski2011sexual}.
 \end{itemize}
 
-Els vídeos sexistes es distribueixen principalment entre Estereotip (56,2\%)
-i Desigualtat (39,2\%), seguits de Discriminació (15,5\%) i Objectificació
-(3,6\%). Cal destacar que si un ítem conté una crítica, denúncia o un relat d'una
-experiència sexista, s'etiqueta com a no sexista.
+Els vídeos sexistes es distribueixen en 56,2\% estereotips, 39,2\% desigualtat (39,2\%), 15,5\% discriminació  i 3,6\% objectificació.
+Cal destacar que si un ítem conté una crítica, denúncia o un relat d'una experiència sexista, s'etiqueta com a no sexista.
 A més, també es van anotar la implicitud del sexisme~\cite{schmeisser2022criteria}, així com la presència d'humor o ironia.
 
 
@@ -71,9 +67,9 @@ als criteris de selecció descrits a la Secció~\ref{sec:filtratge}:
 \subsection{Acord entre anotadors}
 \todo{potser no cal}
 
-La fiabilitat de les anotacions es va mesurar amb la kappa de Fleiss. Per a
-l'anotació textual, s'obté una kappa de 0,719 (equip~1) i 0,717 (equip~2),
-que augmenta fins a 0,834 i 0,853 respectivament en l'anotació del vídeo
+La fiabilitat de les anotacions es va mesurar amb la $\kappa$ de Fleiss. Per a
+l'anotació textual, s'obté una $\kappa=0,719$ (equip~1) i $0,717$ (equip~2),
+que augmenta fins a $0,834$ i $0,853$ respectivament en l'anotació del vídeo
 complet, indicant un acord \textit{substancial}~\cite{landis1977measurement}. La millora en incorporar modalitats
 addicionals suggereix que el sexisme és, en alguns casos, difícil de
 detectar únicament a partir del text, a causa de la dificultat d'identificar
@@ -110,11 +106,10 @@ no sexistes) seguint els criteris següents:
 
 
 Cal dir que els textos sexistes tendeixen a ser més
-llargs que els no sexistes, i que les anotacions de \textit{span} cobreixen
+llargs que els no sexistes, i que les anotacions dels \textit{spans} cobreixen
 una proporció considerable del text en ambdós grups.
 Les taules~\ref{tab:corpus_stats} i~\ref{tab:corpus_labels} resumeixen les estadístiques descriptives i la distribució de categories
 dels textos seleccionats.
-\todo{Podem afegir: La distribució detallada dels \textit{soft labels} es recull a l'Apèndix~\ref{app:soft_labels}.}
 
 \begin{table}[ht]
     \centering
@@ -182,7 +177,7 @@ dels textos seleccionats.
 % \end{figure}
 
 
-\section{Procediment}\label{sec:procediment}
+\section{Procediment experiment}\label{sec:procediment}
 
 % \section{Participants}
 L'estudi va tenir un total de 10 participants voluntaris (5 homes i 5 dones). Tots treballadors o estudiants de la Universitat de Barcelona majors d'edat, entre 22 i 28 anys.
@@ -204,7 +199,7 @@ Durant aquest procés es preguntava si el participant s'havia fixat en alguna pa
 \todo{Pot ser un apèndix}
 
 Utilitzem l'eye-tracker Tobii Pro Spectrum, que enregistra quina zona de la pantalla s'està mirant a 600Hz.
-El software Tobii Pro Lab calcula les fixacions, i permet definir cada paraula d'un text com a àrea d'interés (AOI en les seves sigles en anglès).
+El software Tobii Pro Lab calcula les fixacions, i permet definir cada paraula d'un text com a àrea d'interés (AOI).
 
 El problema a l'hora d'exportar les dades és que Tobii Pro Lab no optimitza el format.
 En comptes de crear un fitxer per a cada text, crea un fitxer amb tots els temps com a fila i totes les AOI com a columna.
