@@ -1,19 +1,19 @@
 """
 Captum Interpretability Suite for BERT models
 
+Provides token-level attributions via Saliency, InputXGradient, Integrated Gradients,
+DeepLift, GuidedBackprop, LayerGradCam, GuidedGradCam, FeatureAblation, and NoiseTunnel.
+
 TODO:
-- Fix GPU CUDA errors for some methods (index out of bounds on attention_mask)
-- Implement DeepLift, GuidedBackprop, GuidedGradCam with proper model wrapping
-  (these require torch.nn.Module, not function wrapper)
+- DeepLift, GuidedBackprop, GuidedGradCam: need torch.nn.Module, not function wrapper
 - Optimize FeatureAblation (too slow - embeddings are high dimensional)
-- Add input_x_gradient method (currently broken)
 - Test NoiseTunnel with faster base methods
 """
 
 import os
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 os.environ["NCCL_P2P_DISABLE"] = "1"
 os.environ["NCCL_IB_DISABLE"] = "1"
 
@@ -59,9 +59,21 @@ class ModelWrapper:
         self.model = model
         self.tokenizer = tokenizer
         self.device = device
+        # Auto-detect the base model for embeddings access
+        # ModernBERT: model.model, BERT/RoBERTa: model.bert, etc.
+        self._base = (
+            getattr(model, "model", None)
+            or getattr(model, "bert", None)
+            or getattr(model, "roberta", None)
+        )
+        if self._base is None:
+            raise ValueError(
+                f"Cannot find base model in {type(model).__name__}. "
+                f"Attributes: {[a for a in dir(model) if not a.startswith('_')][:20]}"
+            )
 
     def get_embeddings(self, input_ids):
-        return self.model.model.embeddings(input_ids)
+        return self._base.embeddings(input_ids)
 
     def forward_with_embeddings(self, embeddings, attention_mask):
         if attention_mask is not None and attention_mask.device != embeddings.device:
@@ -77,7 +89,7 @@ class ModelWrapper:
     def forward_for_captum(self, input_ids, attention_mask=None):
         if attention_mask is None:
             attention_mask = torch.ones_like(input_ids)
-        embeddings = self.model.model.embeddings(input_ids)
+        embeddings = self._base.embeddings(input_ids)
         embeddings = embeddings.requires_grad_(True)
         if attention_mask.device != embeddings.device:
             attention_mask = attention_mask.to(embeddings.device)
