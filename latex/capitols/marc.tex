@@ -1,10 +1,8 @@
 \section{Categorització del sexisme en continguts multimèdia}\label{ch:marc}
 
-Al marc teòric de \textcite{mused} s'estableixen els fonaments conceptuals per a la 
-determinació de contingut sexista en xarxes socials i continguts multimèdia.
-De Grazia defineix el sexisme com ``prejudici i discriminació basats en el sexe 
-o el gènere'', en un sentit ampli, que inclou l'orientació sexual i la identitat de gènere, seguint 
-l'enfocament d'\textcite{o2009encyclopedia} que conceptualitza el sexisme com una ideologia que 
+\textcite{mused} estableixen els fonaments conceptuals per a la classificació de sexisme a continguts multimèdia en xarxes socials.
+De Grazia defineix el sexisme com ``prejudici i discriminació basats en el sexe o el gènere'', en un sentit ampli, que inclou l'orientació sexual i la identitat de gènere. 
+Segueix l'enfocament d'\textcite{o2009encyclopedia}, que conceptualitza el sexisme com una ideologia que 
 reprodueix i marginalitza subjectivats no conformes amb les normes heteropatriarcals.
 
 \textcite{mused} identifiquen diversos desafiaments metodològics:
@@ -13,15 +11,15 @@ reprodueix i marginalitza subjectivats no conformes amb les normes heteropatriar
     \item \textbf{Sexisme implícit vs. explícit}: La detecció de formes implícites 
     (com estereotips subtils) és inherentment més subjectiva i dependent del 
     context cultural, mostrant menor acord entre anotadors humans.
-    
+
     \item \textbf{Importància del context multimodal}: Certs tipus de sexisme 
     (com l'objectificació) només es poden detectar adequadament analitzant 
     múltiples modalitats, no només el text.
-    
+
     \item \textbf{Contradiccions entre modalitats}: Continguts amb missatges 
     textuals neutrals acompanyats d'elements visuals sexistes presenten 
     desafiaments significatius per a la classificació.
-    
+
     \item \textbf{Dependència cultural}: La identificació de sexisme depèn 
     fortament del context social i cultural, el que pot generar variabilitat 
     en els patrons d'atenció entre participants.
@@ -30,52 +28,6 @@ reprodueix i marginalitza subjectivats no conformes amb les normes heteropatriar
 Aquests factors tenen implicacions directes en els patrons d'atenció entre humans 
 i models, especialment en categories de sexisme subtils o contextuals.
 
-\todo{repetit a metodologia}
-\subsection{Tipologia del sexisme: les quatre categories de MuSeD}
-
-El marc d'anotació de \textcite{mused} distingeix quatre categories:
-
-\begin{description}
-    \item[Estereotip (\textit{Stereotype})] 
-    \hfill \break
-    Definicions de propietats que diferencien homes i dones basades en creences estereotipades 
-    (Samory et al., 2021). Reforça rols de gènere tradicionals i presenta diferències com a 
-    ``naturals'' o biològicament determinades.
-
-    \item[Desigualtat (\textit{Inequality})] 
-    \hfill \break
-    Negació de desigualtats de gènere o presentació del feminisme com amenaça pels homes 
-    (Samory et al., 2021). Inclou discursos que argumenten la victimització masculina en 
-    politiques d'igualtat.
-
-    \item[Discriminació (\textit{Discrimination})] 
-    \hfill \break
-    Discriminació basada en orientació sexual o identitat de gènere, sovint denigrant 
-    comunitats LGBTQ+ (Chakravarthi et al., 2021). Aquesta categoria és rellevant per a 
-    l'extensió del concepte de sexisme més enllà del binarisme de gènere.
-
-    \item[Objectificació (\textit{Objectification})] 
-    \hfill \break
-    Representació de dones com a objectes físics valorats per utilitat o atractiu sexual 
-    (Szymanski et al., 2011). Particularment prevalent en format visual, intensificant la 
-    hipersexualització dels cossos femenins.
-\end{description}
-
-\subsection{Distribució i caracterització}
-
-\textcite{mused} reporten la distribució següent en el dataset MuSeD: Estereotip (56,2\%), 
-Desigualtat (39,2\%), Discriminació (15,5\%) i Objectificació (3,6\%). L'objectificació, tot i 
-ser mensy freqüent, és significativament més prevalent en format visual. L'acord inter-anotador 
-(Fleiss' $\kappa$) varia segons la categoria: $\kappa = 0,853$ per a Objectificació explícita 
-i $\kappa = 0,719$ per a Estereotips subtils.
-
-\subsection{Implicacions per a la comparació humà-model}
-
-Veiem, doncs, que els models de llenguatge presenten dificultats 
-amb casos implícits, on l'acord entre anotadors tambié és menor. 
-% La informació visual és crucial per a la classificació correcta en categories com Objectificació. La 
-% contradicció entre contingut verbal i no verbal (p. ex., text aparentment neutral amb 
-% imatges sexistes) presenta desafiaments adicionals.
 
 \section{Eye-tracking com a eina per a la comparació humà-model}
 
@@ -98,6 +50,70 @@ quatre mètodes d'interpretabilitat i tres arquitectures de models.
 
 Les SD (\textit{Saliency Distance}) resulten més petites amb FFD que amb FC, suggerint 
 que la primera impressió humana s'assembla més al processament dels models.
+
+\subsubsection{Durada total de fixació (TFD)}
+
+La durada total de fixació (\textit{Total Fixation Duration}, TFD) és una mesura
+de l'atenció acumulada a una àrea d'interès (AOI en les seves sigles en anglès) al llarg de tota la
+lectura. Es calcula com la suma de les durades de totes les fixacions que
+cauen dins d'una AOI concreta. El el nostre cas, la normalitzem amb el temps total de fixació de cada text:
+
+\[
+\text{TFD}_{i} = \frac{\sum_{k \in \text{fixacions}_i} d_k}{\sum_{j=1}^{N} \sum_{k \in \text{fixacions}_j} d_k}
+\]
+
+on $d_k$ és la durada de la fixació $k$, $i$ és l'índex del token (AOI), i
+$N$ és el nombre total de tokens del text. Aquesta normalització ens permet
+comparar patrons d'atenció entre participants amb velocitats de lectura
+diferents. Una TFD més alta en un token indica que els participants hi dediquen
+proporcionalment més temps d'atenció total.
+
+\subsubsection{Regressions: definició i tipologia}
+
+Una \textbf{regressió} ocorre quan es retorna la vista cap enrere
+(dreta a esquerra en escrits d'esquerra a dreta) respecte a la posició
+actual de lectura. Les regressions són un fenomen cognitiu ben documentat en
+la recerca sobre lectura~\cite{rayner1998eye, rayner2009eye} i reflecteixen
+processos de re-processament, verificació o resolució d'ambigüitat.
+
+\begin{itemize}
+    \item \textbf{Regressions intralínia} (\textit{within-line}): el lector
+    mou la mirada dins de la mateixa línia de text, cap a un token anterior.
+    S'associen principalment a dificultats de comprensió local (p. ex.,
+    paraules amb múltiples significats, estructures sintàctiques complexes).
+
+    \item \textbf{Regressions interlínies} (\textit{between-line}): es fa un salt a una línia anterior. S'associen a processos de coherència global
+    (p. ex., connectar informació prèvia amb el contingut actual).
+\end{itemize}
+
+La taxa de regressió es defineix com la proporció de sacades que són regressions respecte al total de sacades:
+
+\[
+r = \frac{n_{\text{regressions}}}{n_{\text{sacades}}} = \frac{n_{\text{regressions}}}{n_{\text{fixacions}} - 1}
+\]
+
+En condicions normals de lectura, la taxa de regressió se situa entre el
+10\% i el 15\% del total de sacades~\cite{rayner2009eye}. Taxes més altes
+indiquen fragments del text que generen més dificultat de processament.
+
+\subsubsection{Notació TO i FROM}
+
+En l'anàlisi de regressions, utilitzem la notació anglesa estàndard:
+
+\begin{description}
+    \item[TO] Token cap al qual es dirigeix la regressió. Indica on
+    el lector torna per re-processar informació.
+    \item[FROM] Token des del qual es produeix l'origen de la regressió.
+    Indica des d'on el lector interromp la lectura per tornar enrere.
+\end{description}
+
+Per exemple, si un lector està llegint el token $t_{10}$ i fa una
+regressió cap al token $t_{5}$, aquesta es registra com
+$\text{FROM} = t_{10}$, $\text{TO} = t_{5}$. La notació anglesa
+(\textit{regression-to} / \textit{regression-from}) és la convenció
+estàndard en la literatura d'\textit{eye-tracking}
+lector~\cite{rayner2009eye}.
+
 
 \subsection{Troballes principals}
 
