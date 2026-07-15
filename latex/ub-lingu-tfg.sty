@@ -42,17 +42,34 @@
 
 
 % --- Capçalera i peu de pàgina ---
-% --- Assegurar fancyhdr a tot el document ---
+
+
+% --- Mark commands: number + title, chapters capitalized ---
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter.\ #1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
+
+% Normal pages
 \pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\leftmark}   % CHAPTER N. TITLE (uppercase)
+\fancyhead[R]{\small\rightmark} % N.M Section title
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Chapter-opening pages
 \fancypagestyle{plain}{%
-  \fancyhf{} % neteja
+  \fancyhf{}
   \fancyhead[L]{\textit{Treball de Fi de Grau}}
-  \fancyhead[R]{\leftmark}
+  \fancyhead[R]{\small\leftmark} % chapter name, uppercase
   \fancyfoot[C]{\thepage}
   \renewcommand{\headrulewidth}{0.4pt}
   \renewcommand{\footrulewidth}{0pt}
 }
 
+% Mark commands: store the right info at each sectioning level
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter.\ #1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
 
 % --- Títols de secció ---
 % --- Format dels títols ---
