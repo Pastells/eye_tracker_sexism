@@ -405,6 +405,36 @@ def process_all_texts(
     return text_dfs, aoi_cols_dict
 
 
+def get_tfds(dfs, aoi_hit, participants, text_ids):
+    """
+    dfs, aoi_hit i participants de read_all_data
+
+    dfs té un df per fitxer de parquet
+    text_dfs té un df per persona i per text
+    """
+    text_dfs = {}
+    aoi_cols_dict = {}
+    tfds = {}  # Total fixation durations dict {user: {text_id: tfds}}
+    for part_idx in range(len(participants)):
+        participant = participants[part_idx]
+        text_dfs_part, aoi_cols_part = process_all_texts(
+            dfs[part_idx * 4 : (part_idx + 1) * 4], aoi_hit
+        )
+        text_dfs[participant] = text_dfs_part
+        aoi_cols_dict[participant] = aoi_cols_part
+
+        tfds[participant] = {}
+        for text_id in text_ids:
+            _df = text_dfs_part[text_id]
+            # Total fixation duration
+            all_aois = aoi_cols_part[text_id]
+            tfd = _df[_df["event_type"] == "Fixation"].groupby(by="AOI")["duration"].sum()
+            tfd = tfd.reindex(all_aois, fill_value=0).to_numpy()
+            tfds[participant][text_id] = tfd / tfd.sum()
+
+    return text_dfs, aoi_cols_dict, tfds
+
+
 # ======================================
 # fixations and regressions
 # ======================================
@@ -567,3 +597,38 @@ def get_anotacions(tsv_file):
     assert anotacions.shape[0] == anotacions.user.nunique() * anotacions.text.nunique()
     anotacions = anotacions.sort_values(by=["user", "text"])
     return anotacions
+
+
+def cluster_salient(positions, z_scores, max_gap=3):
+    """Cluster nearby salient tokens and return peak per cluster."""
+    if not positions:
+        return []
+    positions = np.array(positions)
+    z_scores = np.array(z_scores)
+    sorted_idx = np.argsort(positions)
+    positions = positions[sorted_idx]
+    z_scores = z_scores[sorted_idx]
+
+    clusters = []
+    current_cluster = [0]
+    for i in range(1, len(positions)):
+        if positions[i] - positions[i - 1] <= max_gap:
+            current_cluster.append(i)
+        else:
+            clusters.append(current_cluster)
+            current_cluster = [i]
+    clusters.append(current_cluster)
+
+    peaks = []
+    for cluster in clusters:
+        cluster_z = z_scores[cluster]
+        best = np.argmax(np.abs(cluster_z))
+        peaks.append(
+            {
+                "positions": positions[cluster].tolist(),
+                "peak_position": int(positions[cluster][best]),
+                "peak_z": float(cluster_z[best]),
+                "cluster_size": len(cluster),
+            }
+        )
+    return peaks

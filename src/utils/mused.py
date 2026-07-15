@@ -328,3 +328,56 @@ def clean(row):
             "label_clean": new_labels,
         }
     )
+
+
+def get_span_annotations(df):
+    annotations = {}  # max-normalized (for filtering)
+    annotations_sum = {}  # sum-normalized (for comparison with eye-tracking)
+    per_label_annotations = {}  # {label: {text_id: sum-normalized array}}
+
+    if "num_id" not in df.columns:
+        df["num_id"] = df["id"].str.replace("video_", "").astype(int)
+
+    for text_id in df.num_id.tolist():
+        row = df[df.num_id == text_id].iloc[0]
+        text = row["text_clean"]
+
+        matches = list(re.finditer(r"\S+", text))
+        tokens = [m.group() for m in matches]
+        starts = [m.start() for m in matches]
+        idx2token = dict(zip(starts, range(len(tokens))))
+
+        x = row["label_clean"]
+        labels = eval(x) if isinstance(x, str) else x
+        _annotations = np.zeros(len(tokens))
+        _per_label = {}  # label -> raw count array
+
+        for annotation_id in range(len(labels)):
+            start = labels[annotation_id]["start"]
+            end = labels[annotation_id]["end"]
+            while idx2token.get(start) is None:
+                start += 1
+            while idx2token.get(end) is None:
+                end -= 1
+            _annotations[idx2token[start] : idx2token[end] + 1] += 1
+
+            for tag in labels[annotation_id]["labels"]:
+                if tag not in _per_label:
+                    _per_label[tag] = np.zeros(len(tokens))
+                _per_label[tag][idx2token[start] : idx2token[end] + 1] += 1
+
+        # max normalization: useful to filter texts where most tokens are annotated
+        _annotations_max = np.divide(_annotations.copy(), max(_annotations.max(), 1))
+        annotations[text_id] = _annotations_max
+
+        # sum normalization: probabilities for comparison with eye-tracking
+        total = _annotations.sum()
+        annotations_sum[text_id] = _annotations / max(total, 1)
+
+        # per-label: sum-normalized
+        for tag, raw in _per_label.items():
+            if tag not in per_label_annotations:
+                per_label_annotations[tag] = {}
+            per_label_annotations[tag][text_id] = raw / max(raw.sum(), 1)
+
+    return annotations, annotations_sum, per_label_annotations
