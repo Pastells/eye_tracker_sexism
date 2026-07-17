@@ -1,3 +1,6 @@
+checkpoints/
+.RData
+.Rhistory
 *.pdf
 data/
 

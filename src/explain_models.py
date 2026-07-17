@@ -25,7 +25,7 @@ import pandas as pd
 import torch
 from tqdm import tqdm
 
-from explain_captum import (
+from explain.explain_captum import (
     ModelWrapper,
     aggregate_to_words,
     get_tokenizer_model,

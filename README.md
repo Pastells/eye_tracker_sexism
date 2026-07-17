@@ -2,11 +2,30 @@
 
 ## Objectiu
 
-Aquest treball estudia els patrons d'atenció humana (registrats amb eye-tracking) i els patrons d'atenció computacionals (obtinguts amb models de llenguatge) en la tasca de classificació de textos sexistes. Es compara l'alineament entre les anotacions humanes, les mètriques d'eye-tracking i les atribucions de models transformer finetunejats.
+Aquest treball estudia els patrons d'atenció humana (registrats amb eye-tracking) i els patrons d'atenció computacionals (obtinguts amb models de llenguatge) en la tasca de classificació de textos sexistes. Es compara l'alineament entre les anotacions humanes, les mètriques d'eye-tracking i les atribucions de models transformer fine-tunejats.
 
 ## Corpus
 
-Es parteix del corpus  [MuSeD (*Multimodal Sexism Detection Dataset*)](https://github.com/lauradegrazia/MuSeD_sexism_detection_videos), que conté transcripcions de vídeos de TikTok i BitChute. S'han seleccionat 40 texts (20 sexistes i 20 no sexistes) seguint criteris de coherència entre modalitats, acord total entre anotadors i longitud raonable. 10 participants (5 homes i 5 dones) van llegir els texts mentre un eye-tracker Tobii Pro Spectrum (600 Hz) registrava els seus moviments oculars.
+Es parteix del corpus [MuSeD (*Multimodal Sexism Detection Dataset*)](https://github.com/lauradegrazia/MuSeD_sexism_detection_videos), que conté transcripcions de vídeos de TikTok i BitChute. S'han seleccionat 40 texts (20 sexistes i 20 no sexistes) seguint criteris de coherència entre modalitats, acord total entre anotadors i longitud raonable. 10 participants (5 homes i 5 dones) van llegir els texts mentre un eye-tracker Tobii Pro Spectrum (600 Hz) registrava els seus moviments oculars.
+
+## Models
+
+S'entrenen tres models de transformador en la tasca de classificació binària de textos sexistes:
+
+| Model | Arquitectura | Paràmetres | Pesos |
+|-------|-------------|-----------|-------|
+| **MrBERT** | ModernBERT | 150M | BSC-LT/MrBERT-es |
+| **BETO** | BERT | 110M | dccuchile/bert-base-spanish-wwm-cased |
+| **mBERT** | BERT | 178M | bert-base-multilingual-cased |
+
+Cada model s'entrena en dues condicions de dades:
+- **Filtrades**: 124 texts d'entrenament (corpus filtrat per acord d'anotadors)
+- **Completes**: 360 texts d'entrenament (corpus complet MuSeD, excepte test)
+
+Per a les explicacions s'empren tres mètodes d'interpretabilitat (Captum):
+- **Saliency**: gradient del output respecte a l'embedding d'entrada
+- **Input×Gradient**: gradient multiplicat per l'entrada
+- **Integrated Gradients**: integració del gradient al llarg d'un camí d'interpolació
 
 ## Mètriques d'eye-tracking
 
@@ -24,7 +43,7 @@ S'analitzen tres tipus de mètriques per token (àrea d'interès):
 - Z-scores de regressions amb correcció FDR de Benjamini-Hochberg.
 - Test de permutació (10.000 permutacions) per validar la significació.
 - Prova exacta de Fisher per avaluar el solapament entre tokens significatius i spans anotats.
-- Divergència de Jensen-Shannon per comparar distribucions d'atenció humana vs. anotacions.
+- Divergència de Jensen-Shannon, entropia creuada i KL per comparar distribucions d'atenció (humana vs. spans vs. model).
 
 ---
 
@@ -32,114 +51,110 @@ S'analitzen tres tipus de mètriques per token (àrea d'interès):
 
 ```
 eye_tracker_sexism/
-├── README.md                          # Aquest fitxer
-├── data/ (omés, contacteu-me si hi voleu accés)
+├── README.md
+├── data/                                # Dades (omés del repo, contacteu si hi voleu accés)
+│   ├── chosen_data_full.csv             # 40 texts + anotacions span
+│   ├── mused_all_clean.csv              # Corpus filtrat (~164 texts)
+│   ├── 01_Text/text_with_mmlabel.csv    # Corpus complet (~400 texts)
+│   └── tobii/                           # Dades eye-tracking
+│       ├── all_parquets/                # 40 fitxers parquet (1 per participant × text)
+│       └── general.tsv                  # Metadades participants
+│
 ├── src/
-│   ├── process_tobii_raw_data.ipynb   # Notebook principal: processament dades + anàlisi complet
-│   ├── anotations_analysis.ipynb      # Anàlisi de les anotacions dels participants
-│   ├── create_corpus_from_mused.ipynb # Creació del corpus seleccionat a partir de MuSeD
-│   ├── bert_baseline.ipynb            # Entrenament model BERT baseline
-│   ├── stats.ipynb                    # Estadístiques addicionals
+│   ├── process_tobii_raw_data.ipynb     # Notebook principal: eye-tracking + anàlisi
+│   ├── anotations_analysis.ipynb        # Anàlisi de les anotacions dels participants
+│   ├── create_corpus_from_mused.ipynb   # Creació del corpus seleccionat
+│   │
+│   ├── train_models.py                  # Entrenament 3 models × 2 condicions
+│   ├── explain_models.py                # Extracció d'atribucions (Saliency, InputXGrad, IG)
+│   ├── compare_results.py               # Comparació: model vs spans vs eye-tracking
 │   │
 │   ├── utils/
-│   │   ├── tobii.py                   # Processament de dades Tobii: fixacions, regressions, TFD/FFD/FC, AOI
-│   │   ├── regressions.py             # Pipeline complet: z-scores, permutacions, FDR, hotspots, Fisher
-│   │   ├── metrics.py                 # Mètriques de distribució: entropia creuada, KL, JS
-│   │   ├── mused.py                   # Càrrega i processament del corpus MuSeD i spans
-│   │   ├── data_correction.py         # Correccions manuals de dades
-│   │   └── train.py                   # Funcions d'entrenament de models
+│   │   ├── tobii.py                     # Fixacions, regressions, TFD/FFD/FC, AOI
+│   │   ├── regressions.py               # Z-scores, permutacions, FDR, hotspots, Fisher
+│   │   ├── metrics.py                   # Entropia creuada, KL, JS
+│   │   ├── mused.py                     # Càrrega corpus MuSeD i spans
+│   │   ├── train.py                     # Funcions d'entrenament HuggingFace
+│   │   └── data_correction.py           # Correccions manuals de dades
 │   │
-│   ├── explain/                       # Mètodes d'interpretabilitat (LRP, gradients)
-│   ├── models/                        # Definicions de models (MLM, seq classification)
-│   ├── scripts/                       # Scripts auxiliars (compressió, conversió parquet)
-│   ├── viz/                           # Visualització d'anotacions span
-│   └── pdfs_anotacions/               # PDFs amb les anotacions span per text
+│   ├── checkpoints/                     # 6 checkpoints entrenats (omés del repo)
+│   │   ├── mrbert_filtered/             # MrBERT, dades filtrades
+│   │   ├── mrbert_full/                 # MrBERT, dades completes
+│   │   ├── beto_filtered/               # BETO, dades filtrades
+│   │   ├── beto_full/                   # BETO, dades completes
+│   │   ├── mbert_filtered/              # mBERT, dades filtrades
+│   │   └── mbert_full/                  # mBERT, dades completes
+│   │
+│   ├── explanations/                    # Atribucions per checkpoint (CSV)
+│   │   ├── mrbert_filtered.csv
+│   │   ├── mrbert_full.csv
+│   │   ├── beto_filtered.csv
+│   │   ├── beto_full.csv
+│   │   ├── mbert_filtered.csv
+│   │   └── mbert_full.csv
+│   │
+│   ├── explain/                         # Mètodes d'interpretabilitat (Captum/LRP)
+│   ├── models/                          # Definicions de models (antic)
+│   ├── scripts/                         # Scripts auxiliars
+│   ├── viz/                             # Visualització d'anotacions span
+│   └── pdfs_anotacions/                 # PDFs amb les anotacions span per text
 │
 ├── latex/
-│   ├── main.tex                       # Document principal del TFG
-│   ├── preamble.tex                   # Configuració LaTeX
+│   ├── main.tex                         # Document principal del TFG
+│   ├── preamble.tex                     # Configuració LaTeX
 │   ├── capitols/
-│   │   ├── intro.tex                  # Introducció
-│   │   ├── marc.tex                   # Marc teòric
-│   │   ├── metodologia.tex            # Metodologia
-│   │   ├── resultats.tex              # Resultats
-│   │   ├── discussio.tex              # Discussió
-│   │   └── conclusions.tex            # conclusions
-│   └── figs/                          # Figures
+│   │   ├── intro.tex                    # Introducció
+│   │   ├── marcz.tex                    # Marc teòric
+│   │   ├── metodologia.tex              # Metodologia
+│   │   ├── resultats.tex                # Resultats
+│   │   ├── discussio.tex                # Discussió
+│   │   └── conclusions.tex              # Conclusions
+│   ├── tables/
+│   │   ├── model_comparison.csv         # Resultats numèrics (Spearman, JS, solapament)
+│   │   ├── model_comparison.tex         # Taules LaTeX auto-generades
+│   │   └── model_typology.csv           # Mètriques per tipologia d'etiqueta
+│   └── figs/                            # Figures
 └── .gitignore
 ```
 
 ## Execució
 
-El notebook principal és `src/process_tobii_raw_data.ipynb`. Per executar-lo:
+### Entrenament de models
 
 ```bash
 cd src
-uv run jupyter lab
+uv run python train_models.py
 ```
 
-Les dependències es gestionen amb `uv` (veure `src/pyproject.toml`). Les principals són: `pandas`, `numpy`, `scipy`, `scikit-learn`, `nltk`, `seaborn`, `matplotlib`.
+Entrena 3 models × 2 condicions = 6 checkpoints a `checkpoints/`. MrBERT utilitza batch_size=8 (150M paràmetres), els altres batch_size=32.
 
-@conklinEyeTrackingGuideApplied2018:
+### Extracció d'explicacions
 
-# Tobii pro lab
+```bash
+cd src
+uv run python explain_models.py
+```
 
-Interface sucks for text. You can only use a "Screen" project type and add the texts one by one manually if you want to automatically get charachters/words as AOI. The "Advanced screen" project lets you upload a csv with the experiments, but not for text.
-So the alternatives to automate the experiments are 1) E-Prime, 2) Use images and map coordinates to words when postprocessing the data.
+Extreu atribucions de token per a cadascun dels 40 texts × 6 checkpoints × 3 mètodes.
 
-For now, I'm testing manually.
+### Comparació amb eye-tracking i spans
 
-Before exporting, you have to use Analyze/AOI Tool to define the words AOI for each stimulus.
-For qualitative analysis it is better to manually define AOIs. For example the region that contains sexism, as well as the pre-critical and spillover regions.
+```bash
+cd src
+uv run python compare_results.py
+```
 
-# Metrics
+Compara les explicacions dels models amb les anotacions span i les mètriques d'eye-tracking. Genera:
+- Taules de correlació de Spearman (model vs. TFD/FFD/FC)
+- Solapament top-20% salient vs. spans anotats
+- Mètriques de distribució: entropia creuada, KL, JS (model vs. spans, model vs. humà)
+- Desglossament per tipologia d'etiqueta span
 
-Lexical variables are the primary influence on early fixation times, while higher-level (contextual, sentence or discourse) variables are likely to show an influence later on, via re-reading and regressions and via increased overall fixation times.
+### Notebook principal
 
-## Early
+```bash
+cd src
+uv run jupyter lab process_tobii_raw_data.ipynb
+```
 
-Skipping rate. Word not fixated on first pass.
-
-First fixation duration (word AOI) is equivalent to first pass reading time (gaze duration) for a multi-word AOI, since it can have multiple fixations.
-
-## Intermediate (regressions)
-
-A regression is going back to a previous word, "fixation on a previous ROI once the eye gaze has entered a later ROI". If we carefully define AOIs some software can export them. Otherwise we have to manually compute the regressions from token X to Y.
-
-Regressions can be interesting in both directions: Out(previous text <- X), In(X <- later text).
-
-## Late
-
-Total reading time, number of fixations, re-reading time, second reading time...
-
-## Possibles experiments (future work)
-
-- Llegir en veu alta
-- Llegir mentre s'escolta l'àudio
-
-# Bibliography
-
-@ikhwantriLookingDeepEyes2023 does an exhaustive study of eye tracking tasks vs models. They do sentiment analysis, relation classification and question answering, test different interpretability methods and compare with LSTM, CNN and vanilla transformers.
-
-**Datasets**: They use two English datasets:
-
-# References
-
-- MQA-RC [@soodInterpretingAttentionModels2020] not only introduces a dataset, but also interprets the results.
-
-- [@sood_interpreting_2020] has a nice example picture.
-
-## ZuCo
-
-- ZuCo [@hollenstein_zuco_2018] (newer version @hollenstein_zuco_2020)
-
-Only 12 participants, 400 sentiment sentences, 300 QA sentences, 407 relation class. sentences.
-
-They do a linguistic assessment of the participants.
-
-### Experimental design
-
-### ZuCo 2.0
-
-@hollenstein_zuco_2020 has 18 participants
-
+Les dependències es gestionen amb `uv` (veure `src/pyproject.toml`). Les principals són: `pandas`, `numpy`, `scipy`, `scikit-learn`, `nltk`, `seaborn`, `matplotlib`, `captum`, `transformers`, `torch`.
