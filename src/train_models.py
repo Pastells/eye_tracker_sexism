@@ -109,8 +109,11 @@ def main():
             model_id = MODELS[model_name]
             output_dir = f"checkpoints/{model_name}_{condition}"
 
+            # Use smaller batch size for larger models to avoid OOM
+            model_batch_size = 8 if model_name == "mrbert" else args.batch_size
+
             print(f"\n--- Training {model_name} ({model_id}) on {condition} ---")
-            print(f"Output: {output_dir}")
+            print(f"Output: {output_dir}, batch_size={model_batch_size}")
 
             tokenizer, model = get_tokenizer_model(
                 model_id, dropout=args.dropout, labels=LABELS
@@ -121,8 +124,8 @@ def main():
 
             train_module.training_args.output_dir = output_dir
             train_module.training_args.learning_rate = args.lr
-            train_module.training_args.per_device_train_batch_size = args.batch_size
-            train_module.training_args.per_device_eval_batch_size = args.batch_size
+            train_module.training_args.per_device_train_batch_size = model_batch_size
+            train_module.training_args.per_device_eval_batch_size = model_batch_size
             train_module.training_args.num_train_epochs = args.epochs
 
             try:
