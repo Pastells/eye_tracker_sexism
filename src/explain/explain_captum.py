@@ -2,12 +2,10 @@
 Captum Interpretability Suite for BERT models
 
 Provides token-level attributions via Saliency, InputXGradient, Integrated Gradients,
-DeepLift, GuidedBackprop, LayerGradCam, GuidedGradCam, FeatureAblation, and NoiseTunnel.
+DeepLift, GuidedBackprop, LayerGradCam, GuidedGradCam, FeatureAblation, NoiseTunnel, and LRP.
 
 TODO:
-- DeepLift, GuidedBackprop, GuidedGradCam: need torch.nn.Module, not function wrapper
 - Optimize FeatureAblation (too slow - embeddings are high dimensional)
-- Test NoiseTunnel with faster base methods
 """
 
 import os
@@ -31,6 +29,8 @@ from captum.attr import (
     InputXGradient,
     IntegratedGradients,
     LayerGradCam,
+    LayerLRP,
+    LRP,
     NoiseTunnel,
     Saliency,
 )
@@ -276,6 +276,34 @@ class NoiseTunnelMethod(AttributionMethod):
         return summarize_attributions(attributions)
 
 
+class _EmbeddingForwardModule(torch.nn.Module):
+    """Thin nn.Module wrapper so LRP gets a real Module (not a plain function)."""
+
+    def __init__(self, wrapper):
+        super().__init__()
+        self.wrapper = wrapper
+
+    def forward(self, embeddings, attention_mask=None):
+        if attention_mask is None:
+            attention_mask = torch.ones(embeddings.shape[:2], device=embeddings.device)
+        embeddings = embeddings.requires_grad_(True)
+        if attention_mask.device != embeddings.device:
+            attention_mask = attention_mask.to(embeddings.device)
+        outputs = self.wrapper.model(inputs_embeds=embeddings, attention_mask=attention_mask)
+        return outputs.logits
+
+
+class LRPMethod(AttributionMethod):
+    name = "lrp"
+
+    def attribute(self, input_ids, attention_mask):
+        embeddings = self.wrapper.get_embeddings(input_ids)
+        module = _EmbeddingForwardModule(self.wrapper)
+        lrp = LRP(module)
+        attributions = lrp.attribute(embeddings, target=1)
+        return summarize_attributions(attributions)
+
+
 METHODS = {
     "saliency": SaliencyMethod,
     "input_x_gradient": InputXGradientMethod,
@@ -286,6 +314,7 @@ METHODS = {
     "guided_gradcam": GuidedGradCamMethod,
     "feature_ablation": FeatureAblationMethod,
     "noise_tunnel": NoiseTunnelMethod,
+    "lrp": LRPMethod,
 }
 
 

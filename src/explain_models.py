@@ -1,7 +1,7 @@
 """
 explain_models.py
 
-Run Captum explainability methods (Saliency, InputXGradient, IG) on trained models
+Run Captum explainability methods (Saliency, InputXGradient, IG, LRP) on trained models
 for the 40 chosen test texts. Saves per-token and per-word attributions.
 
 Usage:
@@ -26,6 +26,7 @@ import torch
 from tqdm import tqdm
 
 from explain.explain_captum import (
+    METHODS as ATTRIBUTION_METHODS,
     ModelWrapper,
     aggregate_to_words,
     get_tokenizer_model,
@@ -36,7 +37,7 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 CHOSEN_PATH = os.path.join(DATA_DIR, "chosen_data_full.csv")
 CHECKPOINTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "checkpoints")
 
-METHODS = ["saliency", "input_x_gradient", "ig"]
+METHODS = ["saliency", "input_x_gradient", "ig", "lrp"]
 
 MODELS = {
     "mrbert": "BSC-LT/MrBERT-es",
@@ -91,9 +92,7 @@ def explain_single_text(wrapper, text, methods):
 
     for method_name in methods:
         try:
-            from explain_captum import METHODS
-
-            method_cls = METHODS[method_name]
+            method_cls = ATTRIBUTION_METHODS[method_name]
             method = method_cls(wrapper)
             result = method.attribute(input_ids, attention_mask)
 

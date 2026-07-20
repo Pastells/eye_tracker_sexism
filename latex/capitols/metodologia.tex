@@ -51,7 +51,6 @@ Cada instància del corpus proporciona les variables següents, rellevants per a
 \end{itemize}
 
 \subsection{Acord entre anotadors}
-\todo{potser no cal}
 
 La fiabilitat de les anotacions es va mesurar amb la $\kappa$ de Fleiss.
 Per a l'anotació textual, s'obté una $\kappa=0,719$ (equip~1) i $0,717$ (equip~2), que augmenta fins a $0,834$ i $0,853$ respectivament en l'anotació del vídeo complet, indicant un acord \textit{substancial}~\cite{landis1977measurement}.
@@ -148,11 +147,9 @@ En total, els 40 textos contenen 2.901 paraules.
 L'estudi va tenir un total de 10 participants voluntaris (5 homes i 5 dones).
 Tots treballadors o estudiants de la Universitat de Barcelona majors d'edat, entre 22 i 28 anys.
 
-\todo{Detalls eye tracker: font Noto Sans?, mida 34 en una pantalla de X polzades.}
-
-Cada participant va ser informat dels objectius de l'estudi abans de llegir els textos.
-La sessió consistia a explicar que havien de llegir 40 textos en castellà extrets de vídeos de xarxes socials amb la intenció de determinar si eren sexistes.
-Podien llegir cada text les vegades que els fos necessari i un cop sabien la resposta premien 0 per no sexista o 1 per sexista en un teclat d'ordinador.
+Cada participant va ser informat dels objectius de l'estudi i va firmar un consentiment informat abans de llegir els textos.
+Es començava explicant que havien de llegir 40 textos en castellà extrets de vídeos de xarxes socials amb la intenció de determinar si eren sexistes.
+Podien llegir cada text les vegades que els fos necessari i un cop havien pensat la resposta premien 0 per no sexista o 1 per sexista en un teclat d'ordinador.
 Seguidament es mostrava una altra pantalla on es preguntava quina confiança tenien en la seva elecció (1 - poca confiança, 2 - confiança mitja, 3 - molta confiança).
 Abans de mostrar el següent text, apareixia una pantalla en blanc durant 500ms.
 Els participants podien fer preguntes o esmenar equivocacions durant la pregunta de la confiança.
@@ -164,49 +161,47 @@ Durant aquest procés es preguntava si el participant s'havia fixat en alguna pa
 \section{Models de llenguatge}
 
 En aquest treball utilitzem diferents tipus de models basats en l'arquitectura \textit{transformer} 
-\cite{vaswaniAttentionAllYou2017}, que ha revolucionat el processament del llenguatge natural (PLN). 
+\cite{vaswaniAttentionAllYou2017}.
 
 \subsection{Models BERT adaptats}
 
-Els models BERT (\textit{Bidirectional Encoder Representations from Transformers})~\cite{devlin2019bert} són models 
-\textit{encoder-only} que han demostrat un rendiment excepcional en tasques de classificació de text.
-En el nostre cas, utilitzem variants en castellà com \textit{PlanTL-GOB-ES/roberta-large-bne} i el més recent \textit{BSC-LT/MrBERT-es}.
+Els models BERT (\textit{Bidirectional Encoder Representations from Transformers})~\cite{devlin2019bert} són models \textit{encoder-only} que han demostrat un rendiment excepcional en tasques de classificació de text.
+En el nostre cas, utilitzem tres variants en castellà: mBERT (la versió multilíngüe del BERT original), BETO~\ref{canete2023spanish} (un dels primers models adaptats només al castellà) i el més recent \textit{BSC-LT/MrBERT-es}~\ref{tamayo2026mrbert} (basat en ModerBERT).
 
 El procés d'adaptació (\textit{finetuning}) consisteix a modificar aquests models preentrenats per la nostra tasca específica de detecció de sexisme.
 Vegeu el codi per a més detalls sobre la implementació, que inclou la preparació de les dades, la configuració del model i l'entrenament utilitzant la llibreria \textit{transformers} de HuggingFace.
 
-\todo{revisar termes IA termcat. Embedding = immersió vectorial}
-\subsection{Models de llenguatge extensos}
+% \subsection{Models de llenguatge extensos}
+%
+% A més dels models adaptats, també experimentem amb models de llenguatge grans (LLMs) en configuracions de \textit{zero-shot} i \textit{few-shot}.
+% Aquests enfocaments permeten avaluar la capacitat dels models per generalitzar sense necessitat d'un entrenament específic per a la nostra tasca.
+%
+% En \textit{zero-shot}, el model realitza la classificació sense cap exemple previ de la tasca.
+% En \textit{few-shot}, es proporcionen uns quants exemples (normalment entre 1 i 5) per guiar la predicció del model.
 
-A més dels models adaptats, també experimentem amb models de llenguatge grans (LLMs) en configuracions de \textit{zero-shot} i \textit{few-shot}.
-Aquests enfocaments permeten avaluar la capacitat dels models per generalitzar sense necessitat d'un entrenament específic per a la nostra tasca.
-
-En \textit{zero-shot}, el model realitza la classificació sense cap exemple previ de la tasca.
-En \textit{few-shot}, es proporcionen uns quants exemples (normalment entre 1 i 5) per guiar la predicció del model.
-Vegeu el codi per a la implementació concreta d'aquests enfocaments.
-
-\section{Mètodes d'interpretabilitat}
+\section{Mètodes d'interpretabilitat}\label{sec:metodes}
 
 Per comprendre els patrons d'atenció dels models i comparar-los amb els patrons humans, utilitzem la llibreria Captum \cite{captum}, que proporciona una suite completa de mètodes d'atribució.
 
-\subsection{Mètodes funcionals}
+\subsection{Mètodes implementats}
 
-Els mètodes que hem implementat són:
+En aquest treball hem implementat quatre mètodes d'atribució utilitzant la llibreria Captum:
 
 \begin{itemize}
     \item \textbf{Saliency}: Mètode basat en gradients que calcula la derivada de la sortida 
     respecte als \textit{embeddings} d'entrada. És útil per identificar quins tokens tenen major impacte en la decisió del model.
     
-    \item \textbf{Integrated Gradients}: Aquest mètode calcula la integral dels gradients al llarg d'un camí des d'una línia base (normalment zeros) fins a la entrada real.
+    \item \textbf{Input X Gradient}: Multiplica l'entrada pels gradients per obtenir 
+    una mesura de la importància de cada característica, proporcionant atribucions més estables que el saliency simple.
+    
+    \item \textbf{Integrated Gradients (IG)}: Aquest mètode calcula la integral dels gradients al llarg d'un camí des d'una línia base (normalment zeros) fins a la entrada real.
     Proporciona una atribució més robusta que el \textit{saliency} simple i inclou una mètrica de convergència (\textit{delta}) que indica la qualitat de l'atribució.
     
-    \item \textbf{Layer Grad-CAM}: Combina informació de gradients amb mapes d'activació de capes intermèdies del model.
-    Tot i que la nostra implementació actual retorna principalment zeros, aquest mètode té potencial per identificar quines capes i neurones són més rellevants per a la decisió.
+    \item \textbf{LRP} (\textit{Layer-wise Relevance Propagation})~\cite{LRP}: Mètode post-hoc d'explicació que atribueix la predicció d'un model a característiques d'entrada mitjançant la redistribució de puntuacions de rellevància des de la capa de sortida fins a l'entrada.
+    LRP ofereix determinisme, en el sentit que garanteix la reproductibilitat de les explicacions per a una mateixa entrada; fidelitat, ja que proporciona informació sobre el procés de decisió a escala de token i compatibilitat amb models transformer.
 \end{itemize}
 
 \subsection{Mètodes en desenvolupament}
-
-Els següents mètodes estan implementats, però encara no funcionen correctament a causa de limitacions tècniques:
 
 \begin{itemize}
     \item \textbf{DeepLift}: Mètode que compara l'activació de cada neurona amb una referència, proporcionant una atribució basada en la diferència respecte a aquesta línia base.
@@ -214,32 +209,21 @@ Els següents mètodes estan implementats, però encara no funcionen correctamen
     \item \textbf{Guided Backpropagation} i \textbf{Guided Grad-CAM}: Mètodes que 
     combinen \textit{backpropagation} guiat amb mapes d'activació per obtenir visualitzacions més interpretables.
     
-    \item \textbf{Input X Gradient}: Multiplica l'entrada pels gradients per obtenir 
-    una mesura de la importància de cada característica.
+    \item \textbf{Layer Grad-CAM}: Combina informació de gradients amb mapes d'activació de capes intermèdies del model.
     
-    \item \textbf{Noise Tunnel}: Afegeix soroll a les entrades i mitja els resultats 
-    de múltiples execucions per obtenir atribucions més robustes.
-\end{itemize}
-
-\subsection{Mètodes massa lents}
-
-\begin{itemize}
-    \item \textbf{Feature Ablation}: Aquest mètode elimina característiques i mesura 
-    l'impacte en la sortida, però és computacionalment costós a causa de la alta dimensionalitat dels \textit{embeddings} (768 dimensions).
+    \item \textbf{Feature Ablation}: Aquest mètode elimina característiques i mesura l'impacte en la sortida, però és computacionalment costós a causa de la alta dimensionalitat dels \textit{embeddings} (768 dimensions).
 \end{itemize}
 
 \subsection{Implementació pràctica}
 
-El procés d'interpretabilitat segueix les següents etapes (vegeu el codi per a la implementació detallada):
+El procés d'interpretabilitat segueix les següents etapes:
 
 \begin{enumerate}
-    \item Carregar el model entrenat i el tokenitzador corresponent
-    \item Tokenitzar el text d'entrada i obtenir els \textit{embeddings}
-    \item Aplicar el mètode d'atribució seleccionat (p. ex., Integrated Gradients)
-    \item Sumar les atribucions al llarg de la dimensió dels \textit{embeddings} per obtenir 
-    una puntuació per a cada token
-    \item Visualitzar els resultats utilitzant codis de colors (verd per a contribucions 
-    positives, vermell per a negatives)
+    \item Carregar el model entrenat i el tokenitzador corresponent.
+    \item Tokenitzar el text d'entrada i obtenir els \textit{embeddings}.
+    \item Aplicar el mètode d'atribució seleccionat (p. ex., Integrated Gradients).
+    \item Sumar les atribucions al llarg de la dimensió dels \textit{embeddings} per obtenir una puntuació per a cada token.
+    \item Visualitzar els resultats utilitzant codis de colors (verd per a contribucions positives, vermell per a negatives).
 \end{enumerate}
 
 El codi inclou funcions per generar visualitzacions HTML amb els tokens ressaltats segons la seva importància per a la predicció del model.
@@ -261,4 +245,4 @@ Aquesta anàlisi comparativa es durà a terme utilitzant les dades d'\textit{eye
 
 \section{Disponibilitat del codi}
 
-Tot el codi utilitzat en aquest treball, incloent la implementació dels models, els mètodes d'interpretabilitat, els scripts d'anàlisi i aquest treball, estan disponibles públicament al repositori GitHub: \url{https://github.com/Pastells/eye\_tracker\_sexism}. 
+Tot el codi utilitzat en aquest treball, incloent la implementació dels models, els mètodes d'interpretabilitat, els scripts d'anàlisi i aquest treball escrit, estan disponibles públicament al repositori GitHub: \url{https://github.com/Pastells/eye\_tracker\_sexism}. 
