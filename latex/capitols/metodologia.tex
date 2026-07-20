@@ -1,45 +1,33 @@
 \section{Corpus d'origen: MuSeD}\label{sec:mused}
 
-El corpus utilitzat en aquest treball prové de MuSeD (\textit{Multimodal Sexism
-Detection Dataset})~\cite{mused}, un conjunt de dades per a la
-detecció de sexisme en vídeos en castellà.
+El corpus utilitzat en aquest treball prové de MuSeD (\textit{Multimodal Sexism Detection Dataset})~\cite{mused}, un conjunt de dades per a la detecció de sexisme en vídeos en castellà.
 MuSeD consta de 400 vídeos extrets de dues xarxes socials: TikTok i BitChute.
-TikTok, tot i prohibir explícitament la misogínia a les seves directrius
-comunitàries, continua allotjant contingut sexista de manera explícita i
-implícita; BitChute, en canvi, és una plataforma de baixa moderació.
-El conjunt de dades és aproximadament equilibrat, amb un 48,5\% de vídeos etiquetats com a sexistes
-i un 51,5\% com a no sexistes.
+TikTok, tot i prohibir explícitament la misogínia a les seves directrius comunitàries, continua allotjant contingut sexista de manera explícita i implícita; BitChute, en canvi, és una plataforma de baixa moderació.
+El conjunt de dades és aproximadament equilibrat, amb un 48,5\% de vídeos etiquetats com a sexistes i un 51,5\% com a no sexistes.
 
 \subsection{Recollida de dades}
 
-Els vídeos es van recollir entre maig i octubre de 2024. Per a TikTok, es va
-elaborar una llista de 187 \textit{hashtags} en castellà que cobreix temàtiques
-relacionades amb el gènere, la sexualitat, el feminisme i la discriminació per
-raó de sexe i orientació sexual (per exemple, \textit{\#brechasalarial},
-\textit{\#violenciamachista} o \textit{\#lgbt}). Per a BitChute, es van
-adaptar alguns d'aquests \textit{hashtags} com a paraules clau de cerca.
-Aproximadament el 90\% dels vídeos provenen de TikTok. Les transcripcions
-textuals es van obtenir automàticament amb Whisper~\cite{whisper} i van ser revisades i
-corregides per una lingüista professional.
+Els vídeos es van recollir entre maig i octubre de 2024.
+%Per a TikTok, 
+Es va elaborar una llista de 187 \textit{hashtags} en castellà que cobria temàtiques relacionades amb el gènere, la sexualitat, el feminisme i la discriminació per sexe o orientació sexual. 
+%(per exemple, \textit{\#brechasalarial}, \textit{\#violenciamachista} o \textit{\#lgbt}).
+%Per a BitChute, es van adaptar alguns d'aquests \textit{hashtags} com a paraules clau de cerca.
+Aproximadament el 90\% dels vídeos provenen de TikTok. 
+Les transcripcions textuals es van obtenir automàticament amb Whisper~\cite{whisper} i van ser revisades i corregides per una lingüista professional.
 
 \subsection{Procés d'anotació}
 
-L'anotació es va dur a terme en tres nivells: text (transcripció i OCR\footnote{Optical character recognition.}---text escrit al vídeo),
-àudio i vídeo complet. Sis anotadors amb formació en lingüística, dividits en
-dos equips, van classificar cada ítem com a sexista o no sexista.
-Addicionalment van etiquetar els \textit{spans} textuals o segments de vídeo que
-motivaven la classificació.
+L'anotació es va dur a terme en tres nivells: text (transcripció i OCR\footnote{Optical character recognition.}---text escrit al vídeo), àudio i vídeo complet.
+Sis anotadors amb formació en lingüística, dividits en dos equips, van classificar cada ítem com a sexista o no sexista.
+Addicionalment, van etiquetar els \textit{spans} textuals o segments de vídeo que motivaven la classificació.
 El marc d'anotació distingia quatre tipus de contingut sexista:
 \begin{itemize}
     \item \textbf{Estereotip} (\textit{Stereotype}): afirmacions sobre
-    propietats que suposadament diferencien homes i dones a partir de creences
-    estereotipades~\cite{samory2021call}. Reforça rols de gènere tradicionals i presenta diferències com a ``naturals'' o biològicament determinades.
+    propietats que suposadament diferencien homes i dones a partir de creences estereotipades~\cite{samory2021call}. Reforça rols de gènere tradicionals i presenta diferències com a ``naturals'' o biològicament determinades.
     \item \textbf{Desigualtat} (\textit{Inequality}): discurs que nega
-    l'existència de desigualtats de gènere o presenta el moviment feminista
-    com una amenaça per als homes. Inclou la victimització masculina en politiques d'igualtat.
+    l'existència de desigualtats de gènere o presenta el moviment feminista com una amenaça per als homes. Inclou la victimització masculina en polítiques d'igualtat.
     \item \textbf{Discriminació} (\textit{Discrimination}): contingut que
-    discrimina per orientació sexual o identitat de gènere i que denigra la
-    comunitat LGBTQ+~\cite{chakravarthi2021dataset}.
+    discrimina per orientació sexual o identitat de gènere i que denigra la comunitat LGBTQ+~\cite{chakravarthi2021dataset}.
     \item \textbf{Objectificació} (\textit{Objectification}): representació de les dones com a objectes físics valorats principalment per la seva utilitat~\cite{szymanski2011sexual}.
 \end{itemize}
 
@@ -50,8 +38,7 @@ A més, també es van anotar la implicitud del sexisme~\cite{schmeisser2022crite
 
 \subsection{Estructura del corpus}
 
-Cada instància del corpus proporciona les variables següents, rellevants per
-als criteris de selecció descrits a la Secció~\ref{sec:filtratge}:
+Cada instància del corpus proporciona les variables següents, rellevants per als criteris de selecció descrits a la Secció~\ref{sec:filtratge}:
 \begin{itemize}
     \item \texttt{sexist\_text}: etiqueta binària que indica si el text,
     aïllat del context audiovisual, es considera sexista.
@@ -59,63 +46,42 @@ als criteris de selecció descrits a la Secció~\ref{sec:filtratge}:
     en el contingut multimodal complet (vídeo, àudio i text).
     \item \texttt{sexist\_soft}: valor continu entre 0 i 1 que reflecteix
     el grau d'acord entre anotadors, té 4 valors possibles: 0, 0,33, 0,67, 1.
-    \item Anotacions a nivell de \textit{span}: fragments concrets del text
-    marcats com a sexistes per part dels anotadors, que permeten identificar
-    quines porcions textuals motiven l'etiqueta global. % TODO: explicar més, no sempre és span sexista
+    \item Anotacions a escala de \textit{span}: fragments concrets del text
+    marcats com a sexistes per part dels anotadors, que permeten identificar quines porcions textuals motiven l'etiqueta global. % TODO: explicar més, no sempre és span sexista
 \end{itemize}
 
 \subsection{Acord entre anotadors}
 \todo{potser no cal}
 
-La fiabilitat de les anotacions es va mesurar amb la $\kappa$ de Fleiss. Per a
-l'anotació textual, s'obté una $\kappa=0,719$ (equip~1) i $0,717$ (equip~2),
-que augmenta fins a $0,834$ i $0,853$ respectivament en l'anotació del vídeo
-complet, indicant un acord \textit{substancial}~\cite{landis1977measurement}. La millora en incorporar modalitats
-addicionals suggereix que el sexisme és, en alguns casos, difícil de
-detectar únicament a partir del text, a causa de la dificultat d'identificar
-formes implícites de sexisme i, en ocasions, de la contradicció entre el
-contingut verbal i el no verbal. Precisament aquest fet motiva el criteri de
-coherència entre modalitats descrit a continuació.
+La fiabilitat de les anotacions es va mesurar amb la $\kappa$ de Fleiss.
+Per a l'anotació textual, s'obté una $\kappa=0,719$ (equip~1) i $0,717$ (equip~2), que augmenta fins a $0,834$ i $0,853$ respectivament en l'anotació del vídeo complet, indicant un acord \textit{substancial}~\cite{landis1977measurement}.
+La millora d'incorporar modalitats addicionals suggereix que el sexisme és, en alguns casos, difícil de detectar únicament a partir del text, a causa de la dificultat d'identificar formes implícites de sexisme o la possible contradicció entre contingut verbal i no verbal.
+Precisament aquest fet motiva el criteri de coherència entre modalitats descrit a continuació.
 
 \section{Selecció de textos de MuSeD}\label{sec:filtratge}
 
-A partir del corpus original, es van seleccionar 40 textos (20 sexistes i 20
-no sexistes) seguint els criteris següents:
+A partir del corpus original, es van seleccionar 40 textos (20 sexistes i 20 no sexistes) seguint els criteris següents:
 
 \begin{enumerate}
-    \item \textbf{Coherència entre modalitats}: només es van conservar les
-    instàncies en què l'etiqueta textual i la multimodal coincideixen
-    (\texttt{sexist\_text} $=$ \texttt{sexist\_video}).
-    \item \textbf{Acord total entre anotadors}: es van descartar les
-    instàncies amb valors intermedis de \texttt{sexist\_soft}, mantenint
-    només aquelles amb consens ($\texttt{sexist\_soft} \in \{0, 1\}$).
-    \item \textbf{Longitud}: es van prioritzar els textos més curts o amb spans anotats més curts per tal de
-    mantenir una durada raonable de la sessió experimental i tenir major explicabilitat a l'hora de fer l'anàlisi. Considerant una
-    velocitat de lectura aproximada de 1.000 caràcters per minut, els 40
-    textos seleccionats suposen aproximadament 17 minuts de lectura, als
-        quals cal afegir el temps de calibració i de \textit{stimulated recall} (vegeu secció~\ref{sec:procediment}).
+    \item \textbf{Coherència entre modalitats}: només es van conservar les instàncies en què l'etiqueta textual i la multimodal coincideixen (\texttt{sexist\_text} $=$ \texttt{sexist\_video}).
+    \item \textbf{Acord total entre anotadors}: es van descartar les instàncies amb valors intermedis de \texttt{sexist\_soft}, mantenint només aquelles amb consens ($\texttt{sexist\_soft} \in \{0, 1\}$).
+    \item \textbf{Longitud}: es van prioritzar els textos més curts o amb spans anotats més curts per tal de mantenir una durada raonable de la sessió experimental i tenir major explicabilitat a l'hora de fer l'anàlisi.
+    Considerant una velocitat de lectura aproximada de 1.000 caràcters per minut, els 40 textos seleccionats suposen aproximadament 17 minuts de lectura, als quals cal afegir el temps de calibratge i de \textit{stimulated recall} (vegeu Secció~\ref{sec:procediment}).
     \item \textbf{Comprensibilitat autònoma}: es van descartar textos amb
     vocabulari estrany (per un oient català).
-    Quan era necessari, es van fer petites edicions per millorar-ne la
-    llegibilitat (afegir cometes, indicar qui parla en fragments dialogats,
-    etc.).
-    \item \textbf{Validació manual}: cada text candidat es va revisar
-    individualment, escoltant l'àudio original i inspeccionant visualment les
-    anotacions de \textit{span} per confirmar-ne l'adequació.
+    Quan era necessari, es van fer petites edicions per millorar-ne la llegibilitat (afegir cometes, indicar qui parla en fragments dialogats, etc.).
+    \item \textbf{Validació manual}: cada text candidat es va revisar individualment, escoltant l'àudio original i inspeccionant visualment les anotacions de \textit{span} per confirmar-ne l'adequació (vegeu l'Apèndix~\ref{sec:spans_viz}).
 \end{enumerate}
 
 
-Cal dir que els textos sexistes tendeixen a ser més
-llargs que els no sexistes, i que les anotacions dels \textit{spans} cobreixen
-una proporció considerable del text en ambdós grups.
-Les taules~\ref{tab:corpus_stats} i~\ref{tab:corpus_labels} resumeixen les estadístiques descriptives i la distribució de categories
-dels textos seleccionats.
+Cal dir que els textos sexistes tendeixen a ser més llargs que els no sexistes, i que les anotacions dels \textit{spans} cobreixen una proporció considerable del text en ambdós grups.
+Les taules~\ref{tab:corpus_stats} i~\ref{tab:corpus_labels} resumeixen les estadístiques descriptives i la distribució de categories dels textos seleccionats.
+En total, els 40 textos contenen 2\.901 paraules.
 
 \begin{table}[ht]
     \centering
     \begin{tabular}{lcccc}
-        \toprule
-        & \multicolumn{2}{c}{No sexistes} &
+        \toprule & \multicolumn{2}{c}{No sexistes} &
           \multicolumn{2}{c}{Sexistes} \\
         \cmidrule(lr){2-3} \cmidrule(lr){4-5}
         & Mitjana & D.E. & Mitjana & D.E. \\
@@ -132,8 +98,7 @@ dels textos seleccionats.
 \begin{table}[ht]
     \centering
     \begin{tabular}{llc}
-        \toprule
-        & Categoria & $n$ \\
+        \toprule & Categoria & $n$ \\
         \midrule
         \multirow{4}{*}{\rotatebox[origin=c,y=1cm]{90}{No sex.}}
         & Crítica/denúncia  & 11 \\
@@ -180,81 +145,49 @@ dels textos seleccionats.
 \section{Procediment experiment}\label{sec:procediment}
 
 % \section{Participants}
-L'estudi va tenir un total de 10 participants voluntaris (5 homes i 5 dones). Tots treballadors o estudiants de la Universitat de Barcelona majors d'edat, entre 22 i 28 anys.
+L'estudi va tenir un total de 10 participants voluntaris (5 homes i 5 dones).
+Tots treballadors o estudiants de la Universitat de Barcelona majors d'edat, entre 22 i 28 anys.
 
 \todo{Detalls eye tracker: font Noto Sans?, mida 34 en una pantalla de X polzades.}
 
 Cada participant va ser informat dels objectius de l'estudi abans de llegir els textos.
-La sessió consistia en explicar que havien de llegir 40 textos en castellà extrets de vídeos de xarxes socials amb la intenció de determinar si eren sexistes.
-Podien llegir cada text les vegades que els fós necessari i un cop sabien la resposta premien 0 per no sexista o 1 per sexista en un teclat d'ordinador.
+La sessió consistia a explicar que havien de llegir 40 textos en castellà extrets de vídeos de xarxes socials amb la intenció de determinar si eren sexistes.
+Podien llegir cada text les vegades que els fos necessari i un cop sabien la resposta premien 0 per no sexista o 1 per sexista en un teclat d'ordinador.
 Seguidament es mostrava una altra pantalla on es preguntava quina confiança tenien en la seva elecció (1 - poca confiança, 2 - confiança mitja, 3 - molta confiança).
 Abans de mostrar el següent text, apareixia una pantalla en blanc durant 500ms.
 Els participants podien fer preguntes o esmenar equivocacions durant la pregunta de la confiança.
 
-Un cop acabada la lectura es procedia a revisar 7 textos prèviament seleccionats (\textit{stimulated recall}).
+Un cop acabada la lectura es revisaven 7 textos prèviament seleccionats (\textit{stimulated recall}).
 Es grabava la pantalla d'ordinador i l'àudio de la conversa amb OBS Studio mentre es mostrava el procés de lectura amb Tobii Pro Lab, on es veuen les fixacions i regressions.
 Durant aquest procés es preguntava si el participant s'havia fixat en alguna paraula o frase en concret per algun motiu, què havia pensat sobre el text, etc.
-
-\section{Funcionament Eye-tracker}\label{sec:tobii}
-\todo{Pot ser un apèndix}
-
-Utilitzem l'eye-tracker Tobii Pro Spectrum, que enregistra quina zona de la pantalla s'està mirant a 600Hz.
-El software Tobii Pro Lab calcula les fixacions, i permet definir cada paraula d'un text com a àrea d'interés (AOI).
-
-El problema a l'hora d'exportar les dades és que Tobii Pro Lab no optimitza el format.
-En comptes de crear un fitxer per a cada text, crea un fitxer amb tots els temps com a fila i totes les AOI com a columna.
-Això fa que el tamany del fitxer creixi quadràticament amb el nombre de textos i el programa es bloquegi.
-Per tal d'optimitzar aquest procés hem exportat diversos fitxers de la següent manera\footnote{Dins el menú Analyze/Data export},
-utilitzant sempre el filtre \textit{Tobii I-VT (Fixation)} i \textit{noise reduction} tant per l'obertura de l'ull com per diàmetre de la pupi"la:
-
-\begin{enumerate}
-    \item \textbf{Dades generals}, inclou dia, hora i resultats de la calibració. (Grup General, excepte AOI size, timestamp i event value; un sol Time of interest; cap AOI)
-    \item \textbf{Anotacions.} Els inputs per teclat dels participants. (Participant name, Event, Event value; Times of Interest = Media gaze data; cap AOI)
-    \item \textbf{Dades del sensor.} Cal seleccionar grups petits d'AOI i els seus respectius temps a Times of interest. Finalment es van fer 4 grups de 10 textos per cada participant. Es poden exportar de cop a fitxers individuals amb \textit{Format=multiple standard files}. Finalment, vam convertir els fitxers exportats al format \textit{parquet}, més eficient.
-        \begin{itemize}
-            \item General: Participant name
-            \item Eye tracking data: Pupil diameter, Validity of eye data
-            \item Media: stimulus name
-            \item Eye movement events: eye movement type, duration and index, fixation point, AOI hit
-        \end{itemize}
-\end{enumerate}
-
-
 
 \section{Models de llenguatge}
 
 En aquest treball utilitzem diferents tipus de models basats en l'arquitectura \textit{transformer} 
 \cite{vaswaniAttentionAllYou2017}, que ha revolucionat el processament del llenguatge natural (PLN). 
 
-\subsection{Models BERT finetunejats}
+\subsection{Models BERT adaptats}
 
 Els models BERT (\textit{Bidirectional Encoder Representations from Transformers})~\cite{devlin2019bert} són models 
 \textit{encoder-only} que han demostrat un rendiment excepcional en tasques de classificació de text.
-En el nostre cas, utilitzem variants en castellà com \textit{PlanTL-GOB-ES/roberta-large-bne} i 
-el més recent \textit{BSC-LT/MrBERT-es}.
+En el nostre cas, utilitzem variants en castellà com \textit{PlanTL-GOB-ES/roberta-large-bne} i el més recent \textit{BSC-LT/MrBERT-es}.
 
-El procés de \textit{finetuning} consisteix a adaptar aquests models preentrenats a la nostra tasca 
-específica de detecció de sexisme. Vegeu el codi per a més detalls sobre la implementació, que 
-inclou la preparació de les dades, la configuració del model i l'entrenament utilitzant la 
-llibreria \textit{transformers} de HuggingFace.
+El procés d'adaptació (\textit{finetuning}) consisteix a modificar aquests models preentrenats per la nostra tasca específica de detecció de sexisme.
+Vegeu el codi per a més detalls sobre la implementació, que inclou la preparació de les dades, la configuració del model i l'entrenament utilitzant la llibreria \textit{transformers} de HuggingFace.
 
-\todo{revisar termes IA termcat}
+\todo{revisar termes IA termcat. Embedding = immersió vectorial}
 \subsection{Models de llenguatge extensos}
 
-A més dels models finetunejats, també experimentem amb grans models de llenguatge (LLMs) 
-en configuracions de \textit{zero-shot} i \textit{few-shot}. Aquests enfocaments permeten 
-avaluar la capacitat dels models per generalitzar sense necessitat d'un entrenament 
-específic per a la nostra tasca.
+A més dels models adaptats, també experimentem amb models de llenguatge grans (LLMs) en configuracions de \textit{zero-shot} i \textit{few-shot}.
+Aquests enfocaments permeten avaluar la capacitat dels models per generalitzar sense necessitat d'un entrenament específic per a la nostra tasca.
 
-En \textit{zero-shot}, el model realitza la classificació sense cap exemple 
-previ de la tasca. En \textit{few-shot}, es proporcionen uns quants exemples (normalment 
-entre 1 i 5) per guiar la predicció del model. Vegeu el codi per a la implementació concreta 
-d'aquests enfocaments.
+En \textit{zero-shot}, el model realitza la classificació sense cap exemple previ de la tasca.
+En \textit{few-shot}, es proporcionen uns quants exemples (normalment entre 1 i 5) per guiar la predicció del model.
+Vegeu el codi per a la implementació concreta d'aquests enfocaments.
 
 \section{Mètodes d'interpretabilitat}
 
-Per comprendre els patrons d'atenció dels models i comparar-los amb els patrons humans, 
-utilitzem la llibreria Captum \cite{captum}, que proporciona una suite completa de mètodes d'atribució.
+Per comprendre els patrons d'atenció dels models i comparar-los amb els patrons humans, utilitzem la llibreria Captum \cite{captum}, que proporciona una suite completa de mètodes d'atribució.
 
 \subsection{Mètodes funcionals}
 
@@ -262,33 +195,24 @@ Els mètodes que hem implementat són:
 
 \begin{itemize}
     \item \textbf{Saliency}: Mètode basat en gradients que calcula la derivada de la sortida 
-    respecte als \textit{embeddings} d'entrada. És útil per identificar quins tokens tenen 
-    major impacte en la decisió del model.
+    respecte als \textit{embeddings} d'entrada. És útil per identificar quins tokens tenen major impacte en la decisió del model.
     
-    \item \textbf{Integrated Gradients}: Aquest mètode calcula la integral dels gradients 
-    al llarg d'un camí des d'una línia base (normalment zeros) fins a la entrada real. 
-    Proporciona una atribució més robusta que el \textit{saliency} simple i inclou una 
-    mètrica de convergència (\textit{delta}) que indica la qualitat de l'atribució.
+    \item \textbf{Integrated Gradients}: Aquest mètode calcula la integral dels gradients al llarg d'un camí des d'una línia base (normalment zeros) fins a la entrada real.
+    Proporciona una atribució més robusta que el \textit{saliency} simple i inclou una mètrica de convergència (\textit{delta}) que indica la qualitat de l'atribució.
     
-    \item \textbf{Layer Grad-CAM}: Combina informació de gradients amb mapes d'activació 
-    de capes intermèdies del model. Tot i que la nostra implementació actual retorna 
-    principalment zeros, aquest mètode té potencial per identificar quines capes i 
-    neurones són més rellevants per a la decisió.
+    \item \textbf{Layer Grad-CAM}: Combina informació de gradients amb mapes d'activació de capes intermèdies del model.
+    Tot i que la nostra implementació actual retorna principalment zeros, aquest mètode té potencial per identificar quines capes i neurones són més rellevants per a la decisió.
 \end{itemize}
 
 \subsection{Mètodes en desenvolupament}
 
-Els següents mètodes estan implementats però encara no funcionen correctament a causa de 
-limitacions tècniques:
+Els següents mètodes estan implementats, però encara no funcionen correctament a causa de limitacions tècniques:
 
 \begin{itemize}
-    \item \textbf{DeepLift}: Mètode que compara l'activació de cada neurona amb una 
-    referència, proporcionant una atribució basada en la diferència respecte a aquesta 
-    línia base.
+    \item \textbf{DeepLift}: Mètode que compara l'activació de cada neurona amb una referència, proporcionant una atribució basada en la diferència respecte a aquesta línia base.
     
     \item \textbf{Guided Backpropagation} i \textbf{Guided Grad-CAM}: Mètodes que 
-    combinen \textit{backpropagation} guiat amb mapes d'activació per obtenir 
-    visualitzacions més interpretables.
+    combinen \textit{backpropagation} guiat amb mapes d'activació per obtenir visualitzacions més interpretables.
     
     \item \textbf{Input X Gradient}: Multiplica l'entrada pels gradients per obtenir 
     una mesura de la importància de cada característica.
@@ -301,14 +225,12 @@ limitacions tècniques:
 
 \begin{itemize}
     \item \textbf{Feature Ablation}: Aquest mètode elimina característiques i mesura 
-    l'impacte en la sortida, però és computacionalment costós a causa de la 
-    alta dimensionalitat dels \textit{embeddings} (768 dimensions).
+    l'impacte en la sortida, però és computacionalment costós a causa de la alta dimensionalitat dels \textit{embeddings} (768 dimensions).
 \end{itemize}
 
 \subsection{Implementació pràctica}
 
-El procés d'interpretabilitat segueix les següents etapes (vegeu el codi per a la 
-implementació detallada):
+El procés d'interpretabilitat segueix les següents etapes (vegeu el codi per a la implementació detallada):
 
 \begin{enumerate}
     \item Carregar el model entrenat i el tokenitzador corresponent
@@ -320,31 +242,23 @@ implementació detallada):
     positives, vermell per a negatives)
 \end{enumerate}
 
-El codi inclou funcions per generar visualitzacions HTML amb els tokens ressaltats segons 
-la seva importància per a la predicció del model.
+El codi inclou funcions per generar visualitzacions HTML amb els tokens ressaltats segons la seva importància per a la predicció del model.
 \todo{afegir exemples}
 
 \section{Comparació amb patrons humans}
 
-L'objectiu final d'aquest treball és comparar els patrons d'atenció obtinguts amb aquests mètodes amb els patrons d'atenció 
-humans registrats amb l'\textit{eye-tracker}. Aquesta comparació permetrà:
+L'objectiu final d'aquest treball és comparar els patrons d'atenció obtinguts amb aquests mètodes amb els patrons d'atenció humans registrats amb l'\textit{eye-tracker}.
+Aquesta comparació permetrà:
 
 \begin{itemize}
-    \item Avaluar si els models se centren en les mateixes parts del text que els humans
-    \item Identificar possibles biaixos o limitacions en els models computacionals
-    \item Explorar si les divergències entre atenció humana i computacional es relacionen 
-    amb errors de classificació
-    \item Obtenir \textit{insights} sobre com millorar els models per alinear-los millor amb 
-    els processos cognitius humans
+    \item Avaluar si els models se centren en les mateixes parts del text que els humans.
+    \item Identificar possibles biaixos o limitacions en els models computacionals.
+    \item Explorar si les divergències entre atenció humana i computacional es relacionen amb errors de classificació.
+    \item Obtenir \textit{insights} sobre com millorar els models per alinear-los millor amb els processos cognitius humans.
 \end{itemize}
 
-Aquesta anàlisi comparativa es durà a terme utilitzant les dades d'\textit{eye-tracking} 
-recollides amb el dispositiu Tobii, tal com es descriu a la Secció\ref{sec:tobii}, 
-i els resultats s'analitzaran quantitativament i qualitativament per obtenir 
-conclusions sobre la similitud entre ambdós tipus d'atenció.
+Aquesta anàlisi comparativa es durà a terme utilitzant les dades d'\textit{eye-tracking} recollides amb el dispositiu Tobii, tal com es descriu a la Secció\ref{sec:tobii}, i els resultats s'analitzaran quantitativament i qualitativament per obtenir conclusions sobre la similitud entre ambdós tipus d'atenció.
 
 \section{Disponibilitat del codi}
 
-Tot el codi utilitzat en aquest treball, incloent la implementació dels models, els 
-mètodes d'interpretabilitat, els scripts d'anàlisi i aquest treball, estan disponibles públicament 
-al repositori GitHub: \url{https://github.com/Pastells/eye\_tracker\_sexism}. 
+Tot el codi utilitzat en aquest treball, incloent la implementació dels models, els mètodes d'interpretabilitat, els scripts d'anàlisi i aquest treball, estan disponibles públicament al repositori GitHub: \url{https://github.com/Pastells/eye\_tracker\_sexism}. 
