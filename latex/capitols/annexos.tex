@@ -1,0 +1,26 @@
+\chapter{Funcionament Eye-tracker}
+
+Utilitzem l'eye-tracker Tobii Pro Spectrum, que enregistra quina zona de la pantalla s'està mirant a 600Hz.
+El software Tobii Pro Lab calcula les fixacions, i permet definir cada paraula d'un text com a àrea d'interés (AOI).
+
+El problema a l'hora d'exportar les dades és que Tobii Pro Lab no optimitza el format.
+En comptes de crear un fitxer per a cada text, crea un fitxer amb tots els temps com a fila i totes les AOI com a columna.
+Això fa que el tamany del fitxer creixi quadràticament amb el nombre de textos i el programa es bloquegi.
+Per tal d'optimitzar aquest procés hem exportat diversos fitxers de la següent manera\footnote{Dins el menú Analyze/Data export}, utilitzant sempre el filtre \textit{Tobii I-VT (Fixation)} i \textit{noise reduction} tant per l'obertura de l'ull com per diàmetre de la pupi"la:
+
+\begin{enumerate}
+    \item \textbf{Dades generals}, inclou dia, hora i resultats del calibratge. (Grup General, excepte AOI size, timestamp i event value; un sol Time of interest; cap AOI)
+    \item \textbf{Anotacions.} Els inputs per teclat dels participants. (Participant name, Event, Event value; Times of Interest = Media gaze data; cap AOI)
+    \item \textbf{Dades del sensor.} Cal seleccionar grups petits d'AOI i els seus respectius temps a Times of interest. Finalment es van fer 4 grups de 10 textos per cada participant. Es poden exportar de cop a fitxers individuals amb \textit{Format=multiple standard files}. Finalment, vam convertir els fitxers exportats al format \textit{parquet}, més eficient.
+        \begin{itemize}
+            \item General: Participant name
+            \item Eye tracking data: Pupil diameter, Validity of eye data
+            \item Media: stimulus name
+            \item Eye movement events: eye movement type, duration and index, fixation point, AOI hit
+        \end{itemize}
+\end{enumerate}
+
+\chapter{Visualització spans}\label{sec:spans_viz}
+
+Per tal de visualitzar múltiples spans, utilitzem un script basat en la llibreria spaCy\footnote{https://spacy.io/}.
+A~\ref{fig:} se'n mostra un exemple.
