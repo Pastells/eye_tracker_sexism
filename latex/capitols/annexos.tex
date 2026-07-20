@@ -1,7 +1,7 @@
 \chapter{Funcionament Eye-tracker}
 
 Utilitzem l'eye-tracker Tobii Pro Spectrum, que enregistra quina zona de la pantalla s'està mirant a 600Hz.
-El software Tobii Pro Lab calcula les fixacions, i permet definir cada paraula d'un text com a àrea d'interés (AOI).
+El software Tobii Pro Lab calcula les fixacions, i permet definir cada paraula d'un text com a àrea d'interés (AOI en les seves sigles en anglès).
 
 El problema a l'hora d'exportar les dades és que Tobii Pro Lab no optimitza el format.
 En comptes de crear un fitxer per a cada text, crea un fitxer amb tots els temps com a fila i totes les AOI com a columna.
@@ -19,6 +19,49 @@ Per tal d'optimitzar aquest procés hem exportat diversos fitxers de la següent
             \item Eye movement events: eye movement type, duration and index, fixation point, AOI hit
         \end{itemize}
 \end{enumerate}
+
+
+\chapter{TFD i regressions}\label{app:tfd}
+
+\section{Durada total de fixació (TFD)}
+
+La durada total de fixació (\textit{Total Fixation Duration}, TFD) és una mesura de l'atenció acumulada a una AOI al llarg de tota la lectura.
+Es calcula com la suma de les durades de totes les fixacions que cauen dins d'una AOI concreta.
+En el nostre cas, la normalitzem amb el temps total de fixació de cada text:
+
+\[
+\text{TFD}_{i} = \frac{\sum_{k \in \text{fixacions}_i} d_k}{\sum_{j=1}^{N} \sum_{k \in \text{fixacions}_j} d_k}
+\]
+
+on $d_k$ és la durada de la fixació $k$, $i$ és l'índex del token (AOI), i $N$ és el nombre total de tokens del text.
+Aquesta normalització ens permet comparar patrons d'atenció entre participants amb velocitats de lectura diferents.
+Una TFD més alta en un token indica que els participants hi dediquen proporcionalment més temps d'atenció total.
+En contextos de sexisme, una TFD més alta en paraules amb càrrega emotiva o ideològica pot indicar un processament més profund del contingut discriminatori.
+
+\section{Regressions}
+
+Una \textbf{regressió} ocorre quan es retorna la vista cap enrere (dreta a esquerra en escrits d'esquerra a dreta) respecte a la posició actual de lectura.
+Les regressions són un fenomen cognitiu ben documentat en la recerca sobre lectura~\cite{rayner1998eye, rayner2009eye} i reflecteixen processos de reprocessament, verificació o resolució d'ambigüitat.
+Se'n solen distingir dos tipus.
+El primer són les \textbf{regressions intralínia} (\textit{within-line}), en què el lector mou la mirada dins de la mateixa línia de text cap a un token anterior. 
+S'associen principalment a dificultats de comprensió local com paraules amb múltiples significats o estructures sintàctiques complexes).
+També hi ha \textbf{regressions interlínia} (\textit{between-line}): es fa un salt a una línia anterior.
+Estan relacionades amb processos de coherència global (e.g., connectar informació prèvia amb el contingut actual).
+
+La taxa de regressió es defineix com la proporció de sacades que són regressions respecte al total de sacades:
+
+\[
+r = \frac{n_{\text{regressions}}}{n_{\text{sacades}}} = \frac{n_{\text{regressions}}}{n_{\text{fixacions}} - 1}
+\]
+
+En condicions normals de lectura, la taxa de regressió se situa entre el 10\% i el 15\% del total de sacades~\cite{rayner2009eye}.
+Taxes més altes indiquen fragments del text que generen més dificultat de processament.
+Aquestes mètriques han estat àmpliament utilitzades en estudis sobre processament de frases i ambiguïtat sintàctica, com demostra \textcite{alvarez2025} en un estudi amb parlants de català L1 i anglès L2, on les regressions van ser particularment informatives per identificar les regions textuals que generen dificultat de processament.
+
+En l'anàlisi de regressions, fem servir la notació anglesa TO i FROM: el token TO és aquell cap al qual es dirigeix la regressió i indica on el lector torna per reprocessar informació, mentre que el token FROM és aquell des del qual es produeix l'origen de la regressió i indica des d'on el lector interromp la lectura per tornar enrere.
+Per exemple, si un participant està llegint el token $t_{10}$ i fa una regressió cap al token $t_{5}$, aquesta es registra com $\text{FROM} = t_{10}$, $\text{TO} = t_{5}$.
+Aquesta convenció (\textit{regression-to} / \textit{regression-from}) és estàndard en la literatura d'\textit{eye-tracking} per lectura~\cite{rayner2009eye}.
+En el context del sexisme, les regressions poden indicar moments en què el lector torna a processar un contingut discriminatori o irònic, la qual cosa pot ajudar a identificar regions textuals que generen confusió o conflicte cognitiu.
 
 \chapter{Visualització spans}\label{sec:spans_viz}
 
