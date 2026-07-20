@@ -1,262 +1,129 @@
 \section{Categorització del sexisme en continguts multimèdia}\label{ch:marc}
 
 \textcite{mused} estableixen els fonaments conceptuals per a la classificació de sexisme a continguts multimèdia en xarxes socials.
-De Grazia defineix el sexisme com ``prejudici i discriminació basats en el sexe o el gènere'', en un sentit ampli, que inclou l'orientació sexual i la identitat de gènere. 
-Segueix l'enfocament d'\textcite{o2009encyclopedia}, que conceptualitza el sexisme com una ideologia que 
-reprodueix i marginalitza subjectivats no conformes amb les normes heteropatriarcals.
+Defineixen el sexisme com ``prejudici i discriminació basats en el sexe o el gènere'', en un sentit ampli, que inclou l'orientació sexual i la identitat de gènere.
+Segueix l'enfocament d'\textcite{o2009encyclopedia}, que conceptualitza el sexisme com una ideologia que reprodueix i marginalitza subjectivitats no conformes amb les normes heteropatriarcals.
 
-\textcite{mused} identifiquen diversos desafiaments metodològics:
+Dins aquest marc conceptual, \textcite{mused} identifiquen diversos desafiaments rellevants per a la classificació de sexisme: 
+\begin{itemize}
+    \item La distinció entre sexisme implícit i explícit. La detecció de formes implícites, com estereotips subtils, és inherentment més subjectiva i depenent del context cultural, i mostra menor acord entre anotadors humans)
+    \item La importància del context multimodal. Certs tipus de sexisme, com l'objectificació, només es poden detectar adequadament analitzant múltiples modalitats i no només el text, la qual cosa genera contradiccions quan un missatge textual neutre s'acompanya d'elements visuals sexistes.
+    \item La dependència cultural del fenomen, pot generar variabilitat notable en els patrons d'atenció entre participants.
+\end{itemize}
+Aquests factors tenen implicacions directes en els patrons d'atenció entre humans i models d'intel·ligència artificial, especialment en categories de sexisme subtils o contextuals, i motiven l'ús de tècniques d'\textit{eye-tracking} i d'interpretabilitat computacional que desenvolupem a continuació.
+
+
+%\section{Eye-tracking com a eina per a la comparació humà-model}
+
+\section{Lectura i eye-tracking}
+
+La lectura implica una sèrie de moviments oculars: fixacions (períodes de 200--300\,ms en què l'ull està relativament estàtic) intercalades amb sacades ràpides (moviments de 30--50\,ms)~\cite{rayner1998eye}.
+Durant les fixacions, el lector processa la informació d'una àrea focal de 3--4 lletres; la informació perifèrica guia les sacades successives cap a les paraules següents.
+L'\textit{eye-tracking} és una tècnica no invasiva que permet registrar els moviments oculars durant la lectura.
+Ens aporta informació indirecta, però objectiva, sobre els processos cognitius \cite{conklinEyeTrackingGuideApplied2018}.
+Aquesta idea s'anomena \textit{mind-eye hypothesis} (hipòtesi ull-ment)~\cite{just1980theory}: els ulls són una finestra a la ment.
+La hipòtesi se sosté en dues premises~\cite{pickering2004eye}, 1) allò en què es fixen els ulls és el que s'està processant mentalment, i 2) com més temps en una regió més esforç cognitiu.
+
+Així doncs, els moviments oculars proporcionen una mesura en temps real del processament lingüístic: les fixacions reflecteixen l'atenció i l'esforç cognitiu, mentre que les sacades indiquen els moviments entre regions textuals.
+Les mètriques d'\textit{eye-tracking} més utilitzades en la recerca sobre lectura inclouen:
 
 \begin{itemize}
-    \item \textbf{Sexisme implícit vs. explícit}: La detecció de formes implícites 
-    (com estereotips subtils) és inherentment més subjectiva i dependent del 
-    context cultural, mostrant menor acord entre anotadors humans.
-
-    \item \textbf{Importància del context multimodal}: Certs tipus de sexisme 
-    (com l'objectificació) només es poden detectar adequadament analitzant 
-    múltiples modalitats, no només el text.
-
-    \item \textbf{Contradiccions entre modalitats}: Continguts amb missatges 
-    textuals neutrals acompanyats d'elements visuals sexistes presenten 
-    desafiaments significatius per a la classificació.
-
-    \item \textbf{Dependència cultural}: La identificació de sexisme depèn 
-    fortament del context social i cultural, el que pot generar variabilitat 
-    en els patrons d'atenció entre participants.
+    \item \textbf{Durada de la primera fixació (FFD, \textit{First Fixation Duration})}: durada de la primera fixació sobre una paraula. Capta la reacció inicial al contingut, i reflecteix el processament superficial i el reconeixement lèxic ràpid \cite{rayner2009eye}. Una FFD més llarga indica una paraula menys predictable o més cognitivament complexa.
+    \item \textbf{Durada total de fixació (TFD, \textit{Total Fixation Duration})}: suma de la duració de les fixacions sobre una paraula al llarg de tota la lectura, incloent-hi relectures. Captura l'atenció acumulada i el processament deliberat, i és especialment sensible a la dificultat semàntica i pragmàtica del text.
+    \item \textbf{Nombre de fixacions (FC, \textit{Fixation Count})}: nombre total de fixacions sobre una paraula o àrea d'interès. Reflecteix l'atenció acumulada, incloent-hi relectures i processament deliberat \cite{rayner2009eye}.
+    \item \textbf{Regressions}: moviments oculars cap enrere (dreta a esquerra en escrits d'esquerra a dreta) que reflecteixen reprocessament, verificació o resolució d'ambigüitat. Taxes més altes de regressió indiquen fragments del text que generen més dificultat de processament.
 \end{itemize}
 
-Aquests factors tenen implicacions directes en els patrons d'atenció entre humans 
-i models, especialment en categories de sexisme subtils o contextuals.
+Aquestes mètriques proporcionen una mesura no només del processament superficial (reconeixement de paraules), sinó també de la integració semàntica i pragmàtica, i estan correlacionades amb la càrrega cognitiva associada al processament del llenguatge. Per més informació sobre la TFD i les regressions, vegeu l'Apèndix~\ref{app:tfd}.
 
+% TODO: integrar
+Una característica destacable és que les frases es presenten en un escenari naturalista: la frase completa es mostra a la pantalla i el participant decideix a quina velocitat llegir i quines paraules fixar, a diferència de sistemes com RSVP (\textit{Rapid Serial Visual Representation}) que presenten les paraules una a una a velocitat constant.
 
-\section{Eye-tracking com a eina per a la comparació humà-model}
+\subsection{Corpus d'eye-tracking per al PLN}
 
-\textcite{ikhwantriLookingDeepEyes2023} estableixen el marc metodològic 
-per a la comparació sistemàtica entre patrons d'atenció humans i computacionals en tasques de PLN, 
-analitzant tres tasques (anàlisi de sentiment, classificació de relacions, pregunta-resposta), 
-quatre mètodes d'interpretabilitat i tres arquitectures de models.
+En el camp del processament del llenguatge natural (PLN), existeixen diversos corpus d'\textit{eye-tracking} per a l'entrenament i avaluació de models computacionals.
+Aquests corpus permeten entrenar models predictius de fixacions i explorar la relació entre atenció humana i mecanismes d'atenció en models de llenguatge.
 
-\subsection{Mètriques d'\textit{eye-tracking}}
+\textbf{ZuCo 1.0} \cite{hollenstein_zuco_2018} és un recurs simultani d'electroencefalografia (EEG) i \textit{eye-tracking} amb 12 subjectes que llegeixen frases angleses.
+El corpus inclou 21.629 paraules en 1.107 frases, amb 154.173 fixacions enregistrades.
+Els materials inclouen frases de ressenyes de pel·lícules amb etiquetes de sentiment i paràgrafs biogràfics de Wikipedia amb relacions semàntiques anotades.
+Els participants executen tres tasques: dues de lectura normal (amb materials diferents) i una tasca específica de cerca de relacions.
+Els autors extreuen diferents característiques oculars per a cada paraula i frase, com la FFD, o el temps total de lectura.
 
-\textcite{ikhwantriLookingDeepEyes2023} defineixen dues mètriques principals:
+\textbf{ZuCo 2.0} \cite{hollenstein_zuco_2020} amplia el predecessor amb enregistraments simultanis d'\textit{eye-tracking} i EEG de 18 subjectes llegint 739 frases de Wikipedia en dos paradigmes: lectura normal (349 frases) i lectura específica de tasca (390 frases) en què els participants busquen activament un tipus de relació semàntica (afiliació política, educació, fundador, títol de treball, nacionalitat, etc.).
+Aquest disseny permet comparar el processament cognitiu entre la lectura normal i l'anotació, una distinció clau per entendre com els humans processen el text segons la tasca.
+Els resultats mostren que la lectura específica de tasca genera una taxa d'omissió significativament més alta (0,45 vs.\ 0,33) i una velocitat de lectura més ràpida (4,81 vs.\ 5,84 segons per frase), ja que els lectors no necessiten processar tota la sinopsi sinó només les paraules rellevants per a la relació buscada.
+Aquest corpus és particularment rellevant per al nostre treball perquè demostra que l'objectiu de la lectura modifica profundament els patrons d'atenció visual, una qüestió que també abordem quan comparem l'atenció humana (lectura per comprensió) amb les atribucions del model (classificació de sexisme).
 
-\begin{itemize}
-    \item \textbf{First Fixation Duration (FFD)}: Durada de la primera fixació en una 
-    paraula o àrea d'interès. Captura la reacció inicial i implícita al contingut.
-    
-    \item \textbf{Fixation Count (FC)}: Nombre total de fixacions en una paraula o 
-    àrea. Reflecteix l'atenció acumulada, incloent re-lectures i processament deliberat.
-\end{itemize}
-
-Les SD (\textit{Saliency Distance}) resulten més petites amb FFD que amb FC, suggerint 
-que la primera impressió humana s'assembla més al processament dels models.
-
-\subsubsection{Durada total de fixació (TFD)}
-
-La durada total de fixació (\textit{Total Fixation Duration}, TFD) és una mesura
-de l'atenció acumulada a una àrea d'interès (AOI en les seves sigles en anglès) al llarg de tota la
-lectura. Es calcula com la suma de les durades de totes les fixacions que
-cauen dins d'una AOI concreta. El el nostre cas, la normalitzem amb el temps total de fixació de cada text:
-
-\[
-\text{TFD}_{i} = \frac{\sum_{k \in \text{fixacions}_i} d_k}{\sum_{j=1}^{N} \sum_{k \in \text{fixacions}_j} d_k}
-\]
-
-on $d_k$ és la durada de la fixació $k$, $i$ és l'índex del token (AOI), i
-$N$ és el nombre total de tokens del text. Aquesta normalització ens permet
-comparar patrons d'atenció entre participants amb velocitats de lectura
-diferents. Una TFD més alta en un token indica que els participants hi dediquen
-proporcionalment més temps d'atenció total.
-
-\subsubsection{Regressions: definició i tipologia}
-
-Una \textbf{regressió} ocorre quan es retorna la vista cap enrere
-(dreta a esquerra en escrits d'esquerra a dreta) respecte a la posició
-actual de lectura. Les regressions són un fenomen cognitiu ben documentat en
-la recerca sobre lectura~\cite{rayner1998eye, rayner2009eye} i reflecteixen
-processos de re-processament, verificació o resolució d'ambigüitat.
-
-\begin{itemize}
-    \item \textbf{Regressions intralínia} (\textit{within-line}): el lector
-    mou la mirada dins de la mateixa línia de text, cap a un token anterior.
-    S'associen principalment a dificultats de comprensió local (p. ex.,
-    paraules amb múltiples significats, estructures sintàctiques complexes).
-
-    \item \textbf{Regressions interlínies} (\textit{between-line}): es fa un salt a una línia anterior. S'associen a processos de coherència global
-    (p. ex., connectar informació prèvia amb el contingut actual).
-\end{itemize}
-
-La taxa de regressió es defineix com la proporció de sacades que són regressions respecte al total de sacades:
-
-\[
-r = \frac{n_{\text{regressions}}}{n_{\text{sacades}}} = \frac{n_{\text{regressions}}}{n_{\text{fixacions}} - 1}
-\]
-
-En condicions normals de lectura, la taxa de regressió se situa entre el
-10\% i el 15\% del total de sacades~\cite{rayner2009eye}. Taxes més altes
-indiquen fragments del text que generen més dificultat de processament.
-
-\subsubsection{Notació TO i FROM}
-
-En l'anàlisi de regressions, utilitzem la notació anglesa estàndard:
-
-\begin{description}
-    \item[TO] Token cap al qual es dirigeix la regressió. Indica on
-    el lector torna per re-processar informació.
-    \item[FROM] Token des del qual es produeix l'origen de la regressió.
-    Indica des d'on el lector interromp la lectura per tornar enrere.
-\end{description}
-
-Per exemple, si un lector està llegint el token $t_{10}$ i fa una
-regressió cap al token $t_{5}$, aquesta es registra com
-$\text{FROM} = t_{10}$, $\text{TO} = t_{5}$. La notació anglesa
-(\textit{regression-to} / \textit{regression-from}) és la convenció
-estàndard en la literatura d'\textit{eye-tracking}
-lector~\cite{rayner2009eye}.
-
-
-\subsection{Troballes principals}
-
-\textcite{ikhwantriLookingDeepEyes2023} reporten:
-
-\begin{itemize}
-    \item \textbf{Arquitectura}: Els models Transformer mostren menor SD (major alineament) 
-    en la majoria de tasques. Excepció: en tasques QA amb resposta múltiple, LSTM amb mètodes 
-    d'atenció mostren major conformitat.
-    
-    \item \textbf{Mètode d'interpretabilitat}: Mètodes basats en gradients (Grad, IG) mostren 
-    SD més petites en classificació i anàlisi de sentiment. Mètodes de pertorbació (IP) 
-    mostren les SD més grans.
-    
-    \item \textbf{Alineament vs. rendiment}: En tasques de classificació, major conformitat 
-    (menor SD) correlaciona amb millor rendiment. En tasques complexes com QA, aquesta 
-    relació és més feble.
-    
-    \item \textbf{Categories lingüístiques}: En anàlisi de sentiment, humans i models se 
-    centren en adjectius, noms propis i adverbis. En classificació de relacions, models 
-    no capturen bé verbs que indiquen relacions entre entitats.
-\end{itemize}
-
-\subsection{Corbes SD-Performance (SDPC)}
-
-\textcite{ikhwantriLookingDeepEyes2023} proposen les corbes SDPC per analitzar la relació entre alineament 
-i rendiment. En tasques de classificació, les corbes tendeixen a ser decreixents (major 
-alineament correlaciona amb millor rendiment); en tasques de QA, les corbes són més 
-planes o irregulars. Aquesta metodologia s'aplicarà per analitzar si textos sexistes 
-explícits mostren major alineament i millor rendiment.
+\textcite{arcosMultimodalSensorData2024} va aplicar dades d'\textit{eye-tracking}, freqüència cardíaca i (EEG) a la detecció de sexisme en mems.
+Els seus resultats mostren que els mems sexistes requereixen un major esforç cognitiu, manifestat en temps de reacció més llargs i un nombre de fixacions superior, amb un gradient que augmenta des dels mems no sexistes fins als sexistes crítics.
+A més, el seu model, que integra text i imatge amb EEG i \textit{eye-tracking} aconsegueix un AUC de 0,8 en la detecció binària, una millora del 3,4\% respecte a un model base només de text i imatge.
+Demostra, doncs, que les respostes fisiològiques proporcionen un senyal que complementa el contingut, i que la fusió multimodal millora el rendiment en la detecció de sexisme.
 
 \section{Comparació entre atenció humana i computacional}
 
-La intersecció entre patrons d'atenció humans i mecanismes d'atenció computacionals 
-emergit com un camp crític en interpretabilitat de l'IA i lingüística cognitiva. 
-\textcite{ikhwantriLookingDeepEyes2023} demostren que l'alineament 
-varia segons: tipus de tasca PLN, arquitectura del model, mètode d'interpretabilitat, 
-i mètrica d'\textit{eye-tracking} (FFD vs. FC).
+\textcite{ikhwantriLookingDeepEyes2023} estableixen el marc metodològic per a la comparació sistemàtica entre patrons d'atenció humans i computacionals en tasques de PLN.
+Analitzen tres tasques (anàlisi de sentiment, classificació de relacions, pregunta-resposta), quatre mètodes d'interpretabilitat (gradient simple, Integrated Gradients, pertorbació d'entrada i atenció) i tres arquitectures (LSTM, CNN i Transformer).
+Es basen en dos conjunts de dades d'\textit{eye-tracking}: ZuCo i MQA-RC.
 
-\subsection{Variabilitat en explicacions: humans vs. models}
-
-Bogaert et al. (2026) comparen anotacions humanes (tokens resaltats) amb explicacions generades 
-mitjançant LRP de models transformer finetunejats, revelant:
+Per mesurar la conformitat entre la prominència del model i l'atenció humana, proposen la \textbf{Saliency Distance} (SD), definida com la divergència de Kullback-Leibler (divergència KL) entre la distribució de prominència sobre les paraules d'entrada (obtinguda d'un mètode d'interpretabilitat) i una característica d'\textit{eye-tracking} (FC o FFD).
+Una SD més petita indica major similitud entre les distribucions, és a dir, el model centra l'atenció en les mateixes paraules que els humans.
+Els seus resultats principals són:
 
 \begin{itemize}
-    \item \textbf{Granularitat}: Humans destaquen segments més llargs i semànticament salients; 
-    models produeixen atribucions més difuses a nivell de token.
-    
-    \item \textbf{Consens}: Humans mostren major consens en tokens més rellevants; models 
-    tendeixen a estar més d'acord considerant tots els tokens.
-    
-    \item \textbf{Sensibilitat a la classe}: Estabilitat de les explicacions varia segons el 
-    tipus de contingut. En textos d'opinió, humans s'acorden més; en textos de notícies, 
-    models mostren major consistència.
+    \item Les SD són consistentment més petites amb FFD que amb FC en gairebé totes les combinacions de tasques i mètodes. Això s'explica perquè la FFD captura la primera lectura d'una paraula, similar al comportament dels models que processen el text una sola vegada, mentre que el FC inclou relectures que els models no realitzen.
+    \item Els mètodes basats en gradients (Grad i IG) obtenen SD més petites que els mètodes de pertorbació (IP) i atenció (Attn) en les tasques d'anàlisi de sentiment i classificació de relacions. En canvi, en la tasca de QA amb resposta múltiple (textos més llargs), l'atenció és el mètode que obtenen SD més petites.
+    \item El Transformer mostra les SD més petites en la majoria de combinacions, excepte amb el mètode IP en anàlisi de sentiment i amb Attn en classificació de relacions.
+    \item En anàlisi de sentiment, els humans centren l'atenció en noms propis, adjectius, noms, adverbis i nombres; els models amb el millor mètode (Grad-Transformer) sobrevaloren els adjectius, però subvaloren els noms propis i els nombres. En classificació de relacions, els models no capten bé els verbs i adjectius que indiquen relacions entre entitats.
+    \item Proposen les corbes SD-Performance (SDPC): en tasques de classificació aquestes corbes tendeixen a ser decreixents (major conformitat → millor rendiment), mentre que en QA són més planes o irregulars.
 \end{itemize}
+
+Els resultats d'\textcite{ikhwantriLookingDeepEyes2023} suggereixen que la relació entre conformitat humana i rendiment varia segons la tasca, el mètode d'interpretabilitat i l'arquitectura.
+En el nostre cas, la classificació de textos és similar a les tasques de sentiment i relació. 
+Esperem que els mètodes basats en gradients mostrin major alineament amb l'atenció humana. \todo{check si és així}
+A més, la nostra aproximació tripartida (anotacions, eye-tracking i models) permet superar les limitacions identificades pels autors: la necessitat de considerar múltiples fonts d'informació per entendre completament el comportament dels models.
+
+
+\section{Comparació entre atenció humana i computacional (cont)}
+
+La intersecció entre patrons d'atenció humans i mecanismes d'atenció computacionals ha emergit com un camp crític en interpretabilitat de la IA i lingüística cognitiva.
+\textcite{soodInterpretingAttentionModels2020} van proposar un mètode sistemàtic per comparar atenció humana i atenció computacional en tasques de comprensió lectora, utilitzant un nou corpus d'\textit{eye-tracking} (MQA-RC) amb 23 subjectes.
+Els seus resultats mostren que models basats en LSTM i CNN tenen una correlació significativa entre la similitud amb l'atenció humana i el rendiment (Spearman $\rho = -0,73$ i $-0,72$ respectivament, $p < 0,001$), però aquesta relació no es manté per a models Transformer com XLNet ($\rho = -0,16$, $p = 0,381$).
+A més, la divergència KL entre l'atenció LSTM i humana ($0,018$) és significativament menor que la de XLNet ($0,022$), suggerint que diferents arquitectures aprenen estratègies d'atenció diferents i que la similitud amb l'atenció humana no garanteix el millor rendiment.
+Aquesta observació té implicacions directes per al nostre treball: si els models Transformer (com BERT) no mostren una correlació significativa amb l'atenció humana, és més rellevant explorar altres fonts d'informació complementària, com les anotacions humanes i les dades d'\textit{eye-tracking}.
+
+\textcite{ikhwantriLookingDeepEyes2023} demostren que l'alineament varia segons el tipus de tasca de PLN, l'arquitectura del model, el mètode d'interpretabilitat i la mètrica d'\textit{eye-tracking} emprada (FFD vs.\ FC).
+En concret, els models Transformer mostren en general major alineament que altres arquitectures, tot i que en tasques de QA (\textit{question answering}) amb resposta múltiple són els models LSTM amb mecanismes d'atenció els que mostren major conformitat; els mètodes basats en gradients (Grad, IG) obtenen SD més petites en classificació i anàlisi de sentiment que els mètodes de pertorbació; i mentre que en tasques de classificació un major alineament correlaciona amb millor rendiment, aquesta relació s'afebleix en tasques més complexes com el QA.
+Lingüísticament, en anàlisi de sentiment els models centren l'atenció en adjectius, noms propis i adverbis, mentre que en classificació de relacions els models no capturen bé els verbs que indiquen relacions entre entitats.
+% Per formalitzar aquesta relació, \textcite{ikhwantriLookingDeepEyes2023} proposen les corbes SD-Performance (SDPC): en tasques de classificació aquestes corbes tendeixen a ser decreixents, mentre que en QA són més planes o irregulars.
+% Aplicarem aquesta metodologia per analitzar si els textos sexistes explícits mostren major alineament i millor rendiment que els casos subtils. % TODO: no crec que ho faci
+
+\subsection{Variabilitat en explicacions: humans vs.\ models}
+
+\cite{bogaert_explanation_2026} comparen anotacions humanes (tokens ressaltats) amb explicacions generades mitjançant LRP de models transformer adaptats, i identifiquen diferències notables de granularitat (els humans destaquen segments més llargs i semànticament prominents, mentre que els models produeixen atribucions més difuses a escala de token), de consens (els humans mostren major acord en els tokens més rellevants, mentre que els models tendeixen a coincidir més quan es consideren tots els tokens) i de sensibilitat a la classe de contingut (en textos d'opinió els humans s'acorden més, mentre que en textos de notícies són els models els que mostren major consistència).
 
 \subsection{Efecte Rashomon}
 
-L'efecte Rashomon (Breiman, 2001; aplicat per Bogaert et al., 2023) estableix que múltiples 
-models amb rendiment similar poden produir explicacions radicalment diferents per a la mateixa 
-predicció. Això qüestiona la noció de \textit{la} explicació correcta d'un model. Models funcionalment 
-equivalents (precisió estadísticament indiferent) poden divergir significativament en les seves 
-explicacions. Si els models poden arribar a la mateixa conclusió per camins diferents, 
-l'alineament amb processos humans es converteix en un criteri de disseny explícit.
+L'efecte Rashomon~\cite{breiman2003statistical} estableix que múltiples models amb rendiment similar poden produir explicacions radicalment diferents per a la mateixa predicció.
+Això qüestiona la noció de \textit{la} explicació correcta d'un model.
+Models funcionalment equivalents (precisió estadísticament indiferent) poden divergir significativament en les seves explicacions.
+Si els models poden arribar a la mateixa conclusió per camins diferents, l'alineament amb processos humans es converteix en un criteri de disseny explícit, i la variabilitat en les explicacions esdevé una propietat inherent a quantificar, no un soroll a eliminar.
 
 \section{Mètodes d'interpretabilitat: LRP i Captum}
 
-LRP (Bach et al., 2015; Chefer et al., 2021) és un mètode post-hoc d'explicació que atribueix 
-la predicció d'un model a característiques d'entrada mitjançant la redistribució de puntuacions 
-de rellevància des de la capa de sortida fins a l'entrada. LRP ofereix:
-
-\begin{itemize}
-    \item \textbf{Determinisme}: Reproducibilitat de les explicacions per a una mateixa entrada.
-    \item \textbf{Fidelitat}: Proporciona insights sobre el procés de decisió a nivell de token 
-    (Lyu et al., 2024).
-    \item \textbf{Compatibilitat}: Adequat per a models transformer (BERT, RoBERTa).
-\end{itemize}
-
-Implementarem LRP mitjançant la llibreria Captum \cite{captum}, que proporciona una interfície 
-unificada per a diversos mètodes d'atribució (LRP, Integrated Gradients, Saliency Maps).
+LRP~\cite{LRP} és un mètode post-hoc d'explicació que atribueix la predicció d'un model a característiques d'entrada mitjançant la redistribució de puntuacions de rellevància des de la capa de sortida fins a l'entrada.
+LRP ofereix determinisme, en el sentit que garanteix la reproductibilitat de les explicacions per a una mateixa entrada; fidelitat, ja que proporciona informació sobre el procés de decisió a escala de token i compatibilitat amb models transformer.
+Implementarem LRP mitjançant la llibreria Captum \cite{captum}, que proporciona una interfície unificada per a diversos mètodes d'atribució (LRP, Integrated Gradients, Saliency Maps).
 
 \section{Enfocament tripartit: models, anotacions i eye-tracking}
 
-El nostre treball expandeix el marc de Bogaert et al. (2026) incorporant dades 
-d'\textit{eye-tracking} que capturen patrons d'atenció visual real durant la lectura.
+El nostre treball expandeix el marc de~\cite{bogaert_explanation_2026} incorporant dades d'\textit{eye-tracking} que capturen patrons d'atenció visual real durant la lectura.
+Aquesta aproximació tripartida permet establir tres comparacions: entre les atribucions del model (LRP, Captum) i els \textit{spans} textuals marcats per anotadors humans com a rellevants; entre les atribucions del model i les mètriques d'\textit{eye-tracking} (TFD, regressions) per token o regió textual; i entre els patrons d'atenció visual (inconscients, capturats per \textit{eye-tracking}) i les decisions conscients de ressaltar fragments rellevants (anotacions).
 
-\subsection{Comparacions}
+A partir d'aquest marc, plantegem quatre hipòtesis de treball: que els models adaptats mostraran un alineament moderat amb els patrons humans, amb diferències notables de granularitat (H1, seguint Bogaert et al.); que l'alineament serà major per a sexisme explícit que per a casos subtils (H2); que les tres fonts de dades proporcionaran informació complementària entre si (H3); i que els models amb diferents \textit{seed}s mostraran una variabilitat associada a l'efecte Rashomon, però menor que la variabilitat inter-anotador humana (H4).
 
-L'aproximació tripartita permet tres comparacions:
+\section{Plausibilitat i Fidelitat}
 
-\begin{enumerate}
-    \item \textbf{Models vs. Anotacions}: Atribucions del model (LRP, Captum) amb \textit{spans} 
-    textuals marcats per anotadors humans com a rellevants.
-    
-    \item \textbf{Models vs. Eye-tracking}: Atribucions del model amb mètriques 
-    d'\textit{eye-tracking} (durada de fixació, regressions) per token o regió textual.
-    
-    \item \textbf{Eye-tracking vs. Anotacions}: Relació entre patrons d'atenció visual 
-    (inconscients) i decisions consciouss de ressaltar fragments rellevants.
-\end{enumerate}
+Adoptem el marc de \textcite{jacovi2020towards}, que distingeix entre la \textbf{plausibilitat} d'una explicació, és a dir, la mesura en què resulta convincent per a un observador humà i s'alinea amb les seves expectatives sobre els factors rellevants, i la seva \textbf{fidelitat}, la mesura en què reflecteix el procés real de decisió del model.
 
-\subsection{Hipòtesis}
-
-\begin{itemize}
-    \item \textbf{H1}: Models finetunejats mostren alineament moderat amb patrons humans, 
-    amb diferències en granularitat (Bogaert et al.).
-    \item \textbf{H2}: Alineament major per a sexisme explícit, menor per a casos subtils.
-    \item \textbf{H3}: Les tres fonts de dades proporcionen informació complementària.
-    \item \textbf{H4}: Models amb diferents seeds mostren variabilitat (efecte Rashomon), 
-    menor que la variabilitat inter-anotador humana.
-\end{itemize}
-
-\section{Plausibilitat vs. Fidelitat}
-
-Adoptem el marc de Jacovi and Goldberg (2020):
-
-\begin{itemize}
-    \item \textbf{Plausibilitat}: Mesura en què una explicació és convincent per a un 
-    observador humà, alineant-se amb expectatives sobre factors rellevants.
-    \item \textbf{Fidelitat}: Mesura en què una explicació reflecteix el procés real de 
-    decisió del model.
-\end{itemize}
-
-L'enfocament tripartit permet:
-
-\begin{itemize}
-    \item Anotacions humanes (\textit{spans} resaltats): avaluació de \textbf{plausibilitat}.
-    \item Dades d'\textit{eye-tracking}: mesura objectiva de \textbf{fidelitat}, ja que els 
-    moviments oculars reflecteixen processos cognitius implícits menys subjectius.
-    \item Combinació: exploració de la possible tensió entre ambdós objectius.
-\end{itemize}
-
-\section{Conclusions del marc teòric}
-
-La literatura revisada proporciona un marc sòlid per al nostre treball:
-
-\begin{itemize}
-    \item La comparació entre patrons d'atenció humans i computacionals és un camp emergent 
-    amb potencial per millorar la interpretabilitat dels models.
-    \item La variabilitat en les explicacions és una propietat inherent que cal quantificar, 
-    no un soroll a eliminar.
-    \item LRP, combinat amb Captum, ofereix eines per explorar aquesta variabilitat 
-    de manera sistemàtica.
-    \item L'enfocament tripartit (models + anotacions + \textit{eye-tracking}) expandeix 
-    l'estat de l'art proporcionant una visió més completa de l'alineament humà-model.
-\end{itemize}
+L'enfocament tripartit que proposem permet situar cadascuna de les nostres fonts de dades en aquest marc: les anotacions humanes (\textit{spans} ressaltats) permeten avaluar la plausibilitat de les explicacions; les dades d'\textit{eye-tracking} ofereixen una mesura més objectiva de la fidelitat, ja que els moviments oculars reflecteixen processos cognitius implícits i menys subjectius; i la combinació d'ambdues fonts permet explorar la possible tensió entre aquests dos objectius.
