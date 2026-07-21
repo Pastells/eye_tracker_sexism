@@ -12,6 +12,65 @@ Dins aquest marc conceptual, \textcite{mused} identifiquen diversos desafiaments
 \end{itemize}
 Aquests factors tenen implicacions directes en els patrons d'atenció entre humans i models d'intel·ligència artificial, especialment en categories de sexisme subtils o contextuals, i motiven l'ús de tècniques d'\textit{eye-tracking} i d'interpretabilitat computacional que desenvolupem a continuació.
 
+\section{Corpus d'origen: MuSeD}\label{sec:mused}
+
+El corpus utilitzat en aquest treball prové de MuSeD (\textit{Multimodal Sexism Detection Dataset})~\cite{mused}, un conjunt de dades per a la detecció de sexisme en vídeos en castellà.
+MuSeD consta de 400 vídeos extrets de dues xarxes socials: TikTok i BitChute.
+TikTok, tot i prohibir explícitament la misogínia a les seves directrius comunitàries, continua allotjant contingut sexista de manera explícita i implícita; BitChute, en canvi, és una plataforma de baixa moderació.
+El conjunt de dades és aproximadament equilibrat, amb un 48,5\% de vídeos etiquetats com a sexistes i un 51,5\% com a no sexistes.
+
+\subsection{Recollida de dades}
+
+Els vídeos es van recollir entre maig i octubre de 2024.
+%Per a TikTok, 
+Es va elaborar una llista de 187 \textit{hashtags} en castellà que cobria temàtiques relacionades amb el gènere, la sexualitat, el feminisme i la discriminació per sexe o orientació sexual. 
+%(per exemple, \textit{\#brechasalarial}, \textit{\#violenciamachista} o \textit{\#lgbt}).
+%Per a BitChute, es van adaptar alguns d'aquests \textit{hashtags} com a paraules clau de cerca.
+Aproximadament el 90\% dels vídeos provenen de TikTok. 
+Les transcripcions textuals es van obtenir automàticament amb Whisper~\cite{whisper} i van ser revisades i corregides per una lingüista professional.
+
+\subsection{Procés d'anotació}
+
+L'anotació es va dur a terme en tres nivells: text (transcripció i OCR\footnote{Optical character recognition.}---text escrit al vídeo), àudio i vídeo complet.
+Sis anotadors amb formació en lingüística, dividits en dos equips, van classificar cada ítem com a sexista o no sexista.
+Addicionalment, van etiquetar els \textit{spans} textuals o segments de vídeo que motivaven la classificació.
+El marc d'anotació distingia quatre tipus de contingut sexista:
+\begin{itemize}
+    \item \textbf{Estereotip} (\textit{Stereotype}): afirmacions sobre
+    propietats que suposadament diferencien homes i dones a partir de creences estereotipades~\cite{samory2021call}. Reforça rols de gènere tradicionals i presenta diferències com a ``naturals'' o biològicament determinades.
+    \item \textbf{Desigualtat} (\textit{Inequality}): discurs que nega
+    l'existència de desigualtats de gènere o presenta el moviment feminista com una amenaça per als homes. Inclou la victimització masculina en polítiques d'igualtat.
+    \item \textbf{Discriminació} (\textit{Discrimination}): contingut que
+    discrimina per orientació sexual o identitat de gènere i que denigra la comunitat LGBTQ+~\cite{chakravarthi2021dataset}.
+    \item \textbf{Objectificació} (\textit{Objectification}): representació de les dones com a objectes físics valorats principalment per la seva utilitat~\cite{szymanski2011sexual}.
+\end{itemize}
+
+Els vídeos sexistes es distribueixen en 56,2\% estereotips, 39,2\% desigualtat (39,2\%), 15,5\% discriminació  i 3,6\% objectificació.
+Cal destacar que si un ítem conté una crítica, denúncia o un relat d'una experiència sexista, s'etiqueta com a no sexista.
+A més, també es van anotar la implicitud del sexisme~\cite{schmeisser2022criteria}, així com la presència d'humor o ironia.
+
+
+\subsection{Estructura del corpus}
+
+Cada instància del corpus proporciona les variables següents, rellevants per als criteris de selecció descrits a la Secció~\ref{sec:filtratge}:
+\begin{itemize}
+    \item \texttt{sexist\_text}: etiqueta binària que indica si el text,
+    aïllat del context audiovisual, es considera sexista.
+    \item \texttt{sexist\_video}: etiqueta binària equivalent, però basada
+    en el contingut multimodal complet (vídeo, àudio i text).
+    \item \texttt{sexist\_soft}: valor continu entre 0 i 1 que reflecteix
+    el grau d'acord entre anotadors, té 4 valors possibles: 0, 0,33, 0,67, 1.
+    \item Anotacions a escala de \textit{span}: fragments concrets del text
+    marcats com a sexistes per part dels anotadors, que permeten identificar quines porcions textuals motiven l'etiqueta global.
+\end{itemize}
+
+\subsection{Acord entre anotadors}
+
+La fiabilitat de les anotacions es va mesurar amb la $\kappa$ de Fleiss.
+Per a l'anotació textual, s'obté una $\kappa=0,719$ (equip~1) i $0,717$ (equip~2), que augmenta fins a $0,834$ i $0,853$ respectivament en l'anotació del vídeo complet, indicant un acord \textit{substancial}~\cite{landis1977measurement}.
+La millora d'incorporar modalitats addicionals suggereix que el sexisme és, en alguns casos, difícil de detectar únicament a partir del text, a causa de la dificultat d'identificar formes implícites de sexisme o la possible contradicció entre contingut verbal i no verbal.
+Precisament aquest fet motiva el criteri de coherència entre modalitats descrit a la metodologia (Secció~\ref{sec:filtratge}).
+
 
 \section{Lectura i eye-tracking}
 
@@ -56,7 +115,7 @@ Demostra, doncs, que les respostes fisiològiques proporcionen un senyal que com
 \section{Comparació entre atenció humana i computacional}
 
 La intersecció entre patrons d'atenció humans i mecanismes d'atenció computacionals ha emergit com un camp crític en interpretabilitat de la IA i lingüística cognitiva.
-\textcite{soodInterpretingAttentionModels2020} van proposar un mètode sistemàtic per comparar atenció humana i atenció computacional en tasques de comprensió lectora, utilitzant un nou corpus d'\textit{eye-tracking} (MQA-RC) amb 23 subjectes.
+\textcite{soodInterpretingAttentionModels2020} van proposar un mètode sistemàtic per comparar atenció humana i atenció computacional en tasques de comprensió lectora, utilitzant un nou corpus d'\textit{eye-tracking} (MQA-RC\footnote{MovieQA Reading Comprehension, QA=Question Answering}) amb 23 subjectes.
 Observen que models basats en LSTM i CNN tenen una correlació significativa entre la similitud amb l'atenció humana i el rendiment (Spearman $\rho = -0,73$ i $-0,72$ respectivament, $p < 0,001$), però aquesta relació no es manté per a models Transformer com XLNet ($\rho = -0,16$, $p = 0,381$).
 A més, la divergència KL entre l'atenció LSTM i humana ($0,018$) és significativament menor que la de XLNet ($0,022$), suggerint que diferents arquitectures aprenen estratègies d'atenció diferents i que la similitud amb l'atenció humana no garanteix el millor rendiment.
 Aquesta observació té implicacions directes per al nostre treball: si els models Transformer (com BERT) no mostren una correlació significativa amb l'atenció humana, és més rellevant explorar altres fonts d'informació complementària, com les anotacions humanes i les dades d'\textit{eye-tracking}.
@@ -71,7 +130,7 @@ Els seus resultats principals són:
 
 \begin{itemize}
     \item Les SD són consistentment més petites amb FFD que amb FC en gairebé totes les combinacions de tasques i mètodes. Això s'explica perquè la FFD captura la primera lectura d'una paraula, similar al comportament dels models que processen el text una sola vegada, mentre que el FC inclou relectures que els models no realitzen.
-    \item Els mètodes basats en gradients (Grad i IG) obtenen SD més petites que els mètodes de pertorbació (IP) i atenció (Attn) en les tasques d'anàlisi de sentiment i classificació de relacions. En canvi, en la tasca de QA amb resposta múltiple (textos més llargs), l'atenció és el mètode que obté SD més petites.
+    \item Els mètodes basats en gradients obtenen SD més petites que els mètodes de pertorbació (IP) i atenció (Attn) en les tasques d'anàlisi de sentiment i classificació de relacions. En canvi, en la tasca de QA amb resposta múltiple (textos més llargs), l'atenció és el mètode que obté SD més petites.
     \item El Transformer mostra les SD més petites en la majoria de combinacions, excepte amb el mètode IP en anàlisi de sentiment i amb Attn en classificació de relacions.
     \item En anàlisi de sentiment, els humans centren l'atenció en noms propis, adjectius, noms, adverbis i nombres; els models amb el millor mètode (Grad-Transformer) sobrevaloren els adjectius, però subvaloren els noms propis i els nombres. En classificació de relacions, els models no capten bé els verbs i adjectius que indiquen relacions entre entitats.
     \item Proposen les corbes SD-Performance (SDPC): en tasques de classificació aquestes corbes tendeixen a ser decreixents (major conformitat → millor rendiment), mentre que en QA són més planes o irregulars.
