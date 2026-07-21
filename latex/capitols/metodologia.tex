@@ -1,62 +1,3 @@
-\section{Corpus d'origen: MuSeD}\label{sec:mused}
-
-El corpus utilitzat en aquest treball prové de MuSeD (\textit{Multimodal Sexism Detection Dataset})~\cite{mused}, un conjunt de dades per a la detecció de sexisme en vídeos en castellà.
-MuSeD consta de 400 vídeos extrets de dues xarxes socials: TikTok i BitChute.
-TikTok, tot i prohibir explícitament la misogínia a les seves directrius comunitàries, continua allotjant contingut sexista de manera explícita i implícita; BitChute, en canvi, és una plataforma de baixa moderació.
-El conjunt de dades és aproximadament equilibrat, amb un 48,5\% de vídeos etiquetats com a sexistes i un 51,5\% com a no sexistes.
-
-\subsection{Recollida de dades}
-
-Els vídeos es van recollir entre maig i octubre de 2024.
-%Per a TikTok, 
-Es va elaborar una llista de 187 \textit{hashtags} en castellà que cobria temàtiques relacionades amb el gènere, la sexualitat, el feminisme i la discriminació per sexe o orientació sexual. 
-%(per exemple, \textit{\#brechasalarial}, \textit{\#violenciamachista} o \textit{\#lgbt}).
-%Per a BitChute, es van adaptar alguns d'aquests \textit{hashtags} com a paraules clau de cerca.
-Aproximadament el 90\% dels vídeos provenen de TikTok. 
-Les transcripcions textuals es van obtenir automàticament amb Whisper~\cite{whisper} i van ser revisades i corregides per una lingüista professional.
-
-\subsection{Procés d'anotació}
-
-L'anotació es va dur a terme en tres nivells: text (transcripció i OCR\footnote{Optical character recognition.}---text escrit al vídeo), àudio i vídeo complet.
-Sis anotadors amb formació en lingüística, dividits en dos equips, van classificar cada ítem com a sexista o no sexista.
-Addicionalment, van etiquetar els \textit{spans} textuals o segments de vídeo que motivaven la classificació.
-El marc d'anotació distingia quatre tipus de contingut sexista:
-\begin{itemize}
-    \item \textbf{Estereotip} (\textit{Stereotype}): afirmacions sobre
-    propietats que suposadament diferencien homes i dones a partir de creences estereotipades~\cite{samory2021call}. Reforça rols de gènere tradicionals i presenta diferències com a ``naturals'' o biològicament determinades.
-    \item \textbf{Desigualtat} (\textit{Inequality}): discurs que nega
-    l'existència de desigualtats de gènere o presenta el moviment feminista com una amenaça per als homes. Inclou la victimització masculina en polítiques d'igualtat.
-    \item \textbf{Discriminació} (\textit{Discrimination}): contingut que
-    discrimina per orientació sexual o identitat de gènere i que denigra la comunitat LGBTQ+~\cite{chakravarthi2021dataset}.
-    \item \textbf{Objectificació} (\textit{Objectification}): representació de les dones com a objectes físics valorats principalment per la seva utilitat~\cite{szymanski2011sexual}.
-\end{itemize}
-
-Els vídeos sexistes es distribueixen en 56,2\% estereotips, 39,2\% desigualtat (39,2\%), 15,5\% discriminació  i 3,6\% objectificació.
-Cal destacar que si un ítem conté una crítica, denúncia o un relat d'una experiència sexista, s'etiqueta com a no sexista.
-A més, també es van anotar la implicitud del sexisme~\cite{schmeisser2022criteria}, així com la presència d'humor o ironia.
-
-
-\subsection{Estructura del corpus}
-
-Cada instància del corpus proporciona les variables següents, rellevants per als criteris de selecció descrits a la Secció~\ref{sec:filtratge}:
-\begin{itemize}
-    \item \texttt{sexist\_text}: etiqueta binària que indica si el text,
-    aïllat del context audiovisual, es considera sexista.
-    \item \texttt{sexist\_video}: etiqueta binària equivalent, però basada
-    en el contingut multimodal complet (vídeo, àudio i text).
-    \item \texttt{sexist\_soft}: valor continu entre 0 i 1 que reflecteix
-    el grau d'acord entre anotadors, té 4 valors possibles: 0, 0,33, 0,67, 1.
-    \item Anotacions a escala de \textit{span}: fragments concrets del text
-    marcats com a sexistes per part dels anotadors, que permeten identificar quines porcions textuals motiven l'etiqueta global. % TODO: explicar més, no sempre és span sexista
-\end{itemize}
-
-\subsection{Acord entre anotadors}
-
-La fiabilitat de les anotacions es va mesurar amb la $\kappa$ de Fleiss.
-Per a l'anotació textual, s'obté una $\kappa=0,719$ (equip~1) i $0,717$ (equip~2), que augmenta fins a $0,834$ i $0,853$ respectivament en l'anotació del vídeo complet, indicant un acord \textit{substancial}~\cite{landis1977measurement}.
-La millora d'incorporar modalitats addicionals suggereix que el sexisme és, en alguns casos, difícil de detectar únicament a partir del text, a causa de la dificultat d'identificar formes implícites de sexisme o la possible contradicció entre contingut verbal i no verbal.
-Precisament aquest fet motiva el criteri de coherència entre modalitats descrit a continuació.
-
 \section{Selecció de textos de MuSeD}\label{sec:filtratge}
 
 A partir del corpus original, es van seleccionar 40 textos (20 sexistes i 20 no sexistes) seguint els criteris següents:
@@ -160,12 +101,10 @@ Durant aquest procés es preguntava si el participant s'havia fixat en alguna pa
 
 \section{Models de llenguatge}
 
-En aquest treball utilitzem diferents tipus de models basats en l'arquitectura \textit{transformer} 
-\cite{vaswaniAttentionAllYou2017}.
+%\subsection{Models BERT adaptats}
 
-\subsection{Models BERT adaptats}
-
-Els models BERT (\textit{Bidirectional Encoder Representations from Transformers})~\cite{devlin2019bert} són models \textit{encoder-only} que han demostrat un rendiment excepcional en tasques de classificació de text.
+En aquest treball fem ús de diferents models basats en l'arquitectura \textit{transformer} \cite{vaswaniAttentionAllYou2017}, concretament del tipus BERT (\textit{Bidirectional Encoder Representations from Transformers})~\cite{devlin2019bert}.
+Són models \textit{encoder-only} que han demostrat bon rendiment en tasques de classificació de text.
 En el nostre cas, utilitzem tres variants en castellà: mBERT (la versió multilíngüe del BERT original), BETO~\cite{canete2023spanish} (un dels primers models adaptats només al castellà) i el més recent \textit{BSC-LT/MrBERT-es}~\cite{tamayo2026mrbert} (basat en ModerBERT).
 
 El procés d'adaptació (\textit{finetuning}) consisteix a modificar aquests models preentrenats per la nostra tasca específica de detecció de sexisme.
@@ -182,67 +121,39 @@ Vegeu el codi per a més detalls sobre la implementació, que inclou la preparac
 \section{Mètodes d'interpretabilitat}\label{sec:metodes}
 
 Per comprendre els patrons d'atenció dels models i comparar-los amb els patrons humans, utilitzem la llibreria Captum \cite{captum}, que proporciona una suite completa de mètodes d'atribució.
-
-\subsection{Mètodes implementats}
-
-En aquest treball hem implementat quatre mètodes d'atribució utilitzant la llibreria Captum:
+En aquest treball hem implementat quatre mètodes d'atribució:
 
 \begin{itemize}
-    \item \textbf{Saliency}: Mètode basat en gradients que calcula la derivada de la sortida 
-    respecte als \textit{embeddings} d'entrada. És útil per identificar quins tokens tenen major impacte en la decisió del model.
-    
-    \item \textbf{Input X Gradient}: Multiplica l'entrada pels gradients per obtenir 
-    una mesura de la importància de cada característica, proporcionant atribucions més estables que el saliency simple.
-    
+    \item \textbf{Saliency}: Mètode basat en gradients que calcula la derivada de la sortida respecte als \textit{embeddings} d'entrada. És útil per identificar quins tokens tenen major impacte en la decisió del model.
+    \item \textbf{Input X Gradient}: Multiplica l'entrada pels gradients per obtenir una mesura de la importància de cada característica, proporcionant atribucions més estables que el saliency simple.
     \item \textbf{Integrated Gradients (IG)}: Aquest mètode calcula la integral dels gradients al llarg d'un camí des d'una línia base (normalment zeros) fins a la entrada real.
     Proporciona una atribució més robusta que el \textit{saliency} simple i inclou una mètrica de convergència (\textit{delta}) que indica la qualitat de l'atribució.
-    
-    \item \textbf{LRP} (\textit{Layer-wise Relevance Propagation})~\cite{LRP}: Mètode post-hoc d'explicació que atribueix la predicció d'un model a característiques d'entrada mitjançant la redistribució de puntuacions de rellevància des de la capa de sortida fins a l'entrada.
-    LRP ofereix determinisme, en el sentit que garanteix la reproductibilitat de les explicacions per a una mateixa entrada; fidelitat, ja que proporciona informació sobre el procés de decisió a escala de token i compatibilitat amb models transformer.
+    \item \textbf{LRP} (\textit{Layer-wise Relevance Propagation})~\cite{LRP}: atribueix la predicció a característiques d'entrada mitjançant la redistribució de puntuacions de rellevància des de la capa de sortida fins a l'entrada.
+    LRP és determinista, en el sentit que garanteix la reproductibilitat de les explicacions per a una mateixa entrada.
 \end{itemize}
 
-\subsection{Mètodes en desenvolupament}
-
-\begin{itemize}
-    \item \textbf{DeepLift}: Mètode que compara l'activació de cada neurona amb una referència, proporcionant una atribució basada en la diferència respecte a aquesta línia base.
-    
-    \item \textbf{Guided Backpropagation} i \textbf{Guided Grad-CAM}: Mètodes que 
-    combinen \textit{backpropagation} guiat amb mapes d'activació per obtenir visualitzacions més interpretables.
-    
-    \item \textbf{Layer Grad-CAM}: Combina informació de gradients amb mapes d'activació de capes intermèdies del model.
-    
-    \item \textbf{Feature Ablation}: Aquest mètode elimina característiques i mesura l'impacte en la sortida, però és computacionalment costós a causa de la alta dimensionalitat dels \textit{embeddings} (768 dimensions).
-\end{itemize}
-
-\subsection{Implementació pràctica}
-
-El procés d'interpretabilitat segueix les següents etapes:
-
-\begin{enumerate}
-    \item Carregar el model entrenat i el tokenitzador corresponent.
-    \item Tokenitzar el text d'entrada i obtenir els \textit{embeddings}.
-    \item Aplicar el mètode d'atribució seleccionat (p. ex., Integrated Gradients).
-    \item Sumar les atribucions al llarg de la dimensió dels \textit{embeddings} per obtenir una puntuació per a cada token.
-    \item Visualitzar els resultats utilitzant codis de colors (verd per a contribucions positives, vermell per a negatives).
-\end{enumerate}
-
-El codi inclou funcions per generar visualitzacions HTML amb els tokens ressaltats segons la seva importància per a la predicció del model.
-\todo{afegir exemples}
+% \subsection{Implementació pràctica}
+%
+% El procés d'interpretabilitat segueix les següents etapes:
+%
+% \begin{enumerate}
+%     \item Carregar el model entrenat i el tokenitzador corresponent.
+%     \item Tokenitzar el text d'entrada i obtenir els \textit{embeddings}.
+%     \item Aplicar el mètode d'atribució seleccionat.
+%     \item Sumar les atribucions al llarg de la dimensió dels \textit{embeddings} per obtenir una puntuació per a cada token.
+%     \item Visualitzar els resultats utilitzant codis de colors (verd per a contribucions positives, vermell per a negatives).
+% \end{enumerate}
+%
+% El codi inclou funcions per generar visualitzacions HTML amb els tokens ressaltats segons la seva importància per a la predicció del model.
+% \todo{afegir exemples}
 
 \section{Comparació amb patrons humans}
 
-L'objectiu final d'aquest treball és comparar els patrons d'atenció obtinguts amb aquests mètodes amb els patrons d'atenció humans registrats amb l'\textit{eye-tracker}.
-Aquesta comparació permetrà:
-
-\begin{itemize}
-    \item Avaluar si els models se centren en les mateixes parts del text que els humans.
-    \item Identificar possibles biaixos o limitacions en els models computacionals.
-    \item Explorar si les divergències entre atenció humana i computacional es relacionen amb errors de classificació.
-    \item Obtenir \textit{insights} sobre com millorar els models per alinear-los millor amb els processos cognitius humans.
-\end{itemize}
+L'objectiu final d'aquest treball és comparar els patrons d'atenció obtinguts amb els mètodes esmentats amb els patrons d'atenció humans registrats amb l'\textit{eye-tracker} i les anotacions inicials del corpus.
+Aquesta comparació permetrà avaluar si els models se centren en les mateixes parts del text que els humans, identificar possibles biaixos o limitacions en els models computacionals, i explorar si les divergències entre atenció humana i computacional es relacionen amb errors de classificació.
 
 Aquesta anàlisi comparativa es durà a terme utilitzant les dades d'\textit{eye-tracking} recollides amb el dispositiu Tobii, tal com es descriu a l'Apèndix~\ref{sec:tobii}, i els resultats s'analitzaran quantitativament i qualitativament per obtenir conclusions sobre la similitud entre ambdós tipus d'atenció.
 
-\section{Disponibilitat del codi}
+% \section{Disponibilitat del codi}
 
 Tot el codi utilitzat en aquest treball, incloent la implementació dels models, els mètodes d'interpretabilitat, els scripts d'anàlisi i aquest treball escrit, estan disponibles públicament al repositori GitHub: \url{https://github.com/Pastells/eye\_tracker\_sexism}. 
