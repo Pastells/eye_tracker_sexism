@@ -166,7 +166,7 @@ En aquest treball utilitzem diferents tipus de models basats en l'arquitectura \
 \subsection{Models BERT adaptats}
 
 Els models BERT (\textit{Bidirectional Encoder Representations from Transformers})~\cite{devlin2019bert} són models \textit{encoder-only} que han demostrat un rendiment excepcional en tasques de classificació de text.
-En el nostre cas, utilitzem tres variants en castellà: mBERT (la versió multilíngüe del BERT original), BETO~\ref{canete2023spanish} (un dels primers models adaptats només al castellà) i el més recent \textit{BSC-LT/MrBERT-es}~\ref{tamayo2026mrbert} (basat en ModerBERT).
+En el nostre cas, utilitzem tres variants en castellà: mBERT (la versió multilíngüe del BERT original), BETO~\cite{canete2023spanish} (un dels primers models adaptats només al castellà) i el més recent \textit{BSC-LT/MrBERT-es}~\cite{tamayo2026mrbert} (basat en ModerBERT).
 
 El procés d'adaptació (\textit{finetuning}) consisteix a modificar aquests models preentrenats per la nostra tasca específica de detecció de sexisme.
 Vegeu el codi per a més detalls sobre la implementació, que inclou la preparació de les dades, la configuració del model i l'entrenament utilitzant la llibreria \textit{transformers} de HuggingFace.
@@ -241,7 +241,7 @@ Aquesta comparació permetrà:
     \item Obtenir \textit{insights} sobre com millorar els models per alinear-los millor amb els processos cognitius humans.
 \end{itemize}
 
-Aquesta anàlisi comparativa es durà a terme utilitzant les dades d'\textit{eye-tracking} recollides amb el dispositiu Tobii, tal com es descriu a la Secció\ref{sec:tobii}, i els resultats s'analitzaran quantitativament i qualitativament per obtenir conclusions sobre la similitud entre ambdós tipus d'atenció.
+Aquesta anàlisi comparativa es durà a terme utilitzant les dades d'\textit{eye-tracking} recollides amb el dispositiu Tobii, tal com es descriu a l'Apèndix~\ref{sec:tobii}, i els resultats s'analitzaran quantitativament i qualitativament per obtenir conclusions sobre la similitud entre ambdós tipus d'atenció.
 
 \section{Disponibilitat del codi}
 
