@@ -101,7 +101,6 @@ eye_tracker_sexism/
 │
 ├── latex/
 │   ├── main.tex                         # Document principal del TFG
-│   ├── preamble.tex                     # Configuració LaTeX
 │   ├── capitols/
 │   │   ├── intro.tex                    # Introducció
 │   │   ├── marcz.tex                    # Marc teòric
