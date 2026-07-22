@@ -123,11 +123,11 @@ Per comprendre els patrons d'atenció dels models i comparar-los amb els patrons
 En aquest treball hem implementat quatre mètodes d'atribució:
 
 \begin{itemize}
-    \item \textbf{Saliency}: Mètode basat en gradients que calcula la derivada de la sortida respecte als \textit{embeddings} d'entrada. És útil per identificar quins tokens tenen major impacte en la decisió del model.
-    \item \textbf{Input X Gradient}: Multiplica l'entrada pels gradients per obtenir una mesura de la importància de cada característica, proporcionant atribucions més estables que el saliency simple.
-    \item \textbf{Integrated Gradients (IG)}: Aquest mètode calcula la integral dels gradients al llarg d'un camí des d'una línia base (normalment zeros) fins a l'entrada real.
+    \item \textbf{Saliency}~\cite{simonyan2013deep}: Mètode basat en gradients que calcula la derivada de la sortida respecte als \textit{embeddings} d'entrada. És útil per identificar quins tokens tenen major impacte en la decisió del model.
+    \item \textbf{Input X Gradient}~\cite{shrikumar2016not}: Multiplica l'entrada pels gradients per obtenir una mesura de la importància de cada característica, proporcionant atribucions més estables que el saliency simple.
+    \item \textbf{Integrated Gradients (IG)}~\cite{sundararajan2017axiomatic}: Aquest mètode calcula la integral dels gradients al llarg d'un camí des d'una línia base (normalment zeros) fins a l'entrada real.
     Proporciona una atribució més robusta que el \textit{saliency} simple i inclou una mètrica de convergència (\textit{delta}) que indica la qualitat de l'atribució.
-    \item \textbf{LRP} (\textit{Layer-wise Relevance Propagation})~\cite{LRP}: atribueix la predicció a característiques d'entrada mitjançant la redistribució de puntuacions de rellevància des de la capa de sortida fins a l'entrada.
+\item \textbf{Layer-wise Relevance Propagation (LRP)}~\cite{LRP}: atribueix la predicció a característiques d'entrada mitjançant la redistribució de puntuacions de rellevància des de la capa de sortida fins a l'entrada.
     LRP és determinista, en el sentit que garanteix la reproductibilitat de les explicacions per a una mateixa entrada.
 \end{itemize}
 
