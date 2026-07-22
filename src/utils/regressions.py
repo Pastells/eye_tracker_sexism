@@ -654,20 +654,35 @@ def get_top_hotspots_per_text(
     salient_source_tokens,
     texts,
     text_ids,
+    perm_target_qvalues=None,
+    perm_source_qvalues=None,
     n_top=10,
 ):
     """Get top N significant regression tokens per text (TO and FROM combined).
 
-    Filters stopwords and reports the percentage.
+    Prioritises permutation-significant tokens (q < 0.05), then fills
+    remaining slots with z-score significant tokens. Filters stopwords
+    and reports the percentage.
 
     Returns:
-        hotspots_df: DataFrame with text_id, direction, token, position, z_score, is_stopword
+        hotspots_df: DataFrame with text_id, direction, token, position, z_score, is_stopword, perm_sig
         stopword_pct: float, percentage of significant tokens that are stopwords
     """
     import nltk
 
     nltk.download("stopwords", quiet=True)
     es_stopwords = set(nltk.corpus.stopwords.words("spanish"))
+
+    # Build permutation-significant sets
+    perm_sig_pairs = set()
+    if perm_target_qvalues is not None and perm_source_qvalues is not None:
+        for text_id in text_ids:
+            for idx, q in enumerate(perm_target_qvalues.get(text_id, [])):
+                if q < 0.05:
+                    perm_sig_pairs.add((text_id, idx))
+            for idx, q in enumerate(perm_source_qvalues.get(text_id, [])):
+                if q < 0.05:
+                    perm_sig_pairs.add((text_id, idx))
 
     records = []
     for text_id in text_ids:
@@ -693,18 +708,21 @@ def get_top_hotspots_per_text(
             subset="token_idx", keep="first"
         )
 
-        # Add token text and stopword flag
+        # Add token text, stopword flag, and permutation significance
         combined["token"] = combined["token_idx"].apply(
             lambda i: tokens[i] if i < len(tokens) else "?"
         )
         combined["is_stopword"] = (
             combined["token"].str.lower().str.strip(".,;:!?()\"'¿¡").isin(es_stopwords)
         )
+        combined["perm_sig"] = combined.apply(
+            lambda row: (text_id, row["token_idx"]) in perm_sig_pairs, axis=1
+        )
         combined["text_id"] = text_id
 
         records.append(
             combined[
-                ["text_id", "direction", "token", "token_idx", "z_score", "is_stopword"]
+                ["text_id", "direction", "token", "token_idx", "z_score", "is_stopword", "perm_sig"]
             ]
         )
 
@@ -718,21 +736,28 @@ def get_top_hotspots_per_text(
     total_sw = all_hotspots["is_stopword"].sum()
     stopword_pct = 100 * total_sw / max(total_sig, 1)
 
-    # For each text, take top n_top non-stopword tokens (if available), else top n_top overall
+    # For each text: prefer permutation-significant lexical words, then fill
     top_records = []
     for text_id in text_ids:
         text_all = all_hotspots[all_hotspots["text_id"] == text_id].copy()
         if len(text_all) == 0:
             continue
 
-        # Prefer lexical words
-        lexical = text_all[~text_all["is_stopword"]].head(n_top)
-        if len(lexical) < n_top:
-            # Fill remaining with stopwords if needed
-            remaining = text_all[text_all["is_stopword"]].head(n_top - len(lexical))
-            lexical = pd.concat([lexical, remaining])
+        # Tier 1: permutation-significant non-stopwords
+        tier1 = text_all[text_all["perm_sig"] & ~text_all["is_stopword"]].head(n_top)
+        # Tier 2: remaining permutation-significant (stopwords)
+        remaining_perm = n_top - len(tier1)
+        tier2 = text_all[text_all["perm_sig"] & text_all["is_stopword"]].head(remaining_perm)
+        # Tier 3: z-score significant non-stopwords
+        remaining_z = n_top - len(tier1) - len(tier2)
+        used_idx = set(tier1["token_idx"].tolist() + tier2["token_idx"].tolist())
+        tier3 = text_all[~text_all["perm_sig"] & ~text_all["is_stopword"] & ~text_all["token_idx"].isin(used_idx)].head(remaining_z)
+        # Tier 4: remaining z-score significant stopwords
+        remaining_sz = n_top - len(tier1) - len(tier2) - len(tier3)
+        used_idx2 = used_idx | set(tier3["token_idx"].tolist())
+        tier4 = text_all[~text_all["perm_sig"] & text_all["is_stopword"] & ~text_all["token_idx"].isin(used_idx2)].head(remaining_sz)
 
-        top_records.append(lexical)
+        top_records.append(pd.concat([tier1, tier2, tier3, tier4]))
 
     hotspots_df = (
         pd.concat(top_records, ignore_index=True) if top_records else pd.DataFrame()

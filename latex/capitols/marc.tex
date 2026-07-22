@@ -52,7 +52,7 @@ A més, també es van anotar la implicitud del sexisme~\cite{schmeisser2022crite
 
 \subsection{Estructura del corpus}
 
-Cada instància del corpus proporciona les variables següents, rellevants per als criteris de selecció descrits a la Secció~\ref{sec:filtratge}:
+Cada instància del corpus proporciona les variables següents, rellevants per als criteris de selecció descrits a la \autoref{sec:filtratge}:
 \begin{itemize}
     \item \texttt{sexist\_text}: etiqueta binària que indica si el text,
     aïllat del context audiovisual, es considera sexista.
@@ -69,7 +69,7 @@ Cada instància del corpus proporciona les variables següents, rellevants per a
 La fiabilitat de les anotacions es va mesurar amb la $\kappa$ de Fleiss.
 Per a l'anotació textual, s'obté una $\kappa=0,719$ (equip~1) i $0,717$ (equip~2), que augmenta fins a $0,834$ i $0,853$ respectivament en l'anotació del vídeo complet, indicant un acord \textit{substancial}~\cite{landis1977measurement}.
 La millora d'incorporar modalitats addicionals suggereix que el sexisme és, en alguns casos, difícil de detectar únicament a partir del text, a causa de la dificultat d'identificar formes implícites de sexisme o la possible contradicció entre contingut verbal i no verbal.
-Precisament aquest fet motiva el criteri de coherència entre modalitats descrit a la metodologia (Secció~\ref{sec:filtratge}).
+Precisament aquest fet motiva el criteri de coherència entre modalitats descrit a la metodologia (\autoref{sec:filtratge}).
 
 
 \section{Lectura i eye-tracking}
@@ -79,7 +79,7 @@ Durant les fixacions, el lector processa la informació d'una àrea focal de 3--
 L'\textit{eye-tracking} és una tècnica no invasiva que permet registrar els moviments oculars durant la lectura.
 Ens aporta informació indirecta, però objectiva, sobre els processos cognitius \cite{conklinEyeTrackingGuideApplied2018}.
 Aquesta idea s'anomena \textit{mind-eye hypothesis} (hipòtesi ull-ment)~\cite{just1980theory}: els ulls són una finestra a la ment.
-La hipòtesi se sosté en dues premises~\cite{pickering2004eye}, 1) allò en què es fixen els ulls és el que s'està processant mentalment, i 2) com més temps en una regió més esforç cognitiu.
+La hipòtesi se sosté en dues premisses~\cite{pickering2004eye}, 1) allò en què es fixen els ulls és el que s'està processant mentalment, i 2) com més temps en una regió més esforç cognitiu.
 
 Així doncs, els moviments oculars proporcionen una mesura en temps real del processament lingüístic: les fixacions reflecteixen l'atenció i l'esforç cognitiu, mentre que les sacades indiquen els moviments entre regions textuals.
 Les mètriques d'\textit{eye-tracking} més utilitzades en la recerca sobre lectura inclouen:
@@ -91,7 +91,7 @@ Les mètriques d'\textit{eye-tracking} més utilitzades en la recerca sobre lect
     \item \textbf{Regressions}: moviments oculars cap enrere (dreta a esquerra en escrits d'esquerra a dreta) que reflecteixen reprocessament, verificació o resolució d'ambigüitat. Taxes més altes de regressió indiquen fragments del text que generen més dificultat de processament.
 \end{itemize}
 
-Aquestes mètriques proporcionen una mesura no només del processament superficial (reconeixement de paraules), sinó també de la integració semàntica i pragmàtica, i estan correlacionades amb la càrrega cognitiva associada al processament del llenguatge. Per més informació sobre la TFD i les regressions, vegeu l'Apèndix~\ref{app:tfd}.
+Aquestes mètriques proporcionen una mesura no només del processament superficial (reconeixement de paraules), sinó també de la integració semàntica i pragmàtica, i estan correlacionades amb la càrrega cognitiva associada al processament del llenguatge. Per a més informació sobre la TFD i les regressions, vegeu l'\autoref{app:tfd}.
 
 \subsection{Corpus d'eye-tracking per al PLN}
 
@@ -107,7 +107,7 @@ Els autors extreuen diferents característiques oculars per a cada paraula i fra
 \textbf{ZuCo 2.0} \cite{hollenstein_zuco_2020} amplia el predecessor amb 18 subjectes i contrasta la lectura normal amb la lectura específica per la tasca. Demostra que l'objectiu de la lectura modifica profundament els patrons d'atenció visual, una qüestió que també abordem quan comparem l'atenció humana (lectura per comprensió) amb les atribucions del model (classificació de sexisme).
 
 \textcite{arcosMultimodalSensorData2024} aplica dades d'\textit{eye-tracking}, freqüència cardíaca i (EEG) a la detecció de sexisme en mems.
-Mostren que els mems sexistes requereixen un major esforç cognitiu, manifestat en temps de reacció més llargs i un nombre de fixacions superior, amb un gradient que augmenta des dels mems no sexistes fins als sexistes crítics.
+Mostren que els mems sexistes requereixen més esforç cognitiu, manifestat en temps de reacció més llargs i un nombre de fixacions superior, amb un gradient que augmenta des dels mems no sexistes fins als sexistes crítics.
 A més, el seu model, que integra text i imatge amb EEG i \textit{eye-tracking} aconsegueix un AUC de 0,8 en la detecció binària, una millora del 3,4\% respecte a un model base només de text i imatge.
 Demostra, doncs, que les respostes fisiològiques proporcionen un senyal que complementa el contingut, i que la fusió multimodal millora el rendiment en la detecció de sexisme.
 
@@ -143,7 +143,7 @@ A més, la nostra aproximació tripartida (anotacions, eye-tracking i models) pe
 
 \subsection{Variabilitat en explicacions: humans vs.\ models}
 
-\textcite{bogaert_explanation_2026} comparen anotacions humanes (tokens ressaltats) amb explicacions generades mitjançant LRP (vegeu la Secció~\ref{sec:metodes}) de models transformer adaptats.
+\textcite{bogaert_explanation_2026} comparen anotacions humanes (tokens ressaltats) amb explicacions generades mitjançant LRP (vegeu la \autoref{sec:metodes}) de models transformer adaptats.
 Identifiquen diferències notables en diferents àmbits. 
 Quant a granularitat, els humans destaquen segments més llargs i semànticament rellevants, mentre que els models produeixen atribucions més difuses a escala de token.
 Els humans mostren més acord en els tokens més rellevants, mentre que els models tendeixen a coincidir més quan es consideren tots els tokens.

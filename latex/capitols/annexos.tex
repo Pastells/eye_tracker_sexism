@@ -1,8 +1,11 @@
 \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+\hypersetup{bookmarksdepth=0}
 \chapter{Funcionament Eye-tracker}\label{sec:tobii}
 
 Utilitzem l'eye-tracker Tobii Pro Spectrum, que enregistra quina zona de la pantalla s'està mirant a 600Hz.
 El software Tobii Pro Lab calcula les fixacions, i permet definir cada paraula d'un text com a àrea d'interés (AOI en les seves sigles en anglès).
+El software de Tobii permet fer anàlisis algunes mètriques, però és limitat en certs aspectes, com el càlcul de regressions.
+Per això exportem les dades i calculem nosaltres les mètriques d'eye-tracking: FFD, TFD, FC i regressions.
 
 El problema a l'hora d'exportar les dades és que Tobii Pro Lab no optimitza el format.
 En comptes de crear un fitxer per a cada text, crea un fitxer amb tots els temps com a fila i totes les AOI com a columna.
