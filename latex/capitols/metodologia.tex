@@ -1,19 +1,19 @@
 \section{Selecció de textos de MuSeD}\label{sec:filtratge}
 
-A partir del corpus original, es van seleccionar 40 textos (20 sexistes i 20 no sexistes) seguint els criteris següents:
+A partir del corpus MuSeD, es van seleccionar 40 textos (20 sexistes i 20 no sexistes) seguint els criteris següents:
 
 \begin{enumerate}
     \item \textbf{Coherència entre modalitats}: només es van conservar les instàncies en què l'etiqueta textual i la multimodal coincideixen (\texttt{sexist\_text} $=$ \texttt{sexist\_video}).
     \item \textbf{Acord total entre anotadors}: es van descartar les instàncies amb valors intermedis de \texttt{sexist\_soft}, mantenint només aquelles amb consens ($\texttt{sexist\_soft} \in \{0, 1\}$).
-    \item \textbf{Longitud}: es van prioritzar els textos més curts o amb spans anotats més curts per tal de mantenir una durada raonable de la sessió experimental i tenir major explicabilitat a l'hora de fer l'anàlisi.
+    \item \textbf{Longitud}: es van prioritzar els textos més curts o amb segments anotats més curts per tal de mantenir una durada raonable de la sessió experimental i tenir major explicabilitat a l'hora de fer l'anàlisi.
     Considerant una velocitat de lectura aproximada de 1.000 caràcters per minut, els 40 textos seleccionats suposen aproximadament 17 minuts de lectura, als quals cal afegir el temps de calibratge i de \textit{stimulated recall} (vegeu \autoref{sec:procediment}).
     \item \textbf{Comprensibilitat autònoma}: es van descartar textos amb vocabulari estrany (per un oient català).
     Quan era necessari, es van fer petites edicions per millorar-ne la llegibilitat (afegir cometes, indicar qui parla en fragments dialogats, etc.).
-    \item \textbf{Validació manual}: cada text candidat es va revisar individualment, escoltant l'àudio original i inspeccionant visualment les anotacions de \textit{span} per confirmar-ne l'adequació (vegeu l'\autoref{sec:spans_viz}).
+    \item \textbf{Validació manual}: cada text candidat es va revisar individualment, escoltant l'àudio original i inspeccionant visualment les anotacions de segment per confirmar-ne l'adequació (vegeu l'\autoref{sec:spans_viz}).
 \end{enumerate}
 
 
-Cal dir que els textos sexistes tendeixen a ser més llargs que els no sexistes, i que les anotacions dels \textit{spans} cobreixen una proporció considerable del text en ambdós grups.
+Cal dir que els textos sexistes tendeixen a ser més llargs que els no sexistes, i que les anotacions dels segments cobreixen una proporció considerable del text en ambdós grups.
 Les taules~\ref{tab:corpus_stats} i~\ref{tab:corpus_labels} resumeixen les estadístiques descriptives i la distribució de categories dels textos seleccionats.
 En total, els 40 textos contenen 2.901 paraules. La llista completa dels textos, amb les categories binàries assignades, es troba a l'\autoref{sec:appendix_texts}.
 
@@ -26,8 +26,8 @@ En total, els 40 textos contenen 2.901 paraules. La llista completa dels textos,
         & Mitjana & D.E. & Mitjana & D.E. \\
         \midrule
         Longitud (caràcters)      & 388,9 & 137,9 & 439,4 & 173,4 \\
-        Nombre de \textit{spans}  & 0,95  & 0,50  & 1,83  & 0,75  \\
-        Longitud dels \textit{spans} & 255,7 & 139,6 & 362,7 & 205,3 \\
+        Nombre de segments  & 0,95  & 0,50  & 1,83  & 0,75  \\
+        Longitud dels segments & 255,7 & 139,6 & 362,7 & 205,3 \\
         \bottomrule
     \end{tabular}
     \caption{Estadístiques descriptives dels 40 textos seleccionats (D.E.:
@@ -74,7 +74,7 @@ En total, els 40 textos contenen 2.901 paraules. La llista completa dels textos,
 % \begin{figure}[ht]
 %     \centering
 %     \includegraphics[width=\linewidth]{figures/exemple_anotacio.pdf}
-%     \caption{Exemple d'un text sexista amb els \textit{spans} anotats ressaltats.
+%     \caption{Exemple d'un text sexista amb els segments anotats ressaltats.
 %     Cada fragment destacat correspon a una porció del text identificada com a
 %     sexista pels anotadors del corpus MuSeD.}
 %     \label{fig:exemple_anotacio}
@@ -96,7 +96,8 @@ Els participants podien fer preguntes o esmenar equivocacions durant la pregunta
 
 Un cop acabada la lectura es revisaven 7 textos prèviament seleccionats (\textit{stimulated recall}).
 Es grabava la pantalla d'ordinador i l'àudio de la conversa amb OBS Studio mentre es mostrava el procés de lectura amb Tobii Pro Lab, on es veuen les fixacions i regressions.
-Durant aquest procés es preguntava si el participant s'havia fixat en alguna paraula o frase en concret per algun motiu, què havia pensat sobre el text, etc.
+Durant aquest procés es preguntava si el participant s'havia fixat en alguna paraula o frase en concret per algun motiu, o si havia pensat quelcom en concret sobre el text. 
+Per exemple, si havia trobat difícil alguna paraula o li havia sobtat un concepte.
 
 \section{Models de llenguatge}
 
@@ -104,10 +105,10 @@ Durant aquest procés es preguntava si el participant s'havia fixat en alguna pa
 
 En aquest treball fem ús de diferents models basats en l'arquitectura \textit{transformer} \cite{vaswaniAttentionAllYou2017}, concretament del tipus BERT (\textit{Bidirectional Encoder Representations from Transformers})~\cite{devlin2019bert}.
 Són models \textit{encoder-only} que han demostrat bon rendiment en tasques de classificació de text.
-En el nostre cas, utilitzem tres variants en castellà: mBERT (la versió multilingüe del BERT original), BETO~\cite{canete2023spanish} (un dels primers models adaptats només al castellà) i el més recent \textit{BSC-LT/MrBERT-es}~\cite{tamayo2026mrbert} (basat en ModerBERT).
+En el nostre cas, utilitzem tres variants en castellà: mBERT (la versió multilingüe del BERT original), BETO~\cite{canete2023spanish} (un dels primers models adaptats només al castellà) i el més recent MrBERT-es~\cite{tamayo2026mrbert} (basat en ModerBERT).
 
 El procés d'adaptació (\textit{finetuning}) consisteix a modificar aquests models preentrenats per la nostra tasca específica de detecció de sexisme.
-Vegeu el codi per a més detalls sobre la implementació, que inclou la preparació de les dades, la configuració del model i l'entrenament utilitzant la llibreria \textit{transformers} de HuggingFace.
+Vegeu el codi per a més detalls sobre la implementació, que inclou la preparació de les dades, la configuració del model i l'entrenament utilitzant la llibreria \textit{transformers} de HuggingFace\footnote{https://huggingface.co/docs/transformers/en/index}.
 
 % \subsection{Models de llenguatge extensos}
 %
