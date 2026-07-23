@@ -170,13 +170,22 @@ def load_eye_tracking_data():
     general_path = os.path.join(DATA_DIR, "tobii", "general.tsv")
     general = pd.read_csv(general_path, sep="\t")
     general = general.drop_duplicates(subset=["Participant name"])
-    general = general.sort_values("Participant name").reset_index(drop=True)
-    gender_map = general.set_index("Participant name")["sexe"].to_dict()
+    gender_series = general.set_index("Participant name")["sexe"]
+
+    def lookup_gender(name):
+        if name in gender_series.index:
+            return gender_series[name]
+        lower = name.lower().split("_")[0]
+        for gs_name, gs_gender in gender_series.items():
+            if gs_name.lower() == lower:
+                return gs_gender
+        return None
+
     male_count, female_count = 0, 0
     p_map = {}
-    for p in sorted(gender_map.keys()):
-        sex = gender_map[p]
-        if sex == "male":
+    for p in participants:
+        sex = lookup_gender(p)
+        if sex == "home":
             male_count += 1
             p_map[p] = f"M{male_count}"
         else:

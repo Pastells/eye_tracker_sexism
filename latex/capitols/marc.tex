@@ -101,13 +101,13 @@ Aquestes mètriques proporcionen una mesura no només del processament superfici
 En el camp del PLN, existeixen diversos corpus d'\textit{eye-tracking} per a l'entrenament i avaluació de models computacionals.
 Aquests corpus permeten entrenar models predictius de fixacions i explorar la relació entre atenció humana i mecanismes d'atenció en models de llenguatge.
 
-\textbf{ZuCo} \cite{hollenstein_zuco_2018} és un recurs simultani d'electroencefalografia (EEG) i \textit{eye-tracking} amb 12 subjectes que llegeixen frases angleses.
+ZuCo \cite{hollenstein_zuco_2018} és un recurs simultani d'electroencefalografia (EEG) i \textit{eye-tracking} amb 12 subjectes que llegeixen frases angleses.
 El corpus inclou 21.629 paraules en 1.107 frases, amb 154.173 fixacions enregistrades.
 Els materials inclouen frases de ressenyes de pel·lícules amb etiquetes de sentiment i paràgrafs biogràfics de Wikipedia amb relacions semàntiques anotades.
 Els participants executen tres tasques: dues de lectura normal (amb materials diferents) i una tasca específica de cerca de relacions.
 Els autors extreuen diferents característiques oculars per a cada paraula i frase, com la FFD, o el temps total de lectura.
 
-\textbf{ZuCo 2.0} \cite{hollenstein_zuco_2020} amplia el predecessor amb 18 subjectes i contrasta la lectura normal amb la lectura específica per la tasca. Demostra que l'objectiu de la lectura modifica profundament els patrons d'atenció visual, una qüestió que també abordem quan comparem l'atenció humana (lectura per comprensió) amb les atribucions del model (classificació de sexisme).
+ZuCo 2.0 \cite{hollenstein_zuco_2020} amplia el predecessor amb 18 subjectes i contrasta la lectura normal amb la lectura específica per la tasca. Demostra que l'objectiu de la lectura modifica profundament els patrons d'atenció visual, una qüestió que també abordem quan comparem l'atenció humana (lectura per comprensió) amb les atribucions del model (classificació de sexisme).
 
 \textcite{arcosMultimodalSensorData2024} aplica dades d'\textit{eye-tracking}, freqüència cardíaca i EEG a la detecció de sexisme en mems.
 Mostren que els mems sexistes requereixen més esforç cognitiu, manifestat en temps de reacció més llargs i un nombre de fixacions superior, amb un gradient que augmenta des dels mems no sexistes fins als sexistes crítics.
@@ -117,7 +117,7 @@ Demostra, doncs, que les respostes fisiològiques proporcionen un senyal que com
 
 \section{Comparació entre atenció humana i computacional}
 
-La intersecció entre patrons d'atenció humans i mecanismes d'atenció computacionals ha emergit com un camp crític en interpretabilitat de la IA i lingüística cognitiva.
+La intersecció entre patrons d'atenció humans i mecanismes d'atenció computacionals ha emergit com un camp crític en interpretabilitat~\cite{lipton2018mythos} de la IA i lingüística cognitiva.
 \textcite{soodInterpretingAttentionModels2020} van proposar un mètode sistemàtic per comparar atenció humana i atenció computacional en tasques de comprensió lectora, utilitzant un nou corpus d'\textit{eye-tracking}, MQA-RC\footnote{MovieQA Reading Comprehension, QA=Question Answering}, amb 23 subjectes.
 Observen que models basats en LSTM i CNN tenen una correlació significativa entre la similitud amb l'atenció humana i el rendiment (Spearman $\rho = -0,73$ i $-0,72$ respectivament, $p < 0,001$), però aquesta relació no es manté per a models Transformer com XLNet~\cite{yang2019xlnet} ($\rho = -0,16$, $p = 0,381$).
 A més, la divergència de Kullback-Leibler (divergència KL) entre l'atenció LSTM i humana ($0,018$) és significativament menor que la de XLNet ($0,022$), suggerint que diferents arquitectures aprenen estratègies d'atenció diferents i que la similitud amb l'atenció humana no garanteix el millor rendiment.
@@ -127,7 +127,7 @@ Aquesta observació té implicacions directes per al nostre treball: si els mode
 Analitzen tres tasques (anàlisi de sentiment, classificació de relacions, pregunta-resposta), quatre mètodes d'interpretabilitat (gradient simple, Integrated Gradients, pertorbació d'entrada i atenció) i tres arquitectures (LSTM, CNN i Transformer).
 Es basen en dos conjunts de dades d'\textit{eye-tracking}: ZuCo i MQA-RC.
 
-Per mesurar la conformitat entre la prominència del model i l'atenció humana, proposen la \textbf{Saliency Distance} (SD), definida com la divergència KL entre la distribució de prominència sobre les paraules d'entrada (obtinguda d'un mètode d'interpretabilitat) i una característica d'\textit{eye-tracking} (FC o FFD).
+Per mesurar la conformitat entre la prominència del model i l'atenció humana, proposen la Saliency Distance (SD), definida com la divergència KL entre la distribució de prominència sobre les paraules d'entrada (obtinguda d'un mètode d'interpretabilitat) i una característica d'\textit{eye-tracking} (FC o FFD).
 Una SD més petita indica major similitud entre les distribucions, és a dir, el model centra l'atenció en les mateixes paraules que els humans.
 Els seus resultats principals són:
 
@@ -154,15 +154,17 @@ Els humans mostren més acord en els tokens més rellevants, mentre que els mode
 Pel que fa a la sensibilitat a la classe de contingut, en textos d'opinió els humans tenen més acord, mentre que en textos de notícies són els models els que mostren major consistència.
 \todo{això també es podria mirar}
 
-\subsection{Efecte Rashomon}
-
-L'efecte Rashomon~\cite{breiman2003statistical} estableix que múltiples models amb rendiment similar poden produir explicacions radicalment diferents per a la mateixa predicció.
-Això qüestiona la noció de \textit{l'única} explicació correcta d'un model.
-Models funcionalment equivalents (precisió estadísticament indiferent) poden divergir significativament en les seves explicacions.
+Aquesta variabilitat en les explicacions no és exclusiva de la comparació humà-model, sinó que també es manifesta entre models funcionalment equivalents.
+L'efecte Rashomon~\cite{breiman2003statistical} estableix que múltiples models amb rendiment similar poden produir explicacions radicalment diferents per a la mateixa predicció, la qual cosa qüestiona la noció de \textit{l'única} explicació correcta d'un model.
 Si els models poden arribar a la mateixa conclusió per camins diferents, l'alineament amb processos humans es converteix en un criteri de disseny explícit, i la variabilitat en les explicacions esdevé una propietat inherent a quantificar, no un soroll a eliminar.
 
+\subsection{Plausibilitat i fidelitat}
 
-\section{Enfocament tripartit: models, anotacions i eye-tracking}
+Adoptem el marc de \textcite{jacovi2020towards}, que distingeix entre la plausibilitat d'una explicació, és a dir, la mesura en què resulta convincent per a un observador humà i s'alinea amb les seves expectatives sobre els factors rellevants, i la seva fidelitat, la mesura en què reflecteix el procés real de decisió del model.
+
+L'enfocament tripartit que proposem permet situar cadascuna de les nostres fonts de dades en aquest marc: les anotacions humanes (segments ressaltats) permeten avaluar la plausibilitat de les explicacions; les dades d'\textit{eye-tracking} ofereixen una mesura més objectiva de la fidelitat, ja que els moviments oculars reflecteixen processos cognitius implícits i menys subjectius; i la combinació d'ambdues fonts permet explorar la possible tensió entre aquests dos objectius.
+
+\section{Enfocament tripartit i hipòtesis del treball}
 
 El nostre treball expandeix el marc de~\textcite{bogaert_explanation_2026} incorporant dades d'\textit{eye-tracking} que capturen patrons d'atenció visual real durant la lectura.
 Aquesta aproximació permet establir tres comparacions: entre les atribucions dels models i els segments textuals marcats per anotadors humans com a rellevants; entre les atribucions del model i les mètriques d'\textit{eye-tracking} per token o regió textual; i entre els patrons d'atenció visual (inconscients, capturats per \textit{eye-tracking}) i les decisions conscients de ressaltar fragments rellevants (anotacions).
@@ -171,12 +173,7 @@ A partir d'aquest marc, plantegem tres hipòtesis:
 
 \begin{itemize}
     \item \textbf{H1}: Els models adaptats mostraran un alineament moderat amb els patrons humans, amb diferències notables de granularitat, seguint~\textcite{bogaert_explanation_2026}.
-    \item \textbf{H2}: L'alineament serà major per a sexisme explícit que per a casos de sexisme implícit, homor o ironia.
+    \item \textbf{H2}: L'alineament serà major per a sexisme explícit que per a casos de sexisme implícit, humor o ironia.
     \item \textbf{H3}: Les tres fonts de dades proporcionaran informació complementària entre si.
 \end{itemize}
 
-\subsection{Plausibilitat i fidelitat}
-
-Adoptem el marc de \textcite{jacovi2020towards}, que distingeix entre la \textbf{plausibilitat} d'una explicació, és a dir, la mesura en què resulta convincent per a un observador humà i s'alinea amb les seves expectatives sobre els factors rellevants, i la seva \textbf{fidelitat}, la mesura en què reflecteix el procés real de decisió del model.
-
-L'enfocament tripartit que proposem permet situar cadascuna de les nostres fonts de dades en aquest marc: les anotacions humanes (segments ressaltats) permeten avaluar la plausibilitat de les explicacions; les dades d'\textit{eye-tracking} ofereixen una mesura més objectiva de la fidelitat, ja que els moviments oculars reflecteixen processos cognitius implícits i menys subjectius; i la combinació d'ambdues fonts permet explorar la possible tensió entre aquests dos objectius.

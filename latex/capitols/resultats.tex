@@ -1,16 +1,16 @@
-Aquest capítol descriu l'anàlisi de les anotacions de sexisme durant l'experiment amb l'eye-tracker, comparades amb el \textit{gold standard} de MuSeD, així com l'anàlisi de les dades de seguiment ocular (fixacions, regressions) i la seva relació amb les anotacions span del gold standard.
-L'anàlisi cobreix mètriques d'exactitud, concordança entre anotadors, calibratge de la confiança, diferències de gènere, detecció de subcategories, proves de significació estadística, mètriques de distribució ocular, i detecció de \textit{hotspots} de regressió.
+Aquest capítol presenta l'anàlisi de les anotacions de sexisme realitzades pels participants durant l'experiment amb eye-tracker, comparades amb el \textit{gold standard} de MuSeD, així com l'anàlisi de les dades de seguiment ocular (fixacions, regressions) i la seva relació amb les anotacions de segments del gold standard.
 
-La gran limitació d'aquest treball és que amb 10 participants i 40 textos, la potència estadística és limitada.
-Per tant, els resultats s'han d'interpretar amb compte.
+L'anàlisi cobreix mètriques d'exactitud, concordança entre anotadors, calibratge de la confiança, diferències de gènere, detecció de subcategories, proves de significació estadística, mètriques de distribució ocular, detecció de \textit{hotspots} de regressió, i comparació entre atenció humana i la prominència de models de xarxes neuronals.
 
-\section{Resultats dels participants en l'anotació}
+\section{Resultats de les anotacions dels participants}
 
-Veiem primer les anotacions dels participants sobre si troben el text sexista o no, comparats amb el gold standard.
-Vuit dels deu participants obtenen resultats significativament superiors a l'atzar ($p < 0.01$), com es mostra a la Taula~\ref{tab:participant_accuracy}.
-Dos participants no assoleixen la significació, tot i que la seva exactitud (62.5\%) és superior a l'atzar.
-El nom dels participants s'ha omés per privacitat, anomanem els participants M1--5 (homes) i F1--5 (dones).
+Primer, examinem les anotacions dels participants sobre si consideren el text sexista o no, comparant-les amb el \textit{gold standard}.
+Com es mostra a la La \autoref{tab:participant_accuracy}, vuit dels deu participants assoleixen resultats significativament superiors a l'atzar ($p < 0,01$).
+Dos participants (F2 i F4) no arriben a la significació estadística, tot i que la seva exactitud (62,5\%) és superior a l'atzar.
+Això ens indica que els participants van executar la tasca correctament amb la suficient atenció.
 
+Els participants s'identifiquen amb codis M1–5 (homes) i F1–5 (dones) per mantenir la privacitat.
+Els anotadors M3 i F5 van ser anotadors de MuSeD. Veiem que són els que obtenen exactituds més altes.
 
 \begin{table}[htbp]
 \centering
@@ -18,23 +18,29 @@ El nom dels participants s'ha omés per privacitat, anomanem els participants M1
 \toprule
 Participant & Exactitud & valor $p$ \\
 \midrule
-M3 & 100.0\% & $< 0.001$ ** \\
-F5 &  92.5\% & $< 0.001$ ** \\
-M1 &  90.0\% & $< 0.001$ ** \\
-M5 &  87.5\% & $< 0.001$ ** \\
-F1 &  85.0\% & $< 0.001$ ** \\
-M2 &  82.5\% & $< 0.001$ ** \\
-F3 &  82.5\% & $< 0.001$ ** \\
-M4 &  82.5\% & $< 0.001$ ** \\
-F2 &  62.5\% & $= 0.077$ ns \\
-F4 &  62.5\% & $= 0.077$ ns \\
+M3 & 100,0\% & $< 0,001$ ** \\
+F5 &  92,5\% & $< 0,001$ ** \\
+M1 &  90,0\% & $< 0,001$ ** \\
+M5 &  87,5\% & $< 0,001$ ** \\
+F1 &  85,0\% & $< 0,001$ ** \\
+M2 &  82,5\% & $< 0,001$ ** \\
+F3 &  82,5\% & $< 0,001$ ** \\
+M4 &  82,5\% & $< 0,001$ ** \\
+F2 &  62,5\% & $= 0,077$ ns \\
+F4 &  62,5\% & $= 0,077$ ns \\
 \bottomrule
 \end{tabular}
 \caption{Exactitud de cada participant comparada amb l'atzar (prova binomial, bilateral).}
 \label{tab:participant_accuracy}
 \end{table}
 
-\paragraph{Diferències de gènere.}
+La mitjana d'exactitud és del 82,7\%, la majoria dels participants identifiquen correctament el contingut sexista. 
+Això dona validesa a les dades de seguiment ocular recollides, ja que provenen de participants que executen la tasca amb competència.
+
+\subsection{Diferències per gènere}
+
+La \autoref{tab:gender} presenta les comparacions basades en el gènere dels participants.
+La prova U de Mann-Whitney sobre l'exactitud per text mostra una diferència significativa, però de petita magnitud ($U = 1001,5$, $p = 0,035$). No obstant això, aquesta diferència no es manté quan examinem específicament els errors en textos sexistes (prova exacta de Fisher, OR $= 0,72$, $p = 0,468$ ns).
 
 \begin{table}[htbp]
 \centering
@@ -42,189 +48,184 @@ F4 &  62.5\% & $= 0.077$ ns \\
 \toprule
 Prova & Estadístic & valor $p$ \\
 \midrule
-U de Mann-Whitney (exactitud per text) & $U = 1001.5$ & $0.035$ * \\
-Exacta de Fisher (errors en textos sexistes) & OR $= 0.72$ & $0.468$ ns \\
+U de Mann-Whitney (exactitud per text) & $U = 1001,5$ & $0,035$ * \\
+Exacta de Fisher (errors en textos sexistes) & OR $= 0,72$ & $0,468$ ns \\
 \bottomrule
 \end{tabular}
-\caption{Comparacions basades en el gènere.}
+\caption{Comparacions de l'exactitud basades en el gènere del participant. OR=Oportunitat relativa.}
 \label{tab:gender}
 \end{table}
 
-Pel que fa al gènere, la prova U de Mann-Whitney revela una diferència significativa en les distribucions d'exactitud per text: els participants homes superen les participants dones sobre els textos compartits ($p = 0.035$).
-La mediana d'exactitud dels homes és 1.000 mentre que la de les dones és 0.800.
-No obstant això, la prova exacta de Fisher sobre el nombre d'errors específicament en els textos sexistes no assoleix la significació ($p = 0.468$): els homes van cometre 16 errors en 100 anotacions (16.0\%) i les dones 21 en 100 (21.0\%), cosa que suggereix que la diferència de gènere ve donada pel rendiment en els textos no sexistes.
+\subsection{Calibratge de la confiança}
 
-\paragraph{Anàlisi de la confiança.}
-
-\begin{table}[htbp]
-\centering
-\begin{tabular}{lll}
-\toprule
-Prova & Estadístic & valor $p$ \\
-\midrule
-Rho de Spearman (confiança vs.\ encert) & $\rho = 0.29$ & $< 0.001$ ** \\
-Kruskal-Wallis (exactitud $\sim$ nivell de confiança) & $H = 35.9$ & $< 0.001$ ** \\
-\bottomrule
-\end{tabular}
-\caption{Proves d'associació entre confiança i exactitud.}
-\label{tab:confidence}
-\end{table}
-
-La confiança autoinformada dels participants està significativament calibrada: una confiança més alta s'associa amb una exactitud més gran.
-La relació és moderada ($\rho = 0.29$) però altament significativa. 
+La confiança autoinformada dels participants (escala 1–3) està significativament calibrada amb l'exactitud: una confiança més alta s'associa amb una exactitud més gran ($\rho = 0,29$, $p < 0,001$).
+Malgrat que la correlació és moderada, la tendència és clara i altament significativa.
 De les 400 anotacions, la majoria es van fer amb confiança alta: 46 amb confiança 1 (11,5\%), 86 amb confiança 2 (21,5\%) i 268 amb confiança 3 (67,0\%).
 L'exactitud augmenta amb el nivell de confiança: 57\% (nivell~1), 74\% (nivell~2) i 90\% (nivell~3).
 És a dir, només un 10\% de les anotacions amb confiança alta (27) van ser incorrectes.
 
-\paragraph{Anàlisi per dificultat de text.}
+\subsection{Anàlisi per dificultat de text}
 
-Els textos més difícils (acord mínim amb el gold standard) van ser:
+Els textos es distribueixen de manera heterogènia en termes de dificultat.
+Els textos més difícils, amb menor acord amb el \textit{gold standard}, van ser:
+
 \begin{itemize}
-    \item Text 37 (No Sexista): 50\% acord (5/10)
-    \item Text 144 (Sexista): 50\% acord (5/10)
-    \item Text 5 (Sexista): 60\% acord (6/10)
-    \item Text 30 (Sexista): 60\% acord (6/10)
-    \item Text 107 (Sexista): 60\% acord (6/10)
+    \item Text 37: 50\% acord (5/10 participants) -- no sexista amb ironia i humor
+    \item Text 144: 50\% acord -- sexista amb estereotips i desigualtat
+    \item Text 5: 60\% acord -- sexista amb ironia i discriminació
+    \item Text 30: 60\% acord -- sexista amb humor i discriminació
+    \item Text 107: 60\% acord -- sexista amb desigualtat
 \end{itemize}
 
-Els textos més fàcils (100\% d'acord) van ser: 59, 62, 99, 133, 214, 217, 327, 352, 356 i 359.
+Aquests textos són candidats a més anàlisi, ja que podrien representar casos límit o ambigus.
+%Els textos més fàcils, amb 100\% d'acord entre participants, van ser:
+% \begin{itemize}
+%     \item Text 59: sexista amb ironia, estereotips i desigualtat
+%     \item Text 62: sexista amb estereotips
+%     \item Text 99: no sexista amb crítica
+%     \item Text 133: no sexista amb crítica
+%     \item Text 214: no sexista
+%     \item Text 217: no sexista amb crítica
+%     \item Text 327: sexista amb estereotips
+%     \item Text 352: no sexista amb crítica
+%     \item Text 356: sexista amb desigualtat i discriminació
+%     \item Text 359: no sexista
+% \end{itemize}
+Dels 10 textos amb 100\% d'acord, 5 són sexistes i 5 no.
+Els sexistes presenten majoritàriament categories explícites: estereotips (3 textos), desigualtat (2) i discriminació (1).
+Això suggereix que el sexisme explícit, basat en estereotips o desigualtat, és fàcilment identificable pels lectors.
+En canvi, cap dels textos amb ironia o humor apareix en aquest grup de màxima facilitat, confirmant que aquestes formes de sexisme subtil són més difícils de detectar.
 
-\paragraph{Categories de sexisme.}
 
-\begin{table}[htbp]
-\centering
-\begin{tabular}{lcccl}
-\toprule
-Subcategoria & Exactitud & $n$ & valor $p$ & Sig. \\
-\midrule humor              & 62.5\% &  40 & $= 0.154$ & ns \\
-ironia             & 70.0\% &  30 & $= 0.043$ & * \\
-discriminació      & 76.7\% &  60 & $< 0.001$ & ** \\
-desigualtat        & 77.1\% &  70 & $< 0.001$ & ** \\
-estereotips        & 84.5\% & 110 & $< 0.001$ & ** \\
-crítica            & 84.5\% & 110 & $< 0.001$ & ** \\
-sexisme implícit   & 85.0\% &  20 & $= 0.003$ & ** \\
-\bottomrule
-\end{tabular}
-\caption{Resultats de la prova binomial per a cada subcategoria ($H_0$: exactitud $= 0.5$, bilateral).}
-\label{tab:subcategory}
-\end{table}
+\subsection{Detecció per subcategories de sexisme}
 
-L'humor és l'única categoria en què l'exactitud dels participants no supera significativament l'atzar ($p = 0.154$).
-Això concorda amb l'anàlisi d'errors, que mostra que els textos sexistes basats en l'humor són els més difícils de detectar: el 100\% dels textos amb humor van ser incorrectament classificats com a no sexistes. \todo{mirar}
-La ironia és marginalment significativa ($p = 0.043$).
+La \autoref{tab:error_analysis} mostra la taxa d'error individual en la detecció de cadascuna de les subcategories de sexisme definides al \textit{gold standard}. 
+L'humor presenta la taxa d'error més alta (30\%, 6/20 anotacions errònies), seguida de discriminació (23\%) i desigualtat (23\%).
 
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lcc}
 \toprule
-Subcategoria & Textos perduts / Total & Taxa d'error \\
-\midrule humor              & 2/2 & 100\% \\
-desigualtat        & 5/7 & 71\% \\
-discriminació      & 4/6 & 67\% \\
-estereotips        & 7/11 & 64\% \\
-ironia             & 1/2 & 50\% \\
+Subcategoria & Errònies / Total & Taxa d'error \\
+\midrule
+humor              & 6/20 & 30\% \\
+discriminació      & 14/60 & 23\% \\
+desigualtat        & 16/70 & 23\% \\
+ironia             & 4/20 & 20\% \\
+sexisme implícit   & 3/20 & 15\% \\
+estereotips        & 16/110 & 15\% \\
 \bottomrule
 \end{tabular}
-\caption{Anàlisi d'errors en textos sexistes per subcategoria.}
+\caption{Taxa d'error individual en la detecció de textos sexistes per subcategoria. Cada anotació d'un participant sobre un text sexista és un cas independent: s'agrupen les anotacions errònies (el participant va classificar el text com a no sexista) per subcategoria del \textit{gold standard}.}
 \label{tab:error_analysis}
 \end{table}
 
-Les proves exactes de Fisher que comparen les taxes d'error entre totes les parelles de categories es van fer amb la correcció de Bonferroni ($n = 28$ parelles).
-Cap diferència per parelles sobreviu a la correcció de Bonferroni, tot i que les parelles humor--estereotips i humor--crítica assoleixen $p_{\text{brut}} = 0.006$ ($p_{\text{ajust}} = 0.173$).
+Per examinar si aquestes diferències són estadísticament significatives, fem proves exactes de Fisher comparant les taxes d'error entre totes les parelles de categories amb correcció de Bonferroni ($n = 10$ parelles de comparacions).
+Cap comparació per parelles resulta significativa ni abans ni després de la correcció. 
+Això indica que les diferències observades entre subcategories, per exemple entre humor i estereotips, poden deure's a l'atzar.
 
-\section{Distribucions d'atenció: comparació amb les anotacions span}
+\section{Distribucions d'atenció: comparació amb les anotacions de segments}
 
-\subsection{Mètriques de distribució}
+%\subsection{Mètriques de distribució ocular}
 
-Per cada parell (participant, text), es van calcular quatre mètriques comparant la distribució d'atenció del participant (temps de fixació total normalitzat per token) amb les anotacions del gold standard (distribució max-normalitzada):
+Per a cada parell (participant, text), calculem quatre mètriques que comparen la distribució d'atenció del participant (TFD normalitzat per token, explicat a l'\autoref{app:tfd}) amb les anotacions del \textit{gold standard} (distribució normalitzada):
 
 \begin{itemize}
-    \item Correlació de Spearman
-    \item Entropia creuada (\textit{cross-entropy})
-    \item Divergència de Kullback-Leibler (KL)
-    \item Divergència de Jensen-Shannon (JS)
+    \item \textbf{Correlació de Spearman:} mesura de concordança monòtona entre distribucions.
+    \item \textbf{Entropia creuada (\textit{cross-entropy}, CE):} mesura asimètrica de divergència probabilística.
+    \item \textbf{Divergència de Kullback-Leibler (KL):} divergència informacional de la distribució humana respecte a l'anotació.
+    \item \textbf{Divergència de Jensen-Shannon (JS):} versió simètrica de KL, més interpretable.
 \end{itemize}
+La correlació de Spearman varia entre $-1$ i $1$ (més alta = millor alineament). 
+La CE $H(p,q)$ té com a mínim l'entropia de la distribució de referència $H(p)$, és a dir, $H(p, q) \geq H(p)$, i varia entre $H(p)$ i $+\infty$. 
+La divergència KL és $H(p,q) - H(p)$, per tant no pot ser negativa.
+La JS està acotada a $[0, 1]$ perquè compara distribucions normalitzades. A més és simètrica.
+La CE i les dues divergències indiquen millor alineament com menor és el valor.
 
-Es van obtenir 300 parells (10 participants $\times$ 30 textos amb anotacions parcials; 10 textos amb tots els tokens anotats van ser exclosos per no tenir senyal discriminant).
+10 dels textos seleccionats tenen tots els tokens o cap d'ells anotats com a segment, no són inclosos en aquesta anàlisi per no tenir senyal discriminant. La \autoref{tab:per_participant_metrics} mostra els resultats per participant.
 
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lcccc}
 \toprule
-Participant & Spearman & Cross-Entropy & KL & JS \\
+Participant & Spearman & CE & KL & JS \\
 \midrule
-F5 & $0.07 \pm 0.20$ & $9.47 \pm 2.33$ & $5.32 \pm 2.33$ & $0.22 \pm 0.07$ \\
-F1 & $0.06 \pm 0.19$ & $9.65 \pm 2.12$ & $5.50 \pm 2.12$ & $0.24 \pm 0.07$ \\
-M5 & $0.05 \pm 0.16$ & $9.30 \pm 2.03$ & $5.15 \pm 2.03$ & $0.21 \pm 0.07$ \\
-F2 & $0.04 \pm 0.21$ & $9.54 \pm 2.17$ & $5.39 \pm 2.17$ & $0.22 \pm 0.07$ \\
-M2 & $0.03 \pm 0.13$ & $9.91 \pm 1.86$ & $5.76 \pm 1.86$ & $0.26 \pm 0.06$ \\
-F4 & $0.02 \pm 0.17$ & $9.57 \pm 1.76$ & $5.42 \pm 1.76$ & $0.23 \pm 0.06$ \\
-M1 & $0.02 \pm 0.18$ & $9.55 \pm 1.84$ & $5.40 \pm 1.84$ & $0.23 \pm 0.06$ \\
-M3 & $0.02 \pm 0.17$ & $10.08 \pm 2.19$ & $5.93 \pm 2.19$ & $0.28 \pm 0.07$ \\
-M4 & $0.02 \pm 0.15$ & $10.12 \pm 2.13$ & $5.97 \pm 2.13$ & $0.29 \pm 0.07$ \\
-F3 & $0.01 \pm 0.10$ & $10.07 \pm 2.06$ & $5.92 \pm 2.06$ & $0.28 \pm 0.07$ \\
+F5 & $0,07 \pm 0,20$ & $9,47 \pm 2,33$ & $5,32 \pm 2,33$ & $0,22 \pm 0,07$ \\
+F1 & $0,06 \pm 0,19$ & $9,65 \pm 2,12$ & $5,50 \pm 2,12$ & $0,24 \pm 0,07$ \\
+M5 & $0,05 \pm 0,16$ & $9,30 \pm 2,03$ & $5,15 \pm 2,03$ & $0,21 \pm 0,07$ \\
+F2 & $0,04 \pm 0,21$ & $9,54 \pm 2,17$ & $5,39 \pm 2,17$ & $0,22 \pm 0,07$ \\
+M2 & $0,03 \pm 0,13$ & $9,91 \pm 1,86$ & $5,76 \pm 1,86$ & $0,26 \pm 0,06$ \\
+F4 & $0,02 \pm 0,17$ & $9,57 \pm 1,76$ & $5,42 \pm 1,76$ & $0,23 \pm 0,06$ \\
+M1 & $0,02 \pm 0,18$ & $9,55 \pm 1,84$ & $5,40 \pm 1,84$ & $0,23 \pm 0,06$ \\
+M3 & $0,02 \pm 0,17$ & $10,08 \pm 2,19$ & $5,93 \pm 2,19$ & $0,28 \pm 0,07$ \\
+M4 & $0,02 \pm 0,15$ & $10,12 \pm 2,13$ & $5,97 \pm 2,13$ & $0,29 \pm 0,07$ \\
+F3 & $0,01 \pm 0,10$ & $10,07 \pm 2,06$ & $5,92 \pm 2,06$ & $0,28 \pm 0,07$ \\
 \bottomrule
 \end{tabular}
 \caption{Mètriques de distribució per participant (mitjana $\pm$ desviació estàndard).}
 \label{tab:per_participant_metrics}
 \end{table}
 
-Les correlacions de Spearman són properes a zero per tots els participants, indicant una concordança gairebé nul·la entre la distribució d'atenció i les anotacions span.
-La divergència JS mitjana és 0.25 (rango 0--1), confirmant una separació substantial entre les dues distribucions.
+Les correlacions de Spearman són properes a zero per tots els participants, indicant una concordança gairebé nul·la entre la distribució d'atenció i les anotacions de segments.
+La divergència JS mitjana és 0,25, confirmant una separació substancial entre les dues distribucions.
+\todo{Ensenyar exemple visual}
 
-\subsection{Anàlisi per etiqueta span}
+\subsection{Alineament per categories de sexisme}
 
-Es van comparar les distribucions d'atenció només dins dels intervals anotats per a cada tipus d'etiqueta span:
+Analitzem l'alineament entre atenció humana i anotacions de segments de dues maneres complementàries.
+En primer lloc, examinem les mètriques de distribució només dins dels segments anotats amb cada tipus d'etiqueta.
+La \autoref{tab:per_label_metrics} presenta els resultats.
+Observem que les correlacions de Spearman són baixes per totes les etiquetes ($\rho \leq 0,06$), però les divergències varien notablement: la desigualtat ideològica presenta la JS més alta (0,50), mentre que estereotips (0,23) i objectificació (0,24) són les més baixes. Això suggereix que els models alineen millor amb l'atenció humana en les categories més explícites.
 
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lcccc}
 \toprule
-Etiqueta & Spearman & Cross-Entropy & KL & JS \\
+Etiqueta & Spearman & CE & KL & JS \\
 \midrule
-IDEOL.\ \& INEQUALITY & $0.06 \pm 0.13$ & $9.20$ & $5.98$ & $0.50$ \\
-INEQUALITY/DISCRIM.    & $0.06 \pm 0.15$ & $9.80$ & $5.99$ & $0.37$ \\
-CRITIQUE               & $0.04 \pm 0.17$ & $10.00$ & $5.90$ & $0.29$ \\
-REPORTED SEXISM        & $0.01 \pm 0.11$ & $10.42$ & $6.27$ & $0.40$ \\
-STEREOTYPE             & $0.04 \pm 0.14$ & $9.40$ & $5.25$ & $0.23$ \\
-IMPLICIT SEXISM        & $0.06 \pm 0.16$ & $9.60$ & $5.45$ & $0.25$ \\
-OBJECTIFICATION        & $0.06 \pm 0.14$ & $9.50$ & $5.35$ & $0.24$ \\
-IRONY                  & $0.03 \pm 0.16$ & $9.80$ & $5.65$ & $0.28$ \\
-JOKE                   & $0.05 \pm 0.19$ & $9.70$ & $5.55$ & $0.26$ \\
+desig. ideol.           & $0,06 \pm 0,13$ & $9,20$ & $5,98$ & $0,50$ \\
+desigualtat/discrim.    & $0,06 \pm 0,15$ & $9,80$ & $5,99$ & $0,37$ \\
+crítica                 & $0,04 \pm 0,17$ & $10,00$ & $5,90$ & $0,29$ \\
+sexisme reportat        & $0,01 \pm 0,11$ & $10,42$ & $6,27$ & $0,40$ \\
+estereotips             & $0,04 \pm 0,14$ & $9,40$ & $5,25$ & $0,23$ \\
+sexisme implícit        & $0,06 \pm 0,16$ & $9,60$ & $5,45$ & $0,25$ \\
+objectificació          & $0,06 \pm 0,14$ & $9,50$ & $5,35$ & $0,24$ \\
+ironia                  & $0,03 \pm 0,16$ & $9,80$ & $5,65$ & $0,28$ \\
+humor                   & $0,05 \pm 0,19$ & $9,70$ & $5,55$ & $0,26$ \\
 \bottomrule
 \end{tabular}
-\caption{Mètriques per tipus d'etiqueta span (mitjana creuada i participants i texts).}
+\caption{Mètriques de distribució per tipus d'etiqueta del segment (mitjana creuada entre participants i texts).}
 \label{tab:per_label_metrics}
 \end{table}
 
-\subsection{Anàlisi per categories binàries}
-
-Es van separar els parells (participant, text) segons les categories binàries del text (sexista/no sexista, ironia/sense ironia, humor/sense humor, etc.):
+En segon lloc, a la~\autoref{tab:binary_js} separem els parells (participant, text) segons les categories binàries del \textit{gold standard} i calculem la divergència JS per a cadascun.
+La presència de \textit{desigualtat} augmenta la JS de 0,24 a 0,33, indicant dificultats especials. 
+\textit{Humor} i \textit{ironia} mostren patrons inversos: quan estan presents, la JS disminueix (0,21), mentre que augmenta quan estan absents (0,26). \textit{Objectificació} i \textit{sexisme reportat} també mostren divergències més altes quan estan presents.
 
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lcc}
 \toprule
 Categoria & JS (negatiu) & JS (positiu) \\
-\midrule sexista          & 0.24 & 0.27 \\
-irony           & 0.26 & 0.21 \\
-humor           & 0.26 & 0.21 \\
-implicit sexism & 0.26 & 0.20 \\
-stereotypes     & 0.25 & 0.26 \\
-inequality      & 0.24 & 0.33 \\
-discrimination  & 0.25 & 0.25 \\
-objectification & 0.26 & 0.32 \\
-critique        & 0.27 & 0.23 \\
-reported sexism & 0.26 & 0.32 \\
+\midrule
+sexista          & 0,24 & 0,27 \\
+ironia           & 0,26 & 0,21 \\
+humor            & 0,26 & 0,21 \\
+sexisme implícit & 0,26 & 0,20 \\
+estereotips      & 0,25 & 0,26 \\
+desig. ideol.    & 0,24 & 0,33 \\
+discriminació    & 0,25 & 0,25 \\
+objectificació   & 0,26 & 0,32 \\
+crítica          & 0,27 & 0,23 \\
+sexisme reportat & 0,26 & 0,32 \\
 \bottomrule
 \end{tabular}
-\caption{Divergència JS per categories binàries del text.}
+\caption{Divergència JS entre els segments anotats i TFD per categoria binària. Negatiu = categoria absent; Positiu = categoria present.}
 \label{tab:binary_js}
 \end{table}
 
-\section{Anàlisi de regressions}
 
-\subsection{Resum general}
+\section{Anàlisi de regressions oculars}
 
 Es van detectar un total de 8642 regressions a través de tots els parells participant $\times$ text, amb una mitjana de $216.1 \pm 76.9$ regressions per text.
 La majoria són regressions dins de la mateixa línia (\textit{within-line}): 7759 (89.8\%), mentre que les regressions entre línies (\textit{between-line}) són 883 (10.2\%).
