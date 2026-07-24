@@ -1,10 +1,10 @@
 En aquest treball hem comparat els patrons d'atenció de lectors humans, obtinguts a partir de dades d'\textit{eye-tracking}, amb les explicacions computacionals de models de llenguatge preentrenats adaptats a la tasca de detecció de sexisme en textos en castellà.
-La comparació tripartita entre atenció humana, anotacions de segments i atribucions del model ens ha permès caracteritzar fins a quin punt aquestes fonts convergeixen i on divergeixen.
+La comparació tripartida entre atenció humana, anotacions de segments i atribucions del model ens ha permès caracteritzar fins a quin punt aquestes fonts convergeixen i on divergeixen.
 
 De l'anàlisi en destaquem quatre resultats principals.
 En primer lloc, observem el que anomenem la paradoxa de BETO: el model amb menor precisió (62,2\%) presenta les distribucions de prominència més properes a l'atenció humana (SD: 2,99--3,46).
 Això suggereix que l'especialització en la tasca de classificació pot allunyar el model dels patrons de processament cognitiu natural, un resultat consistent amb les conclusions d'\textcite{ikhwantriLookingDeepEyes2023}.
-En segon lloc, LRP és el mètode d'interpretabilitat que produeix les distribucions més properes a l'atenció humana en tots els models (SD: 2,99--4,12), possiblement per la seva naturalesa de decomposició exacta del gradient, que preserva la informació contributiva del model.
+En segon lloc, LRP és el mètode d'interpretabilitat que produeix les distribucions més properes a l'atenció humana en tots els models (SD: 2,99--4,12), possiblement per la seva naturalesa de descomposició exacta del gradient, que preserva la informació contributiva del model.
 En tercer lloc, l'anàlisi de regressions als 302 tokens lèxics més prominents mostra que els noms (41,1\%) i els verbs (21,9\%) són les categories morfològiques més representades. A més, el 9,3\% dels tokens són mots amb relació de gènere, cosa que indica una atenció selectiva cap als elements lingüístics relacionats amb el sexisme.
 En quart lloc, la correlació significativa entre la taxa de regressió i la classificació binària ($\rho = 0,429$, $p = 0,006$) indica que els lectors fan més regressions en textos sexistes, consistent amb la necessitat de reprocessament cognitiu davant de contingut polèmic.
 
@@ -21,7 +21,7 @@ Les dades mostren que els participants detecten correctament el sexisme amb una 
 Quant al \textbf{segon objectiu}, hem adaptat tres models preentrenats a la tasca de detecció de sexisme (MrBERT, mBERT i BETO) i n'hem extret explicacions amb quatre mètodes d'interpretabilitat (Saliency, Input$\times$Gradient, Integrated Gradients i LRP).
 L'exactitud varia significativament entre models: MrBERT (75,7\%), BETO (62,2\%) i mBERT (54,1\%).
 
-Respecte al \textbf{tercer objectiu}, la comparació tripartita (model--segments, model--humà, humà--segments) revela divergències substancials.
+Respecte al \textbf{tercer objectiu}, la comparació tripartida (model--segments, model--humà, humà--segments) revela divergències substancials.
 La divergència JS més baixa es dona entre l'atenció humana i les anotacions de segments (0,12), fet que confirma que lectors i anotadors comparteixen una visió similar del que és sexista.
 En canvi, la divergència entre el model i les anotacions és alta (0,78--0,84), cosa que indica que els models distribueixen l'atenció de manera substancialment diferent.
 Coherentment amb la paradoxa de BETO, la Saliency Distance mostra que aquest model presenta les divergències més baixes amb l'atenció humana (2,99--3,46), malgrat tenir una precisió inferior a MrBERT.
@@ -48,7 +48,7 @@ Les categories més explícites (estereotips, objectificació) mostren, doncs, u
 \noindent La hipòtesi es confirma.
 Les anotacions de segments, l'atenció humana i les explicacions del model ofereixen perspectives diferents però compatibles.
 L'ablació de paraules buides demostra que el filtratge redueix la divergència JS un 22\% entre atenció humana i segments, revelant que les paraules buides contribueixen a la divergència aparent.
-La comparació tripartita mostra que cap font per si sola no ofereix una visió completa del fenomen.
+La comparació tripartida mostra que cap font per si sola no ofereix una visió completa del fenomen.
 
 \subsection*{Limitacions i treballs futurs}
 
@@ -56,4 +56,4 @@ La principal limitació d'aquest treball és la mida de mostra reduïda (10 part
 Els resultats no significatius (com la prova de Fisher per text o les correlacions per categoria individual) no impliquen absència d'efecte, sinó manca de potència per detectar-lo.
 A més, les dades de seguiment ocular s'han recollit en condicions controlades de laboratori, que poden no reflectir completament els patrons de lectura naturals.
 
-Com a treballs futurs, proposem: (1) augmentar la mida de la mostra amb més participants i textos; (2) explorar models de llenguatge extensos (LLM); (3) investigar la relació entre les atribucions del model i les categories lingüístiques de manera més granular; (4) aplicar les mètriques de distribució a altres tasques de PLN amb dades d'\textit{eye-tracking} disponibles.
+Com a treballs futurs, proposem: (1) augmentar la mida de la mostra amb més participants i textos; (2) explorar models de llenguatge extensos (\textit{Large Language Model}, LLM en anglès); (3) investigar la relació entre les atribucions del model i les categories lingüístiques de manera més granular; (4) aplicar les mètriques de distribució a altres tasques de PLN amb dades d'\textit{eye-tracking} disponibles.
