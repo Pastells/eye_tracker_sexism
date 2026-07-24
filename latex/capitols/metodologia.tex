@@ -121,6 +121,7 @@ En el nostre cas, utilitzem tres variants en castellà: mBERT (la versió multil
 
 El procés d'adaptació (\textit{finetuning}) consisteix a modificar aquests models preentrenats per la nostra tasca específica de detecció de sexisme.
 Vegeu el codi per a més detalls sobre la implementació, que inclou la preparació de les dades, la configuració del model i l'entrenament utilitzant la llibreria \textit{transformers} de HuggingFace\footnote{https://huggingface.co/docs/transformers/en/index}.
+També vam entrenar els models amb només les dades amb acord total d'anotadors, però les diferències respecte a les dades completes van ser negligibles, de manera que en aquest treball utilitzem només els models entrenats amb el conjunt complet, excepte els 40 textos que guardem com a test.
 
 % \subsection{Models de llenguatge extensos}
 %
