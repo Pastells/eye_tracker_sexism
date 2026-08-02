@@ -70,4 +70,56 @@ En el context del sexisme, les regressions poden indicar moments en què el lect
 \chapter{Visualització spans}\label{sec:spans_viz}
 
 Per tal de visualitzar múltiples spans, utilitzem un script basat en la llibreria spaCy\footnote{https://spacy.io/}.
-A~\ref{fig:} se'n mostra un exemple.
+
+\chapter{Calibratge i validació}\label{app:calibration}
+
+La \autoref{tab:calibration} presenta les mètriques de calibratge i validació de l'eye-tracker Tobii Pro Spectrum per a cada participant, extretes del fitxer de metadades general.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{llcc}
+\toprule
+Participant & Sexe & Precisió Calibratge (mm) & Precisió Validació (mm) \\
+\midrule
+M1 & home & 1,7 & 2,9 \\
+M2 & home & 2,3 & 7,5 \\
+M3 & home & 1,0 & 2,8 \\
+M4 & home & 1,7 & 2,8 \\
+M5 & home & 1,2 & 4,4 \\
+F1 & dona & 1,2 & 12,5 \\
+F2 & dona & 1,2 & 5,6 \\
+F3 & dona & 1,3 & 5,1 \\
+F4 & dona & 3,8 & 6,2 \\
+F5 & dona & 1,5 & 5,7 \\
+\bottomrule
+\end{tabular}
+\caption{Precisió de calibratge i validació de l'eye-tracker per participant (en mil·límetres). Valors més baixes indiquen millor qualitat de calibratge.}
+\label{tab:calibration}
+\end{table}
+
+La majoria de participants presenten una precisió de calibratge adequada ($\leq$ 2,3~mm).
+les participants F1 i F4 mostren una precisió de validació pitjor (12,5 i 6,2~mm respectivament).
+Tot i això, observant els seus patrons de lectura, no hi ha dubte de quina paraula estan mirant en cada moment.
+
+En canvi, tot i presentar una precisió de validació de 5,6~mm, les dades de F2 no són tan clares. En alguns casos sembla que llegeixi entre línies o fins i tot la línia equivocada.
+És per això que vam avaluar l'impacte d'excloure-la de l'anàlisi.
+La \autoref{tab:exclusion_comparison} compara les mètriques principals amb i sense les seves dades.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Mètrica & Amb F2 (10) & Sense F2 (9) & Delta \\
+\midrule
+Spearman (vs.\ segments) & $+0,036$ & $+0,047$ & $+0,010$ \\
+JS (vs.\ segments) & 0,257 & 0,256 & $-0,000$ \\
+\bottomrule
+\end{tabular}
+\caption{Comparació de mètriques de distribució amb i sense F2. Els valors són promitjats sobre els 40 texts.}
+\label{tab:exclusion_comparison}
+\end{table}
+
+Les diferències són negligibles: la correlació de Spearman canvia en 0,01 i la divergència JS en menys de 0,001.
+El test parell de mostres emparellades (per text) no mostra diferències significatives per a Spearman ($p = 0,47$) ni per a la JS ($p = 0,11$).
+Concloem que l'exclusió de la participant F2 no altera els resultats de l'anàlisi de manera substancial. 
+Per tant, es conserven les seves dades en tots els resultats.
