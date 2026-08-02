@@ -76,6 +76,7 @@ Per tal de visualitzar múltiples spans, utilitzem un script basat en la llibrer
 Per tots els participants, es va fer una calibració inicial amb 9 punts d'entrenament i 4 de validació.
 La \autoref{tab:calibration} presenta les mètriques de calibratge i validació de l'eye-tracker Tobii Pro Spectrum per a cada participant.
 
+\iftables
 \begin{table}[htbp]
 \centering
 \begin{tabular}{llcc}
@@ -97,6 +98,7 @@ F5 & dona & 1,5 & 5,7 \\
 \caption{Precisió de calibratge i validació de l'eye-tracker per participant (en mil·límetres). Valors més baixes indiquen millor qualitat de calibratge.}
 \label{tab:calibration}
 \end{table}
+\fi
 
 La majoria de participants presenten una precisió de calibratge adequada ($\leq$ 2,3~mm).
 les participants F1 i F4 mostren una precisió de validació pitjor (12,5 i 6,2~mm respectivament).
@@ -106,6 +108,7 @@ En canvi, tot i presentar una precisió de validació de 5,6~mm, les dades de F2
 És per això que vam avaluar l'impacte d'excloure-la de l'anàlisi.
 La \autoref{tab:exclusion_comparison} compara les mètriques principals amb i sense les seves dades.
 
+\iftables
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lrrr}
@@ -119,6 +122,7 @@ JS (vs.\ segments) & 0,257 & 0,256 & $-0,000$ \\
 \caption{Comparació de mètriques de distribució amb i sense F2. Els valors són promitjats sobre els 40 texts.}
 \label{tab:exclusion_comparison}
 \end{table}
+\fi
 
 Les diferències són negligibles: la correlació de Spearman canvia en 0,01 i la divergència JS en menys de 0,001.
 El test parell de mostres emparellades (per text) no mostra diferències significatives per a Spearman ($p = 0,47$) ni per a la JS ($p = 0,11$).

@@ -2,4 +2,4 @@ Extensió: L'extensió del TFG oscil·larà entre 42.000 i 63.000 caràcters amb
 
 Ho miro passant el pdf final a text, treient les primeres i últimes pàgines: ` pdftotext -enc UTF-8 -f 7 -l 46 main.pdf - | wc -m`
 
-
+A més, compilo amb `\tablesfalse` per no comptar el text de les taules.
