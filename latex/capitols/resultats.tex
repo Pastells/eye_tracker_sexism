@@ -2,7 +2,7 @@ Aquest capítol presenta l'anàlisi de les anotacions de sexisme realitzades pel
 
 L'anàlisi cobreix mètriques d'exactitud, concordança entre anotadors, calibratge de la confiança, diferències de gènere, detecció de subcategories, proves de significació estadística, mètriques de distribució ocular, detecció de \textit{hotspots} de regressió, i comparació entre atenció humana i la prominència de models de xarxes neuronals.
 
-\section{Resultats de les anotacions dels participants}
+\section{Anotacions dels participants}
 
 Primer, examinem les anotacions dels participants sobre si consideren el text sexista o no, comparant-les amb el \textit{gold standard}.
 Com es mostra a la La \autoref{tab:participant_accuracy}, vuit dels deu participants assoleixen resultats significativament superiors a l'atzar ($p < 0,01$).
@@ -123,6 +123,48 @@ estereotips        & 16/110 & 15\% \\
 Per examinar si aquestes diferències són estadísticament significatives, fem proves exactes de Fisher comparant les taxes d'error entre totes les parelles de categories amb correcció de Bonferroni ($n = 10$ parelles de comparacions).
 Cap comparació per parelles resulta significativa ni abans ni després de la correcció. 
 Això indica que les diferències observades entre subcategories, per exemple entre humor i estereotips, poden deure's a l'atzar.
+
+\section{Stimulated recall}
+
+L'\textit{stimulated recall} revela principalment tres fets.
+En primer lloc, l'ambigüitat és freqüent: els participants sovint no saben si el text és sexista o no, especialment quan hi ha ironia, humor o opinions que poden interpretar-se de múltiples maneres.
+En segon lloc, els participants busquen pistes contextuals per resoldre l'ambigüitat: identifiquen qui parla, quina és la seva posició ideològica o si el text descriu un fet o expressa una opinió.
+Finalment, els participants amb experiència prèvia amb el corpus (anotadors de MuSeD) o amb poc contacte amb la llengua castellana van mostrar processos de lectura diferents: les anotadores reconeixien els casos i els processaven amb més rapidesa, mentre que els participants amb menys domini del castellà requerien més relectures.
+Aquests resultats confirmen que la detecció de sexisme en textos és una tasca inherentment subjectiva, especialment en casos amb ironia o sexisme implícit, i justifiquen l'ús de mètriques de distribució (Jensen-Shannon) en lloc de comparacions binàries.
+
+A continuació presentem les observacions més rellevants, agrupades per text, de les entrevistes un cop finalitzada la lectura.
+
+\paragraph{Text 4.}
+La majoria de participants van identificar el text com a sexista, però les estratègies van variar.
+Alguns van expressar dubtes inicials (\textit{``ha dubtat, canviaria segons qui ho digui''}) abans de decidir.
+Una participant que coneixia el corpus va reconèixer el cas i va expressar ràbia davant l'equiparació entre pedofília i orientació sexual.
+En canvi, una altra no sabia si l'interlocutor estava a favor o en contra, i no es va fixar en res en concret.
+
+\paragraph{Text 30.}
+Alguns participants van contextualitzar ràpidament el text: \textit{``ja s'espera que dirà un comentari sexista''}.
+D'altres no ho tenien clar o el van interpretar com a no sexista.
+Una participant es va fixar en ``ahora'', interpretant un possible canvi de punt de vista, i va rellegir el text perquè no li quedava clar si descriu un fet sexista o és sexista en si.
+
+\paragraph{Text 37.}
+Aquest text, marcat com a no sexista pel \textit{gold standard}, va generar opinions dispars: es va interpretar com a sexista perquè no diferencia entre sexe i gènere, com una caricatura, com un atac al gènere masculí, o es van fixar en la ideologia del forense.
+
+\paragraph{Text 107.}
+Els participants van dividir-se entre sexista i no sexista.
+Alguns van decidir que és sexista al final, d'altres el van veure com a simple opinió.
+Diversos participants no sabien si parlava una dona sarcàsticament o un home fent un acudit sexista.
+
+\paragraph{Text 166.}
+Alguns el van veure com una opinió, no sexista; d'altres com un atac al gènere masculí.
+Una participant es va fixar en ``eres un hombre malo'' com a posicionament de la persona i li va semblar discurs d'extrema dreta.
+
+\paragraph{Text 375.}
+La majoria van entendre que podria ser una crítica, però el \textit{``makes no sense. Gracias''} del final ho fa explícit.
+Una participant es va fixar en ``feminisme'' i ``todo ofende'', interpretant que primer presenta una situació i després dona la seva opinió.
+
+\paragraph{Text 399.}
+Alguns van pensar que es tractava d'un cas sexista al principi, però el missatge sencer el van entendre com a crítica.
+Una participant es va fixar en els sinònims (\textit{``nena, abuelita, doña''}) que reafirmen la posició.
+
 
 \section{Distribucions d'atenció: comparació amb les anotacions de segments}
 

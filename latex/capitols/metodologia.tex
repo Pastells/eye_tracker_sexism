@@ -100,6 +100,7 @@ Tots treballadors o estudiants de la Universitat de Barcelona majors d'edat, ent
 
 Cada participant va ser informat dels objectius de l'estudi i va firmar un consentiment informat abans de llegir els textos.
 Es començava explicant que havien de llegir 40 textos en castellà extrets de vídeos de xarxes socials amb la intenció de determinar si eren sexistes.
+Primer de tot, es feia el procés de calibratge, per tal que l'eye-tracker funcionés adequadament (vegeu \autoref{app:calibration})
 Els textos es mostraven en ordre aleatori.
 Podien llegir cada text les vegades que els fos necessari i un cop havien pensat la resposta premien 0 per no sexista o 1 per sexista en un teclat d'ordinador.
 Havien de valorar si el contingut era sexista segons la seva pròpia visió del món.
@@ -108,10 +109,24 @@ Seguidament, es mostrava una altra pantalla on es preguntava quina confiança te
 Abans de mostrar el següent text, apareixia una pantalla en blanc durant 500\,ms.
 Els participants podien fer preguntes o esmenar equivocacions durant la pregunta de la confiança.
 
-Un cop acabada la lectura es revisaven 7 textos prèviament seleccionats (\textit{stimulated recall}).
-Es gravava la pantalla d'ordinador i l'àudio de la conversa amb OBS Studio mentre es mostrava el procés de lectura amb Tobii Pro Lab, on es veuen les fixacions i regressions.
+\subsection{\textit{Stimulated Recall}}
 
-L'anàlisi de la qualitat del calibratge (\autoref{app:calibration}) va revelar que tots els participants tenien una precisió de calibratge acceptable.
+Un cop acabada la lectura, es feien breus entrevistes mentre es mostrava el procés de lectura de certs textos amb Tobii Pro Lab, on es veuen les fixacions i regressions.
+Es gravava la pantalla d'ordinador i l'àudio de la conversa amb OBS Studio.
+Es van seleccionar 7 textos que representaven casos interessants.
+Tot i que el corpus MuSeD disposa d'etiquetes de consens (\textit{gold standard}), les etiquetes de cada anotador revelen que el consens entre anotadors no sempre és absolut.
+Per exemple, el text~4 té unanimitat en discriminació (1,0) però desacord en humor (0,67) i ironia (0,33); el text~30 mostra desacord en humor (0,67) i ironia (0,33); i el text~375 en desigualtat (0,67) i múltiples categories (0,33 cadascuna).
+Els textos seleccionats van ser:
+\begin{itemize}
+    \item \textbf{Text 4} (sexista): ironia i humor amb desacord, discriminació unànime.
+    \item \textbf{Text 30} (sexista): humor i ironia amb desacord, desigualtat.
+    \item \textbf{Text 37} (no sexista segons \textit{gold standard}): estereotips i desigualtat, però ironia i humor amb desacord alt.
+    \item \textbf{Text 107} (sexista): sexisme implícit amb desacord baix.
+    \item \textbf{Text 166} (no sexista): crítica i humor sense desacord en categories principals.
+    \item \textbf{Text 375} (sexista): múltiples categories amb desacord alt (ironia, sexisme implícit, estereotips, desigualtat).
+    \item \textbf{Text 399} (no sexista): crítica, estereotips i sexisme reportat, tots amb desacord.
+\end{itemize}
+
 Es va utilitzar la llengua en que cada participant se sentia més còmode per conversar sobre els textos, català o castellà.
 Durant aquest procés es preguntava si el participant s'havia fixat en alguna paraula o frase en concret per algun motiu, o si havia pensat quelcom en concret sobre el text. 
 Per exemple, si havia trobat difícil alguna paraula o li havia sobtat un concepte.
