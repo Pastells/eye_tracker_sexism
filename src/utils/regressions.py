@@ -672,6 +672,7 @@ def get_top_hotspots_per_text(
 
     nltk.download("stopwords", quiet=True)
     es_stopwords = set(nltk.corpus.stopwords.words("spanish"))
+    es_stopwords.add("si")
 
     # Build permutation-significant sets
     perm_sig_pairs = set()
@@ -763,3 +764,21 @@ def get_top_hotspots_per_text(
         pd.concat(top_records, ignore_index=True) if top_records else pd.DataFrame()
     )
     return hotspots_df, stopword_pct
+
+
+def get_top1_per_text(hotspots_df):
+    """Get the top-1 non-stopword token per text from hotspots_df.
+
+    For each text, selects the token with highest |z_score| among non-stopwords.
+    If a text has no non-stopword tokens, falls back to the top stopword.
+    """
+    rows = []
+    for text_id in sorted(hotspots_df["text_id"].unique()):
+        text_all = hotspots_df[hotspots_df["text_id"] == text_id]
+        non_sw = text_all[~text_all["is_stopword"]]
+        if len(non_sw) > 0:
+            best = non_sw.loc[non_sw["z_score"].abs().idxmax()]
+        else:
+            best = text_all.loc[text_all["z_score"].abs().idxmax()]
+        rows.append(best)
+    return pd.DataFrame(rows)

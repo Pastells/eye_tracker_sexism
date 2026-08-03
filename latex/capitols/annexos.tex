@@ -2,7 +2,7 @@
 \hypersetup{bookmarksdepth=0}
 \chapter{Funcionament Eye-tracker}\label{sec:tobii}
 
-Utilitzem l'eye-tracker Tobii Pro Spectrum, que enregistra quina zona de la pantalla s'està mirant a 600Hz.
+Utilitzem l'\textit{eye-tracker} Tobii Pro Spectrum, que enregistra quina zona de la pantalla s'està mirant a 600Hz.
 El software Tobii Pro Lab calcula les fixacions, i permet definir cada paraula d'un text com a àrea d'interés (AOI en les seves sigles en anglès).
 El software de Tobii permet fer anàlisis algunes mètriques, però és limitat en certs aspectes, com el càlcul de regressions.
 Per això exportem les dades i calculem nosaltres les mètriques d'eye-tracking: FFD, TFD, FC i regressions.
@@ -44,12 +44,12 @@ En contextos de sexisme, una TFD més alta en paraules amb càrrega emotiva o id
 
 \section{Regressions}
 
-Una \textbf{regressió} ocorre quan es retorna la vista cap enrere (dreta a esquerra en escrits d'esquerra a dreta) respecte a la posició actual de lectura.
+Una regressió ocorre quan es retorna la vista cap enrere (dreta a esquerra en escrits d'esquerra a dreta) respecte a la posició actual de lectura.
 Les regressions són un fenomen cognitiu ben documentat en la recerca sobre lectura~\cite{rayner1998eye, rayner2009eye} i reflecteixen processos de reprocessament, verificació o resolució d'ambigüitat.
 Se'n solen distingir dos tipus.
-El primer són les \textbf{regressions intralínia} (\textit{within-line}), en què el lector mou la mirada dins de la mateixa línia de text cap a un token anterior. 
+El primer són les regressions intralínia (\textit{within-line}), en què el lector mou la mirada dins de la mateixa línia de text cap a un token anterior. 
 S'associen principalment a dificultats de comprensió local com paraules amb múltiples significats o estructures sintàctiques complexes).
-També hi ha \textbf{regressions interlínia} (\textit{between-line}): es fa un salt a una línia anterior.
+També hi ha regressions interlínia (\textit{between-line}): es fa un salt a una línia anterior.
 Estan relacionades amb processos de coherència global (e.g., connectar informació prèvia amb el contingut actual).
 
 La taxa de regressió es defineix com la proporció de sacades que són regressions respecte al total de sacades:
@@ -62,10 +62,12 @@ En condicions normals de lectura, la taxa de regressió se situa entre el 10\% i
 Taxes més altes indiquen fragments del text que generen més dificultat de processament.
 Aquestes mètriques han estat àmpliament utilitzades en estudis sobre processament de frases i ambiguïtat sintàctica, com demostra \textcite{alvarez2025} en un estudi amb parlants de català L1 i anglès L2, on les regressions van ser particularment informatives per identificar les regions textuals que generen dificultat de processament.
 
-En l'anàlisi de regressions, fem servir la notació anglesa TO i FROM: el token TO és aquell cap al qual es dirigeix la regressió i indica on el lector torna per reprocessar informació, mentre que el token FROM és aquell des del qual es produeix l'origen de la regressió i indica des d'on el lector interromp la lectura per tornar enrere.
+En l'anàlisi de regressions, fem servir les definicions d'\textit{regression-to} i \textit{regression-from}~\cite{rayner2009eye}: el token de destí és aquell cap al qual es dirigeix la regressió i indica on el lector torna per reprocessar informació, mentre que el token d'origen és aquell des del qual es produeix la regressió i indica des d'on el lector interromp la lectura per tornar enrere.
 Per exemple, si un participant està llegint el token $t_{10}$ i fa una regressió cap al token $t_{5}$, aquesta es registra com $\text{FROM} = t_{10}$, $\text{TO} = t_{5}$.
 Aquesta convenció (\textit{regression-to} / \textit{regression-from}) és estàndard en la literatura d'\textit{eye-tracking} per lectura~\cite{rayner2009eye}.
 En el context del sexisme, les regressions poden indicar moments en què el lector torna a processar un contingut discriminatori o irònic, la qual cosa pot ajudar a identificar regions textuals que generen confusió o conflicte cognitiu.
+
+Per identificar els tokens significatius, fem servir un test de permutació: per a cada parell (participant, text), permutem aleatòriament l'ordre de la seqüència de fixacions mantenint la distribució global de fixacions per token. Així generem una distribució nul·la on les regressions són aleatòries i la comparem amb les observades per determinar quins tokens reben significativament més regressions del que s'esperaria per atzar.
 
 \chapter{Visualització spans}\label{sec:spans_viz}
 

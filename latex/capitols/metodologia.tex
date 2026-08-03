@@ -21,7 +21,7 @@ A partir del corpus MuSeD, es van seleccionar 40 textos (20 sexistes i 20 no sex
 \end{enumerate}
 
 
-Cal dir que els textos sexistes tendeixen a ser més llargs que els no sexistes, i que les anotacions dels segments cobreixen una proporció considerable del text en ambdós grups.
+Val a dir que els textos sexistes tendeixen a ser més llargs que els no sexistes, i que les anotacions dels segments cobreixen una proporció considerable dels textos.
 Les taules~\ref{tab:corpus_stats} i~\ref{tab:corpus_labels} resumeixen les estadístiques descriptives i la distribució de categories dels textos seleccionats.
 En total, els 40 textos contenen 2.901 paraules.
 Observem que la llargada dels segments constitueix un alt percentatge de la llargada total dels textos.
@@ -141,11 +141,11 @@ Per exemple, si havia trobat difícil alguna paraula o li havia sobtat un concep
 
 En aquest treball fem ús de diferents models basats en l'arquitectura \textit{transformer} \cite{vaswaniAttentionAllYou2017}, concretament del tipus BERT (\textit{Bidirectional Encoder Representations from Transformers})~\cite{devlin2019bert}.
 Són models \textit{encoder-only} que han demostrat bon rendiment en tasques de classificació de text.
-En el nostre cas, utilitzem tres variants en castellà: mBERT (la versió multilingüe del BERT original), BETO~\cite{canete2023spanish} (un dels primers models adaptats només al castellà) i el més recent MrBERT-es~\cite{tamayo2026mrbert} (basat en ModerBERT).
+Utilitzem mBERT (la versió multilingüe del BERT original), BETO~\cite{canete2023spanish} (un dels primers models adaptats només al castellà) i el més recent MrBERT-es~\cite{tamayo2026mrbert} (basat en ModerBERT).
 
 El procés d'adaptació (\textit{finetuning}) consisteix a modificar aquests models preentrenats per la nostra tasca específica de detecció de sexisme.
 Vegeu el codi per a més detalls sobre la implementació, que inclou la preparació de les dades, la configuració del model i l'entrenament amb la llibreria \textit{transformers} de HuggingFace\footnote{https://huggingface.co/docs/transformers/en/index}.
-També vam entrenar els models amb només les dades amb acord total d'anotadors, però les diferències respecte a les dades completes van ser negligibles, de manera que en aquest treball usem només els models entrenats amb el conjunt complet, excepte els 40 textos que guardem com a test.
+També vam entrenar els models amb només les dades amb acord total d'anotadors, però les diferències respecte a les dades completes van ser negligibles.%, de manera que en aquest treball usem només els models entrenats amb el conjunt complet, excepte els 40 textos que guardem com a test.
 
 % \subsection{Models de llenguatge extensos}
 %
@@ -158,7 +158,7 @@ També vam entrenar els models amb només les dades amb acord total d'anotadors,
 \section{Mètodes d'interpretabilitat}\label{sec:metodes}
 
 Per comprendre els patrons d'atenció dels models i comparar-los amb els patrons humans, fem servir la llibreria Captum \cite{captum}, que proporciona una suite completa de mètodes d'atribució.
-En aquest treball hem implementat quatre mètodes d'atribució:
+Hem implementat quatre mètodes d'atribució:
 
 \begin{itemize}
     \item \textbf{Saliency}~\cite{simonyan2013deep}: Mètode basat en gradients que calcula la derivada de la sortida respecte als \textit{embeddings} d'entrada. És útil per identificar quins tokens tenen major impacte en la decisió del model.
@@ -186,10 +186,13 @@ En aquest treball hem implementat quatre mètodes d'atribució:
 
 \section{Comparació amb patrons humans}
 
-L'objectiu final d'aquest treball és comparar els patrons d'atenció obtinguts amb els mètodes esmentats amb els patrons d'atenció humans registrats amb l'\textit{eye-tracker} i les anotacions inicials del corpus.
+L'objectiu final d'aquest treball és comparar i) els patrons d'atenció obtinguts amb els mètodes d'interpretabilitat esmentats amb ii) els patrons humans registrats amb l'\textit{eye-tracker} i iii) les anotacions inicials del corpus.
 Aquesta comparació permetrà avaluar si els models se centren en les mateixes parts del text que els humans, identificar possibles biaixos o limitacions en els models computacionals, i explorar si les divergències entre atenció humana i computacional es relacionen amb errors de classificació.
 
-Aquesta anàlisi comparativa es durà a terme utilitzant les dades d'\textit{eye-tracking} recollides amb el dispositiu Tobii, tal com es descriu a l'\autoref{sec:tobii}, i els resultats s'analitzaran quantitativament i qualitativament per obtenir conclusions sobre la similitud entre ambdós tipus d'atenció.
+Cal tenir en compte que els tokens d'\textit{eye-tracking} corresponden a paraules senceres, mentre que els models de llenguatge treballen amb tokens sub-paraula.
+Quan una paraula es divideix en múltiples tokens, les atribucions d'aquests se sumen.
+
+L'anàlisi comparativa es farà amb les dades d'\textit{eye-tracking} recollides pel dispositiu Tobii, tal com es descriu a l'\autoref{sec:tobii}, i els resultats s'analitzaran quantitativament i qualitativament per obtenir conclusions sobre la similitud entre ambdós tipus d'atenció.
 
 % \section{Disponibilitat del codi}
 
