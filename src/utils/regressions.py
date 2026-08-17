@@ -1,3 +1,4 @@
+import re
 import time
 
 import numpy as np
@@ -184,7 +185,7 @@ def compute_zscores(
                 obs_total += obs
                 exp_total += exp
 
-            z = (obs_total - exp_total) / np.sqrt(max(exp_total, 1e-6))
+            z = (exp_total - obs_total) / np.sqrt(max(exp_total, 1e-6))
             records.append(
                 {
                     "text_id": text_id,
@@ -716,6 +717,16 @@ def get_top_hotspots_per_text(
         combined["is_stopword"] = (
             combined["token"].str.lower().str.strip(".,;:!?()\"'¿¡").isin(es_stopwords)
         )
+        # Filter speaker tag artifacts: HABLANTE, single digits, tokens with ]
+        def _is_artifact(t):
+            t = str(t)
+            if "HABLANTE" in t:
+                return True
+            core = re.sub(r"^[\[\(]?", "", t)
+            core = re.sub(r"[\]\):\.,;!?]+$", "", core)
+            return core.isdigit()
+        is_artifact = combined["token"].apply(_is_artifact)
+        combined["is_stopword"] = combined["is_stopword"] | is_artifact
         combined["perm_sig"] = combined.apply(
             lambda row: (text_id, row["token_idx"]) in perm_sig_pairs, axis=1
         )

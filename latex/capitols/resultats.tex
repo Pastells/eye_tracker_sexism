@@ -1,13 +1,13 @@
-Aquest capítol presenta l'anàlisi de les anotacions de sexisme pels participants durant l'experiment, així com l'anàlisi de les dades de seguiment ocular (fixacions, regressions) i la seva relació amb les anotacions del \textit{gold standard} i els models.
+Aquest capítol presenta l'anàlisi de les dades de seguiment ocular (fixacions, regressions) i la seva relació amb les anotacions del \textit{gold standard} i els models de llenguatge. També conté l'anàlisi de les anotacions de sexisme pels participants durant l'experiment.
 
 \section{Anotacions dels participants}
 
-Primer, examinem les anotacions dels participants sobre si consideren el text sexista o no, comparant-les amb el \textit{gold standard}.
+Primer, examinem les anotacions binàries de sexisme, comparant-les amb el \textit{gold standard}.
 Com es mostra a la La \autoref{tab:participant_accuracy}, vuit dels deu participants assoleixen resultats significativament superiors a l'atzar ($p < 0,01$).
 Dos participants (F2 i F4) no arriben a la significació estadística, tot i que la seva exactitud (62,5\%) és superior a l'atzar.
-Això ens indica que els participants executen la tasca correctament amb la suficient atenció.
+Això ens indica que els participants executen la tasca correctament amb suficient atenció.
 
-Els participants s'identifiquen amb codis M1–5 (homes) i F1–5 (dones) per mantenir la privacitat.
+Identifiquem els participants amb codis M1--5 (homes) i F1--5 (dones).
 Els anotadors M3 i F5 són anotadors de MuSeD. Veiem que són els que obtenen exactituds més altes.
 
 \iftables
@@ -15,7 +15,7 @@ Els anotadors M3 i F5 són anotadors de MuSeD. Veiem que són els que obtenen ex
 \centering
 \begin{tabular}{lcc}
 \toprule
-Participant & Exactitud & valor $p$ \\
+\textbf{Participant} & \textbf{Exactitud} & \textbf{valor $p$} \\
 \midrule
 M3 & 100,0\% & $< 0,001$ ** \\
 F5 &  92,5\% & $< 0,001$ ** \\
@@ -34,20 +34,20 @@ F4 &  62,5\% & $= 0,077$ ns \\
 \end{table}
 \fi
 
-La mitjana d'exactitud és del 82,7\%, la majoria dels participants identifiquen correctament el contingut sexista.
-Això dona validesa a les dades de seguiment ocular recollides.
+%La mitjana d'exactitud és del 82,7\%, la majoria dels participants identifiquen correctament el contingut sexista.
+%Això dona validesa a les dades de seguiment ocular recollides.
 
 \subsection{Diferències per gènere}
 
 La \autoref{tab:gender} presenta les comparacions basades en el gènere dels participants.
-La prova U de Mann-Whitney sobre l'exactitud per text mostra una diferència significativa, però de petita magnitud ($U = 1001,5$, $p = 0,035$). No obstant això, aquesta diferència no es manté quan examinem específicament els errors en textos sexistes (prova exacta de Fisher, OR $= 0,72$, $p = 0,468$ ns).
+La prova U de Mann-Whitney sobre l'exactitud per text mostra una diferència significativa, però de petita magnitud. No obstant això, aquesta diferència no es manté quan examinem específicament els errors en textos sexistes (prova exacta de Fisher).
 
 \iftables
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lll}
 \toprule
-Prova & Estadístic & valor $p$ \\
+\textbf{Prova} & \textbf{Estadístic} & \textbf{valor $p$} \\
 \midrule
 U de Mann-Whitney (exactitud per text) & $U = 1001,5$ & $0,035$ * \\
 Exacta de Fisher (errors en textos sexistes) & OR $= 0,72$ & $0,468$ ns \\
@@ -60,17 +60,18 @@ Exacta de Fisher (errors en textos sexistes) & OR $= 0,72$ & $0,468$ ns \\
 
 \subsection{Calibratge de la confiança}
 
-La confiança autoinformada dels participants (escala 1–3) està significativament calibrada amb l'exactitud: una confiança més alta s'associa amb una exactitud més gran ($\rho = 0,29$, $p < 0,001$).
-Malgrat que la correlació és moderada, la tendència és clara i altament significativa.
-De les 400 anotacions, la majoria es fan amb confiança alta: 46 amb confiança 1 (11,5\%), 86 amb confiança 2 (21,5\%) i 268 amb confiança 3 (67,0\%).
+La confiança autoinformada dels participants (escala 1--3) està significativament calibrada amb l'exactitud: una confiança més alta s'associa amb una exactitud més gran ($\rho = 0,29$, $p < 0,001$).
+Malgrat la moderada correlació, la tendència és clara i significativa.
+De les 400 anotacions, la majoria es fan amb confiança alta: 268 amb confiança 3 (67,0\%), 86 amb confiança 2 (21,5\%) i 46 amb confiança 1 (11,5\%).
 L'exactitud augmenta amb el nivell de confiança: 57\% (nivell~1), 74\% (nivell~2) i 90\% (nivell~3).
 És a dir, només un 10\% de les anotacions amb confiança alta (27) són incorrectes.
 
 \subsection{Anàlisi per dificultat de text}
 
 Els textos es distribueixen de manera heterogènia en termes de dificultat.
-Els textos més difícils, amb menor acord amb el \textit{gold standard}, són:
+Els més difícils, amb menor acord amb el \textit{gold standard}, són:
 
+% TODO: es podria escurçar una mica treient 'Text' abans de l'ID i explicar abans què són els IDs
 \begin{itemize}
     \item Text 37: 50\% acord (5/10 participants) -- no sexista amb ironia i humor
     \item Text 144: 50\% acord -- sexista amb estereotips i desigualtat
@@ -102,14 +103,14 @@ En canvi, cap dels textos amb \textit{ironia} o \textit{humor} apareix en aquest
 \subsection{Detecció per subcategories de sexisme}
 
 La \autoref{tab:error_analysis} mostra la taxa d'error individual en la detecció de cadascuna de les subcategories de sexisme definides al \textit{gold standard}. 
-L'\textit{humor} presenta la taxa d'error més alta (30\%, 6/20 anotacions errònies), seguida de \textit{discriminació} (23\%) i \textit{desigualtat} (23\%).
+L'\textit{humor} presenta la taxa d'error més alta, del 30\%, seguida de \textit{discriminació} (23\%) i \textit{desigualtat} (23\%).
 
 \iftables
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lcc}
 \toprule
-Subcategoria & Errònies / Total & Taxa d'error \\
+\textbf{Subcategoria} & \textbf{Errònies / Total} & \textbf{Taxa d'error} \\
 \midrule
 humor              & 6/20 & 30\% \\
 discriminació      & 14/60 & 23\% \\
@@ -124,14 +125,14 @@ estereotips        & 16/110 & 15\% \\
 \end{table}
 \fi
 
-Per examinar si aquestes diferències són estadísticament significatives, fem proves exactes de Fisher comparant les taxes d'error entre totes les parelles de categories amb correcció de Bonferroni ($n = 10$ parelles de comparacions).
+Per examinar si aquestes diferències són estadísticament significatives, fem proves exactes de Fisher comparant les taxes d'error entre totes les parelles de categories amb correcció de Bonferroni.
 Cap comparació per parelles resulta significativa ni abans ni després de la correcció. 
 Això indica que les diferències observades entre subcategories, per exemple entre \textit{humor} i \textit{estereotips}, poden deure's a l'atzar.
 
 \section{Stimulated recall}
 
-L'\textit{stimulated recall} revela principalment tres fets.
-En primer lloc, l'ambigüitat és freqüent: els participants sovint no saben si el text és sexista o no, especialment quan hi ha ironia, humor o opinions que poden interpretar-se de múltiples maneres.
+L'\textit{stimulated recall} revela tres fets.
+En primer lloc, l'ambigüitat és freqüent: els participants sovint no saben si el text és sexista o no, especialment quan hi ha ironia, humor o opinions que poden interpretar-se de diverses maneres.
 En segon lloc, els participants busquen pistes contextuals per resoldre l'ambigüitat: identifiquen qui parla, quina és la seva posició ideològica o si el text descriu un fet o expressa una opinió.
 Finalment, els participants amb experiència prèvia amb el corpus (anotadors de MuSeD) o amb poc contacte amb la llengua castellana mostren processos de lectura diferents: les anotadores reconeixen els casos i els processen amb més rapidesa, mentre que els participants amb menys domini del castellà requereixen més relectures.
 Aquests resultats confirmen que la detecció de sexisme en textos és una tasca inherentment subjectiva, especialment en casos amb ironia o sexisme implícit, i justifiquen l'ús de mètriques de distribució en lloc de comparacions binàries.
@@ -186,8 +187,8 @@ La CE té com a mínim l'entropia de la distribució de referència i varia entr
 La divergència KL és positiva i la JS és simètrica i està acotada a $[0, 1]$.
 La CE i les dues divergències indiquen millor alineament com menor és el valor.
 
-10 dels textos seleccionats tenen o bé tots els tokens o cap d'ells anotats com a segment. 
-No són, per tant, inclosos en aquesta anàlisi per no tenir senyal discriminant. 
+10 dels textos seleccionats tenen o bé tots els tokens anotats com a segments o cap d'ells.
+No són, per tant, inclosos en aquesta anàlisi per no tenir senyal discriminant.
 La \autoref{tab:per_participant_metrics} mostra els resultats per participant.
 
 \iftables
@@ -195,7 +196,7 @@ La \autoref{tab:per_participant_metrics} mostra els resultats per participant.
 \centering
 \begin{tabular}{lcccc}
 \toprule
-Participant & Spearman & CE & KL & JS \\
+\textbf{Participant} & \textbf{Spearman} & \textbf{CE} & \textbf{KL} & \textbf{JS} \\
 \midrule
 F5 & $0,07 \pm 0,20$ & $9,47 \pm 2,33$ & $5,32 \pm 2,33$ & $0,22 \pm 0,07$ \\
 F1 & $0,06 \pm 0,19$ & $9,65 \pm 2,12$ & $5,50 \pm 2,12$ & $0,24 \pm 0,07$ \\
@@ -218,26 +219,27 @@ Les correlacions de Spearman són properes a zero per tots els participants, ind
 La divergència JS mitjana és 0,25, confirmant una separació substancial entre les dues distribucions.
 La \autoref{fig:exemple_visual} mostra un exemple representatiu d'aquesta distribució per al text~30, on les zones d'alt TFD coincideixen amb les zones anotades com a sexistes.
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{../src/pdfs_examples/example_30.pdf}
-\caption{Exemple visual de la distribució d'atenció (TFD) i prominència del model per al text~30. Les barres superiors representen la prominència de cada mètode (Saliency, Input$\times$Gradient, IG, LRP) i les barres inferiors mostren l'atenció humana (TFD). El color vermell indica tokens dins de segments anotats com a sexistes.}
-\label{fig:exemple_visual}
-\end{figure}
+% \begin{figure}[htbp]
+% \centering
+% \includegraphics[width=0.95\textwidth]{../src/pdfs_examples/example_30.pdf}
+% \caption{Exemple visual de la distribució d'atenció (TFD) i prominència del model per al text~30. Les barres superiors representen la prominència de cada mètode (Saliency, Input$\times$Gradient, IG, LRP) i les barres inferiors mostren l'atenció humana (TFD). El color vermell indica tokens dins de segments anotats com a sexistes.}
+% \label{fig:exemple_visual}
+% \end{figure}
 
 \subsection{Alineament per categories de sexisme}
 
 Analitzem l'alineament entre atenció humana i anotacions de segments de dues maneres complementàries.
-En primer lloc, examinem les mètriques de distribució només dins dels segments anotats amb cada tipus d'etiqueta.
+Primer, examinem les mètriques de distribució només dins dels segments anotats amb cada tipus d'etiqueta.
 La \autoref{tab:per_label_metrics} presenta els resultats.
-Observem que les correlacions de Spearman són baixes per totes les etiquetes ($\rho \leq 0,06$), però les divergències varien notablement: la \textit{desig. ideol.} presenta la JS més alta (0,50), mentre que \textit{estereotips} (0,23) i \textit{objectificació} (0,24) són les més baixes. Això suggereix que els models alineen millor amb l'atenció humana en les categories més explícites.
+Les correlacions de Spearman són baixes per totes les etiquetes, però les divergències varien: la \textit{desig. ideol.} presenta la JS més alta (0,50), mentre que \textit{estereotips} (0,23) i \textit{objectificació} (0,24) són les més baixes. 
+Curiosament, categories implícites com \textit{sexisme implícit} (0,25), \textit{humor} (0,26) i \textit{ironia} (0,28) mostren un alineament relativament bo, superior al de categories explícites com \textit{desigualtat/discrim.} (0,37), \textit{sexisme reportat} (0,40) o \textit{desig. ideol.} (0,50).
 
 \iftables
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lcccc}
 \toprule
-Etiqueta & Spearman & CE & KL & JS \\
+\textbf{Etiqueta} & \textbf{Spearman} & \textbf{CE} & \textbf{KL} & \textbf{JS} \\
 \midrule
 desig. ideol.           & $0,06 \pm 0,13$ & $9,20$ & $5,98$ & $0,50$ \\
 desigualtat/discrim.    & $0,06 \pm 0,15$ & $9,80$ & $5,99$ & $0,37$ \\
@@ -255,7 +257,7 @@ humor                   & $0,05 \pm 0,19$ & $9,70$ & $5,55$ & $0,26$ \\
 \end{table}
 \fi
 
-En segon lloc, a la~\autoref{tab:binary_js} separem els texts segons les categories binàries del \textit{gold standard} i calculem la divergència JS per a cadascun.
+Seguidament, a la~\autoref{tab:binary_js} separem els texts segons les categories binàries del \textit{gold standard} i calculem la divergència JS per a cadascun.
 La presència de \textit{desigualtat} augmenta la JS de 0,24 a 0,33, indicant dificultats especials. 
 \textit{Humor} i \textit{ironia} mostren patrons inversos: quan estan presents, la JS disminueix (0,21), mentre que augmenta quan estan absents (0,26). \textit{Objectificació} i \textit{sexisme reportat} també mostren divergències més altes quan estan presents.
 
@@ -264,7 +266,7 @@ La presència de \textit{desigualtat} augmenta la JS de 0,24 a 0,33, indicant di
 \centering
 \begin{tabular}{lcc}
 \toprule
-Categoria & JS (negatiu) & JS (positiu) \\
+\textbf{Categoria} & \textbf{JS (negatiu)} & \textbf{JS (positiu)} \\
 \midrule
 sexista          & 0,24 & 0,27 \\
 ironia           & 0,26 & 0,21 \\
@@ -291,16 +293,16 @@ sexisme reportat & 0,26 & 0,32 \\
 Detectem un total de 8.642 regressions en la totalitat de parells participant-text, amb una mitjana de $216 \pm 77$ regressions per text.
 La majoria són regressions dins de la mateixa línia (\textit{within-line}), 89,8\%, mentre que les regressions entre línies (\textit{between-line}) representen el 10,2\%.
 
-\subsection{Baselines individuals per participant}
+\subsection{\textit{Baselines} individuals per participant}
 
-La \autoref{tab:participant_baselines} presenta les \textit{baselines} de regressió per participant, incloent-hi la taxa de regressió, i la durada mitjana de fixació (Fixation Duration, FD).
+La \autoref{tab:participant_baselines} presenta les \textit{baselines} de regressió per participant, incloent-hi la taxa de regressió, i la durada mitjana de fixació.
 
 \iftables
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lccl}
 \toprule
-Participant & Taxa de regressió (\%) & Mitjana FD (ms) & $n$ regressions \\
+\textbf{Participant} & \textbf{Taxa de regressió (\%)} & \textbf{Mitjana FD (ms)} & \textbf{$n$ regressions} \\
 \midrule
 F1 & 25 & 226 & 1,395 \\
 F5 & 21 & 267 & 1.283 \\
@@ -327,11 +329,11 @@ Aquesta variabilitat és consistent amb les diferències individuals normals en 
 \subsection{Tokens significatius}
 
 Calculem la z-score (unitat tipificada) per cada token, comparant el nombre de regressions amb el \textit{baseline} del participant.
-Després d'aplicar la correcció de Benjamini–Hochberg ($q < 0,05$), identifiquem 2.797 tokens de destí i 2.795 tokens d'origen significatius.
+Després d'aplicar la correcció de Benjamini–Hochberg, identifiquem 2.797 tokens de destí i 2.795 tokens d'origen significatius.
 És a dir, tokens on els participants regressen significativament més sovint del que esperaríem per atzar.
 
 Per validar els resultats de la \textit{z-score}, fem 10.000 permutacions per cada parell (participant, text) mantenint l'estructura de les dades. 
-Els resultats amb correcció de taxa de falsos descobriments de Benjamini-Hochberg ($q < 0,05$) són: 84 tokens de destí i 94 tokens d'origen significatius.
+Els resultats amb correcció de taxa de falsos descobriments de Benjamini-Hochberg són: 84 tokens de destí i 94 tokens d'origen significatius.
 La concordança entre els dos mètodes és moderada:
 
 \begin{itemize}
@@ -355,83 +357,145 @@ La \autoref{tab:top_hotspots} presenta els 40 punts focals lèxics més signific
     \item \textbf{Direcció de regressió:} la majoria dels punts focals són de destí (on els lectors hi regressionen més), suggerint que els lectors revisen tokens temàticament rellevants.
 \end{itemize}
 
+% \iftables
+% \begin{table}[htbp]
+% \centering
+% \footnotesize
+% \begin{tabular}{clrl}
+% \toprule
+% Text & Token més significatiu & $z$ & Direcció \\
+% \midrule
+% 4 & llegado     & $-6,64$ & destí \\
+% 5 & lesbiana     & $-7,11$ & destí \\
+% %23 & ¡Sígueme    & $-6,79$ & origen \\
+% 23 & Sígueme    & $-6,79$ & origen \\
+% 30 & forense      & $-5,75$ & destí \\
+% 37 & Imaginate    & $-3,41$ & origen \\
+% 45 & explicar     & $-5,89$ & origen \\
+% 55 & ahorita      & $-8,14$ & destí \\
+% %59 & miren,       & $-4,64$ & destí \\
+% 59 & miren       & $-4,64$ & destí \\
+% 60 & patriarcal   & $-3,06$ & destí \\
+% 62 & jugando      & $-5,74$ & origen \\
+% %76 & Administrativa. & $-8,00$ & origen \\
+% 76 & Administrativa & $-8,00$ & origen \\
+% 78 & Infojobs     & $-6,11$ & destí \\
+% 99 & jerárquicas  & $-6,61$ & origen \\
+% 106 & mujer       & $-5,65$ & destí \\
+% 107 & ley         & $-5,17$ & origen \\
+% 124 & pena        & $-6,95$ & origen \\
+% 133 & real        & $-6,43$ & destí \\
+% 136 & culturales  & $-6,66$ & destí \\
+% %143 & hermano,    & $-8,82$ & origen \\
+% 143 & hermano,    & $-8,82$ & origen \\
+% 144 & tóxica      & $-6,82$ & destí \\
+% %148 & parejas,    & $-6,43$ & destí \\
+% 148 & parejas,    & $-6,43$ & destí \\
+% 150 & pide        & $-5,75$ & destí \\
+% %151 & favor.      & $-8,06$ & origen \\
+% 151 & favor      & $-8,06$ & origen \\
+% %166 & sense.      & $-3,65$ & origen \\
+% 166 & sense      & $-3,65$ & origen \\
+% 201 & años        & $-7,00$ & destí \\
+% %214 & gracias.    & $-4,83$ & origen \\
+% 214 & gracias    & $-4,83$ & origen \\
+% 215 & beneficiado & $-7,00$ & origen \\
+% 217 & lecciones   & $-6,02$ & origen \\
+% 327 & voy         & $-6,22$ & origen \\
+% 352 & março       & $-5,91$ & destí \\
+% 356 & civilización & $-6,59$ & origen \\
+% 357 & cuenta      & $-6,48$ & origen \\
+% 359 & acceder     & $-5,43$ & destí \\
+% 362 & pasando     & $-7,36$ & origen \\
+% 364 & idiomas     & $-6,92$ & destí \\
+% 373 & verdad      & $-5,26$ & origen \\
+% 375 & tema        & $-6,33$ & destí \\
+% 383 & seguidor    & $-5,58$ & destí \\
+% %390 & patriarcado? & $-4,17$ & destí \\
+% 390 & patriarcado & $-4,17$ & destí \\
+% %399 & chamaquito, & $-5,75$ & destí \\
+% 399 & chamaquito & $-5,75$ & destí \\
+% \bottomrule
+% \end{tabular}
+% \caption{Token més significatiu per text (ordenat per \textit{z-score} descendent). Direcció: destí = tokens on els lectors hi regressionen més sovint; origen = tokens des dels quals els lectors fan més regressions. Els tokens en negreta indiquen paraules temàticament relacionades amb gènere i sexisme.}
+% \label{tab:top_hotspots}
+% \end{table}
+% \fi
+
 \iftables
 \begin{table}[htbp]
 \centering
-\small
-\begin{tabular}{clrl}
+\footnotesize
+\begin{tabular}{clclc}
 \toprule
-Text & Token més significatiu & $z$ & Direcció \\
+\textbf{Text} & \textbf{Destí} & $z$ & \textbf{Origen} & $z$ \\
 \midrule
-4 & llegado     & $-6,64$ & destí \\
-5 & lesbiana     & $-7,11$ & destí \\
-23 & ¡Sígueme    & $-6,79$ & origen \\
-30 & forense      & $-5,75$ & destí \\
-37 & Imaginate    & $-3,41$ & origen \\
-45 & explicar     & $-5,89$ & origen \\
-55 & ahorita      & $-8,14$ & destí \\
-59 & miren,       & $-4,64$ & destí \\
-60 & patriarcal   & $-3,06$ & destí \\
-62 & jugando      & $-5,74$ & origen \\
-76 & Administrativa. & $-8,00$ & origen \\
-78 & Infojobs     & $-6,11$ & destí \\
-99 & jerárquicas  & $-6,61$ & origen \\
-106 & mujer       & $-5,65$ & destí \\
-107 & ley         & $-5,17$ & origen \\
-124 & pena        & $-6,95$ & origen \\
-133 & real        & $-6,43$ & destí \\
-136 & culturales  & $-6,66$ & destí \\
-143 & hermano,    & $-8,82$ & origen \\
-144 & tóxica      & $-6,82$ & destí \\
-148 & parejas,    & $-6,43$ & destí \\
-150 & pide        & $-5,75$ & destí \\
-151 & favor.      & $-8,06$ & origen \\
-166 & sense.      & $-3,65$ & origen \\
-201 & años        & $-7,00$ & destí \\
-214 & gracias.    & $-4,83$ & origen \\
-215 & beneficiado & $-7,00$ & origen \\
-217 & lecciones   & $-6,02$ & origen \\
-327 & voy         & $-6,22$ & origen \\
-352 & março       & $-5,91$ & destí \\
-356 & civilización & $-6,59$ & origen \\
-357 & cuenta      & $-6,48$ & origen \\
-359 & acceder     & $-5,43$ & destí \\
-362 & pasando     & $-7,36$ & origen \\
-364 & idiomas     & $-6,92$ & destí \\
-373 & verdad      & $-5,26$ & origen \\
-375 & tema        & $-6,33$ & destí \\
-383 & seguidor    & $-5,58$ & destí \\
-390 & patriarcado? & $-4,17$ & destí \\
-399 & chamaquito, & $-5,75$ & destí \\
+4 & llegado & $6,64$ & progresismo & $5,16$ \\
+5 & lesbiana & $7,11$ & mientras & $6,88$ \\
+23 & sexual & $6,47$ & Sígueme & $6,79$ \\
+30 & forense & $5,75$ & Feministas & $4,91$ \\
+37 & sobrevibir & $2,94$ & Imaginate & $3,41$ \\
+45 & patriarcal & $5,37$ & explicar & $5,89$ \\
+55 & ahorita & $8,14$ & solo & $8,00$ \\
+59 & miren & $4,64$ & saben & $4,34$ \\
+60 & la & $3,80$ & no & $4,65$ \\
+62 & existe & $5,67$ & hombre & $5,74$ \\
+76 & creen & $7,93$ & Administrativa & $8,00$ \\
+78 & Infojobs & $6,11$ & mercado & $5,95$ \\
+99 & anticuado & $6,25$ & jerárquicas & $6,61$ \\
+106 & mujer & $5,64$ & cumplidos & $5,08$ \\
+107 & aquí & $4,42$ & ley & $5,17$ \\
+124 & nací & $6,87$ & pena & $6,95$ \\
+133 & real & $6,42$ & antecedentes & $6,11$ \\
+136 & culturales & $6,66$ & cualidades & $6,46$ \\
+143 & ridículo & $8,75$ & habilidad & $8,81$ \\
+144 & tóxica & $6,82$ & lado & $6,52$ \\
+148 & parejas & $6,43$ & relacionarse & $5,90$ \\
+150 & pide & $5,75$ & oír & $5,42$ \\
+151 & literalmente & $7,95$ & favor & $8,05$ \\
+166 & pueden & $3,25$ & sense & $3,65$ \\
+201 & años & $7,00$ & siempre & $6,47$ \\
+214 & opinas & $4,64$ & gracias & $4,83$ \\
+215 & Pues & $5,63$ & beneficiado & $7,00$ \\
+217 & bestia & $5,93$ & lecciones & $6,02$ \\
+327 & puedes & $5,84$ & voy & $6,22$ \\
+352 & marzo & $5,91$ & abrazo & $5,77$ \\
+356 & natural & $6,47$ & civilización & $6,59$ \\
+357 & supiese & $6,40$ & cuenta & $6,48$ \\
+359 & acceder & $5,43$ & violación & $4,85$ \\
+362 & voy & $7,27$ & pasando & $7,36$ \\
+364 & idiomas & $6,92$ & respuesta & $6,27$ \\
+373 & pasto & $4,49$ & verdad & $5,26$ \\
+375 & tema & $6,33$ & problema & $6,14$ \\
+383 & seguidor & $5,58$ & largo & $5,32$ \\
+390 & patriarcado & $4,17$ & violentas & $4,09$ \\
+399 & chamaquito & $5,75$ & doña & $5,43$ \\
 \bottomrule
 \end{tabular}
-\caption{Token més significatiu per text (ordenat per \textit{z-score} descendent). Direcció: destí = tokens on els lectors hi regressionen més sovint; origen = tokens des dels quals els lectors fan més regressions. Els tokens en negreta indiquen paraules temàticament relacionades amb gènere i sexisme.}
-\label{tab:top_hotspots}
+\caption{Punts focals de destí i origen per text, sense puntuació. Destí = token on els lectors hi regressionen més sovint ($z$ més alt en direcció TO); Origen = token des del qual els lectors fan més regressions ($z$ més alt en direcció FROM).}
+\label{tab:top_hotspots_split}
 \end{table}
 \fi
 
 \subsection{Superposició amb les anotacions de segments}
 
 Per examinar si els tokens amb atenció ocular més elevada corresponen a les zones anotades com a sexistes, comparem els 2,881 tokens significatius (z-score) amb les anotacions de segments del \textit{gold standard}.
-
 Del total, 2,458 tokens significatius (85,3\%) es troben dins d'un interval anotat. Això indica una forta associació entre les zones de més atenció dels lectors i les zones etiquetades com a sexistes.
 
-No obstant això, apliquem la prova exacta de Fisher per text per detectar si alguna mostra una superposició significativament superior a l'atzar ($p < 0,05$). Cap text assoleix significació estadística. Aquest resultat pot reflectir limitacions de potència: amb una mitjana de 4--10 tokens anotats per text i un total de 10 participants, la mida de mostra per text és insuficient per detectar efectes significatius en proves per text individual. L'efecte global (85,3\% de tokens significatius dins de segments) és, però, molt superior al que s'esperaria per atzar, confirmant l'associació entre atenció humana i segments anotats.
+No obstant això, la prova exacta de Fisher per text no assoleix significació estadística en cap cas, possiblement per manca de potència (mitjana de 4--10 tokens anotats per text i 10 participants). L'efecte global (85,3\% de tokens significatius dins de segments) és, però, molt superior al que s'esperaria per atzar.
 
 \subsection{Correlació entre cobertura de segments i taxa de regressió}
 
-Vam calcular la correlació de Spearman entre la cobertura de cada segment (proporció de tokens anotats) i la taxa de regressió mitjana per text, estratificat per categoria d'etiqueta.
-
-La \autoref{tab:spearman_coverage} mostra els resultats.
-L'única correlació significativa és per la categoria ``sexista'': els textos sexistes pel \textit{gold standard} presenten taxes de regressió més altes.
-Això suggereix que els lectors fan més regressions en resposta al contingut sexista, possiblement degut a la necessitat de reprocessament cognitiu.
+La \autoref{tab:spearman_coverage} mostra la correlació de Spearman entre la cobertura de cada segment (proporció de tokens anotats) i la taxa de regressió mitjana per text, estratificat per categoria d'etiqueta.
+L'única correlació significativa és a la categoria ``sexista'': els textos sexistes presenten taxes de regressió més altes.
+Sembla, doncs, que els lectors fan més regressions en resposta al contingut sexista, possiblement degut a la necessitat de reprocessament cognitiu.
 
 \iftables
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lccr}
 \toprule
-Categoria & $\rho$ & valor $p$ & $n$ texts \\
+\textbf{Categoria} & \textbf{$\rho$} & \textbf{valor $p$} & \textbf{$n$ texts} \\
 \midrule
 sexista          & 0,429 & 0,006 * & 20 \\
 discriminació   & 0,273 & 0,088   & 6 \\
@@ -448,27 +512,27 @@ humor           & 0,078 & 0,634   & 6 \\
 
 \subsection{Punts focals dins de segments per tipus d'etiqueta}
 
-Identifiquem punts focals de regressió significatius dins dels intervals anotats per a cada tipus d'etiqueta, ponderats per $1/\text{longitud\_span}$ per evitar biaix cap a segments llargs:
+Identifiquem punts focals de regressió significatius dins dels intervals anotats per a cada tipus d'etiqueta, ponderats per l'invers de la longitud del segment per evitar biaix cap a segments llargs:
 
 \iftables
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lcrcr}
 \toprule
-Etiqueta & $n$ punts focals & $z$ mitjà & Clúster mitjà & Long. segment \\
+\textbf{Etiqueta} & \textbf{$n$ punts focals} & \textbf{$z$ mitjà} & \textbf{Clúster mitjà} & \textbf{Long. segment} \\
 \midrule
-crítica                 & 42 & $-5,81$ & 56,0 & 60,4 \\
-estereotips             & 30 & $-5,98$ & 55,1 & 58,1 \\
-desigualtat/discrim.    & 30 & $-5,70$ & 50,5 & 53,3 \\
-sexisme implícit        & 24 & $-5,58$ & 37,7 & 37,7 \\
-ironia                  & 16 & $-5,13$ & 39,6 & 39,6 \\
-humor                   & 18 & $-5,21$ & 29,8 & 47,0 \\
-desig. ideol.           & 10 & $-5,20$ & 17,2 & 28,6 \\
-objectificació          & 10 & $-5,87$ & 20,4 & 37,8 \\
-sexisme reportat        &  8 & $-5,86$ & 53,8 & 53,8 \\
+crítica                 & 42 & $5,81$ & 56,0 & 60,4 \\
+estereotips             & 30 & $5,98$ & 55,1 & 58,1 \\
+desigualtat/discrim.    & 30 & $5,70$ & 50,5 & 53,3 \\
+sexisme implícit        & 24 & $5,58$ & 37,7 & 37,7 \\
+ironia                  & 16 & $5,13$ & 39,6 & 39,6 \\
+humor                   & 18 & $5,21$ & 29,8 & 47,0 \\
+desig. ideol.           & 10 & $5,20$ & 17,2 & 28,6 \\
+objectificació          & 10 & $5,87$ & 20,4 & 37,8 \\
+sexisme reportat        &  8 & $5,86$ & 53,8 & 53,8 \\
 \bottomrule
 \end{tabular}
-\caption{Punts focals de regressió per tipus d'etiqueta de segment (ponderats per $1/\text{longitud}$).}
+\caption{Punts focals de regressió per tipus d'etiqueta de segment, ponderats per $1/\text{longitud}$.}
 \label{tab:span_hotspots}
 \end{table}
 \fi
@@ -477,10 +541,10 @@ sexisme reportat        &  8 & $-5,86$ & 53,8 & 53,8 \\
 Els punts focals més significatius (en valor absolut) són:
 
 \begin{itemize}
-    \item \textit{objectificació}, text 143, destí ``y'' ($z = -8,75$, clúster de 9 tokens)
-    \item \textit{estereotips}, text 143, destí ``y'' ($z = -8,75$, clúster de 23 tokens)
-    \item \textit{crítica}, text 55, origen ``a'' ($z = -8,36$, clúster de 98 tokens)
-    \item \textit{desigualtat/discrim.}, text 76, destí ``No.'' ($z = -8,18$, clúster de 73 tokens)
+    \item \textit{objectificació}, text 143, origen ``Cómo'' ($z = 6,65$, clúster de 9 tokens)
+    \item \textit{estereotips}, text 143, origen ``Cómo'' ($z = 6,65$, clúster de 23 tokens)
+    \item \textit{crítica}, text 55, destí ``ahorita'' ($z = 8,14$, clúster de 98 tokens)
+    \item \textit{desigualtat/discrim.}, text 76, origen ``Administrativa'' ($z = 8,00$, clúster de 73 tokens)
 \end{itemize}
 
 \section{Mètriques d'eye-tracking}
@@ -496,7 +560,7 @@ Comparem la TFD, FFD i FC mitjana per text entre els 20 textos sexistes i els 20
 \centering
 \begin{tabular}{lccr}
 \toprule
-Mètode & Sexistes & No sexistes & $p$ \\
+\textbf{Mètode} & \textbf{Sexistes} & \textbf{No sexistes} & \textbf{$p$} \\
 \midrule
 TFD (\%) & $1,87 \pm 0,52$ & $2,41 \pm 1,33$ & 0,473 \\
 FFD (ms) & $198,2 \pm 6,1$ & $201,0 \pm 5,6$ & 0,133 \\
@@ -520,7 +584,7 @@ Per avaluar si els tokens dins dels segments anotats com a sexistes reben més a
 \centering
 \begin{tabular}{lccr}
 \toprule
-Mètode & Dins segment & Fora segment & $p$ \\
+\textbf{Mètode} & \textbf{Dins segment} & \textbf{Fora segment} & \textbf{$p$} \\
 \midrule
 TFD z-score & $+0,045$ ($n = 18\,708$) & $-0,284$ ($n = 2\,973$) & $< 0,001$ *** \\
 FFD z-score & $+0,003$ ($n = 18\,708$) & $-0,018$ ($n = 2\,973$) & 0,741 \\
@@ -542,7 +606,7 @@ En canvi, la FFD no mostra diferències significatives ($p = 0,741$).
 \centering
 \begin{tabular}{lccr}
 \toprule
-Parell & $\rho$ de Spearman & $p$ \\
+\textbf{Parell} & \textbf{$\rho$ de Spearman} & \textbf{$p$} \\
 \midrule
 TFD vs.\ FFD & 0,318 & $< 0,001$ *** \\
 TFD vs.\ FC  & 0,623 & $< 0,001$ *** \\
@@ -573,7 +637,7 @@ Calculem la correlació de Spearman entre la prominència de cada token (valor a
 \centering
 \begin{tabular}{lcccc}
 \toprule
-Model & Mètode & $\rho$ TFD & $\rho$ FFD & $\rho$ FC \\
+\textbf{Model} & \textbf{Mètode} & \textbf{$\rho$ TFD} & \textbf{$\rho$ FFD} & \textbf{$\rho$ FC} \\
 \midrule
 BETO & IG & 0,068 & $-0,036$ & 0,113 \\
 BETO & Input$\times$Gradient & 0,068 & $-0,038$ & 0,116 \\
@@ -602,16 +666,15 @@ LRP mostra correlacions similars o lleugerament superiors a Saliency per a mBERT
 
 \section{Comparació entre atenció humana i prominència de models}
 
-\subsection{Distribucions de prominència del model vs. anotacions de segments}
+A aquesta secció comparem les distribucions de prominència de tres models preentrenats (mBERT, BETO i MrBERT-es) amb les anotacions de segments del \textit{gold standard} i amb l'atenció humana mesurada amb \textit{eye-tracking}.
+Extraiem la prominència dels models amb quatre mètodes d'interpretabilitat: Saliency, Input$\times$Gradient, Integrated Gradients (IG) i Layer-wise Relevance Propagation (LRP).
+Totes les comparacions de distribucions utilitzen filtratge de paraules buides (vegeu l'ablació de l'apartat~\ref{sec:stopword_ablation}).
 
-Avaluem tres models preentrenats: mBERT, BETO i MrBERT-es. Per a cada model, extraiem la prominència mitjançant quatre mètodes: Saliency Maps (gradient simple), Integrated Gradients (IG) i Layer-wise Relevance Propagation (LRP).
+\subsection{Prominència del model vs. anotacions de segments}
 
-La divergència Jensen-Shannon (JS) mitjana entre la distribució de prominència del model i les anotacions de segments és $\sim$0,78--0,84 (rang teòric 0--1), indicant una divergència substantial però no total. 
-Aquesta observació és esperable: els segments marquen només una part del text com a sexista, mentre que la prominència del model es distribueix entre tots els tokens.
+En primer lloc, comparem les distribucions de prominència del model amb les anotacions de segments sexistes del corpus MuSeD.
 
-\textbf{Mètode d'interpretabilitat:} LRP produeix divergències JS lleugerament menors per a mBERT ($JS = 0,786$) respecte a Saliency ($JS = 0,775$) en la comparació amb segments, tot i que les diferències són petites. En la comparació amb l'atenció humana, LRP i Saliency mostren valors molt propers.
-
-\subsection{Superposició amb les anotacions de segments}
+\subsubsection{Solapament}
 
 Avaluem el grau en què les paraules amb prominència més alta (top 20\%) del model coincideixen amb les paraules dins dels segments anotats com a sexistes pel \textit{gold standard}.
 
@@ -620,7 +683,7 @@ Avaluem el grau en què les paraules amb prominència més alta (top 20\%) del m
 \centering
 \begin{tabular}{lcc}
 \toprule
-Model & Mètode & Superposició \\
+\textbf{Model} & \textbf{Mètode} & \textbf{Superposició} \\
 \midrule
 mBERT & IG & 0,916 \\
 MrBERT-es & IG & 0,905 \\
@@ -642,19 +705,53 @@ MrBERT-es & Input$\times$Gradient & 0,887 \\
 \fi
 
 La superposició és alta (60,7\%--71,9\%) per tots els models i mètodes (amb paraules buides filtrades).
-Això indica que els models de transformador, independentment de la seva arquitectura o dades d'entrenament, assignen preferentment atenció als fragments que els anotadors humans identifiquen com a sexistes.
+Això indica que els models assignen preferentment atenció als fragments que els anotadors humans identifiquen com a sexistes.
 El mètode IG produeix una superposició superior (64,3\%--71,9\%) respecte a Saliency, Input$\times$Gradient i LRP (60,7\%--62,1\%), possiblement perquè les atribucions IG són més concentrades en poques paraules clau.
 
-\subsection{Alineament model vs. atenció humana}
+\subsubsection{Distribucions de prominència}
 
-Per examinar si l'atenció de models correlaciona amb l'atenció humana, comparem les distribucions de prominència del model amb les mètriques de fixació humana (TFD, FFD, FC), tant dins com fora dels segments anotats.
+La \autoref{tab:model_vs_span_dist} compara les distribucions de prominència del model amb les anotacions de segments mitjançant tres mètriques de distribució: entropia creuada (CE), divergència KL i divergència Jensen-Shannon (JS).
+
+\iftables
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{Mètode} & \textbf{CE} & \textbf{KL} & \textbf{JS} \\
+\midrule
+BETO & IG & 24,45 & 21,15 & 0,781 \\
+BETO & Input$\times$Gradient & 24,55 & 21,26 & 0,795 \\
+BETO & LRP & 24,71 & 21,43 & 0,790 \\
+BETO & Saliency & 24,51 & 21,22 & 0,776 \\
+MrBERT-es & IG & 25,56 & 22,32 & 0,830 \\
+MrBERT-es & Input$\times$Gradient & 25,69 & 22,40 & 0,837 \\
+MrBERT-es & LRP & 25,67 & 22,36 & 0,833 \\
+MrBERT-es & Saliency & 25,67 & 22,38 & 0,827 \\
+mBERT & IG & 24,39 & 21,10 & 0,779 \\
+mBERT & Input$\times$Gradient & 24,54 & 21,26 & 0,791 \\
+mBERT & LRP & 24,56 & 21,27 & 0,786 \\
+mBERT & Saliency & 24,51 & 21,22 & 0,775 \\
+\bottomrule
+\end{tabular}
+\caption{Mètriques de distribució: prominència del model vs.\ anotacions de segment, amb paraules buides filtrades (mitjana sobre 40 texts).}
+\label{tab:model_vs_span_dist}
+\end{table}
+\fi
+
+La JS mitjana és $\sim$0,78--0,84 (rang 0--1), indicant una divergència substancial però no total entre la distribució de prominència del model i les anotacions de segments.
+La divergència és esperable: els segments marquen només una part del text com a sexista, mentre que la prominència del model es distribueix entre tots els tokens.
+Les diferències entre mètodes d'interpretabilitat són petites (rang de JS: 0,775--0,837), suggerint que la distribució de prominència és similar independentment del mètode utilitzat.
+
+\subsubsection{Alineament per tipologia d'etiqueta}
+
+La \autoref{tab:model_typology} desglossa l'alineament entre prominència del model i atenció humana per tipus d'etiqueta de segment.
 
 \iftables
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lccccc}
 \toprule
-Etiqueta & Prom. (dins) & Prom. (fora) & $\rho$ TFD & $\rho$ FC & JS \\
+\textbf{Etiqueta} & \textbf{Prom. (dins)} & \textbf{Prom. (fora)} & \textbf{$\rho$ TFD} & \textbf{$\rho$ FC} & \textbf{JS} \\
 \midrule
 crítica                 & 0,036 & 0,000 & 0,042 & 0,097 & 0,741 \\
 estereotips             & 0,028 & 0,027 & 0,096 & 0,131 & 0,850 \\
@@ -682,45 +779,16 @@ Les principals observacions són:
     \item La \textbf{JS} més baixa és per \textit{crítica} (0,741), indicant la concordança més alta entre distribucions dins/fora del segment.
 \end{itemize}
 
-\subsubsection{Model vs.\ anotacions de segments}
+\subsection{Prominència del model vs. atenció humana}
+
+En segon lloc, comparem les distribucions de prominència del model amb l'atenció humana mesurada mitjançant \textit{eye-tracking} (TFD, FFD, FC).
 
 \iftables
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lcccc}
 \toprule
-Model & Mètode & Cross-Entropy & KL & JS \\
-\midrule
-BETO & IG & 24,45 & 21,15 & 0,781 \\
-BETO & Input$\times$Gradient & 24,55 & 21,26 & 0,795 \\
-BETO & LRP & 24,71 & 21,43 & 0,790 \\
-BETO & Saliency & 24,51 & 21,22 & 0,776 \\
-MrBERT-es & IG & 25,56 & 22,32 & 0,830 \\
-MrBERT-es & Input$\times$Gradient & 25,69 & 22,40 & 0,837 \\
-MrBERT-es & LRP & 25,67 & 22,36 & 0,833 \\
-MrBERT-es & Saliency & 25,67 & 22,38 & 0,827 \\
-mBERT & IG & 24,39 & 21,10 & 0,779 \\
-mBERT & Input$\times$Gradient & 24,54 & 21,26 & 0,791 \\
-mBERT & LRP & 24,56 & 21,27 & 0,786 \\
-mBERT & Saliency & 24,51 & 21,22 & 0,775 \\
-\bottomrule
-\end{tabular}
-\caption{Mètriques de distribució: prominència del model vs.\ anotacions de segment, amb paraules buides filtrades (mitjana sobre 40 texts).}
-\label{tab:model_vs_span_dist}
-\end{table}
-\fi
-
-La JS mitjana és $\sim$0,78--0,84 (rang 0--1), indicant una divergència substancial però no total entre la distribució de prominència del model i les anotacions de segments (amb paraules buides filtrades).
-Les diferències entre mètodes d'interpretabilitat són petites (rang de JS: 0,775--0,837), suggerint que la distribució de prominència és similar independentment del mètode utilitzat.
-
-\subsubsection{Model vs.\ atenció humana}
-
-\iftables
-\begin{table}[htbp]
-\centering
-\begin{tabular}{lcccc}
-\toprule
-Model & Mètode & Cross-Entropy & KL & JS \\
+\textbf{Model} & \textbf{Mètode} & \textbf{CE} & \textbf{KL} & \textbf{JS} \\
 \midrule
 BETO & IG & 24,43 & 21,15 & 0,778 \\
 BETO & Input$\times$Gradient & 24,51 & 21,21 & 0,790 \\
@@ -745,11 +813,9 @@ La JS entre model i atenció humana (0,77--0,84) és lleugerament menor que la J
 Això és consistent amb l'observació que els lectors presten atenció a zones més àmplies que els segments estrictament anotats.
 Les diferències entre mètodes són petites en la comparació amb l'atenció humana (rang de JS: 0,770--0,835).
 
-% TODO: concordança
-\subsubsection{Resum tripartida}
+\subsection{Convergència entre les tres fonts d'informació}\label{sec:stopword_ablation}
 
-\paragraph{Ablació: efecte del filtratge de paraules buides.}
-Abans de presentar les comparacions amb el model, avaluem l'impacte del filtratge de paraules buides (stopwords) sobre les mètriques de distribució.
+Abans de resumir les tres comparacions, avaluem l'impacte del filtratge de paraules buides (stopwords) sobre les mètriques de distribució.
 La \autoref{tab:stopword_ablation} mostra la divergència JS entre l'atenció humana i les anotacions de segments, amb i sense filtratge.
 El filtratge redueix la JS un 22\% (de 0,154 a 0,120), ja que les paraules buides reben atenció similar dels lectors i dels models però no contribueixen a la discriminació entre zones sexistes i no sexistes.
 L'efecte és consistent en totes les categories d'etiqueta, amb reduccions que van del 17\% (\textit{objectificació}) al 43\% (\textit{ironia}).
@@ -760,7 +826,7 @@ Per aquest motiu, totes les comparacions amb el model que es presenten a continu
 \centering
 \begin{tabular}{lcc}
 \toprule
-Condició & JS mitja & Desv. est. \\
+\textbf{Condició} & \textbf{JS mitja} & \textbf{Desv. est.} \\
 \midrule
 Tots els tokens & 0,154 & 0,101 \\
 Stopwords filtrats & 0,120 & 0,113 \\
@@ -771,14 +837,14 @@ Stopwords filtrats & 0,120 & 0,113 \\
 \end{table}
 \fi
 
-Ara presentem el resum tripartida de les tres comparacions (model--segments, model--humà, humà--segments).
+La \autoref{tab:tripartite_summary} resumeix les tres comparacions de parells (model--segments, model--humà, humà--segments).
 
 \iftables
 \begin{table}[htbp]
 \centering
 \begin{tabular}{lccc}
 \toprule
-Parell & JS (Saliency) & JS (IG) & JS (LRP) \\
+\textbf{Parell} & \textbf{JS (Saliency)} & \textbf{JS (IG)} & \textbf{JS (LRP)} \\
 \midrule
 Model -- Segments  & 0,78--0,83 & 0,78--0,83 & 0,79--0,83 \\
 Model -- Humà      & 0,77--0,83 & 0,78--0,83 & 0,78--0,84 \\
@@ -802,20 +868,20 @@ La divergència més alta és entre el model i les anotacions de segments (0,78-
 \centering
 \begin{tabular}{llrrrr}
 \toprule
-Model & Mètode & Acc. & $\rho$ TFD & $\rho$ FFD & $\rho$ FC \\
+\textbf{Model} & \textbf{Mètode} & \textbf{Precisió (\%)} & \textbf{$\rho$ TFD} & \textbf{$\rho$ FFD} & \textbf{$\rho$ FC} \\
 \midrule
-BETO & IG & 0,611 & $+0,236$ & $+0,159$ & $+0,208$ \\
-BETO & Input$\times$Gradient & 0,622 & $+0,125$ & $+0,042$ & $+0,104$ \\
-BETO & LRP & 0,622 & $+0,308$ & $+0,230$ & $+0,287$ \\
-BETO & Saliency & 0,622 & $+0,193$ & $+0,078$ & $+0,172$ \\
-MrBERT-es & IG & 0,742 & $+0,190$ & $+0,107$ & $+0,223$ \\
-MrBERT-es & Input$\times$Gradient & 0,757 & $+0,088$ & $+0,024$ & $+0,083$ \\
-MrBERT-es & LRP & 0,757 & $+0,024$ & $+0,035$ & $-0,012$ \\
-MrBERT-es & Saliency & 0,757 & $+0,083$ & $+0,053$ & $+0,077$ \\
-mBERT & IG & 0,576 & $-0,193$ & $-0,174$ & $-0,206$ \\
-mBERT & Input$\times$Gradient & 0,541 & $-0,234$ & $-0,203$ & $-0,234$ \\
-mBERT & LRP & 0,541 & $-0,249$ & $-0,249$ & $-0,254$ \\
-mBERT & Saliency & 0,541 & $-0,259$ & $-0,213$ & $-0,244$ \\
+BETO & IG & 61,1 & $+0,236$ & $+0,159$ & $+0,208$ \\
+BETO & Input$\times$Gradient & 62,2 & $+0,125$ & $+0,042$ & $+0,104$ \\
+BETO & LRP & 62,2 & $+0,308$ & $+0,230$ & $+0,287$ \\
+BETO & Saliency & 62,2 & $+0,193$ & $+0,078$ & $+0,172$ \\
+MrBERT-es & IG & 74,2 & $+0,190$ & $+0,107$ & $+0,223$ \\
+MrBERT-es & Input$\times$Gradient & 75,7 & $+0,088$ & $+0,024$ & $+0,083$ \\
+MrBERT-es & LRP & 75,7 & $+0,024$ & $+0,035$ & $-0,012$ \\
+MrBERT-es & Saliency & 75,7 & $+0,083$ & $+0,053$ & $+0,077$ \\
+mBERT & IG & 57,6 & $-0,193$ & $-0,174$ & $-0,206$ \\
+mBERT & Input$\times$Gradient & 54,1 & $-0,234$ & $-0,203$ & $-0,234$ \\
+mBERT & LRP & 54,1 & $-0,249$ & $-0,249$ & $-0,254$ \\
+mBERT & Saliency & 54,1 & $-0,259$ & $-0,213$ & $-0,244$ \\
 \bottomrule
 \end{tabular}
 \caption{Correlació de Spearman entre divergència KL (model vs. humà) i rendiment del model per text, seguint la mètrica de \textcite{soodInterpretingAttentionModels2020}. Cap correlació és estadísticament significativa ($p > 0,05$).}
@@ -828,7 +894,7 @@ mBERT & Saliency & 0,541 & $-0,259$ & $-0,213$ & $-0,244$ \\
 \centering
 \begin{tabular}{llrrr}
 \toprule
-Model & Mètode & SD (TFD) & SD (FFD) & SD (FC) \\
+\textbf{Model} & \textbf{Mètode} & \textbf{$SD_{KL}$ (TFD)} & \textbf{$SD_{KL}$ (FFD)} & \textbf{$SD_{KL}$ (FC)} \\
 \midrule
 BETO & IG & 3,45 & 3,52 & 3,34 \\
 BETO & Input$\times$Gradient & 3,57 & 3,64 & 3,46 \\
@@ -844,40 +910,41 @@ mBERT & LRP & 3,63 & 3,75 & 3,53 \\
 mBERT & Saliency & 3,75 & 3,86 & 3,65 \\
 \bottomrule
 \end{tabular}
-\caption{Saliency Distance (SD) = KL(P\textsubscript{sal} $\|$ P\textsubscript{eye}) per model i mètode, seguint la proposta d'\textcite{ikhwantriLookingDeepEyes2023}. Valors més baixos indiquen major similitud entre la distribució de prominència del model i l'atenció humana.}
+\caption{Saliency Distance ($SD_{KL}$) = KL(P\textsubscript{sal} $\|$ P\textsubscript{eye}) per model i mètode, seguint la proposta d'\textcite{ikhwantriLookingDeepEyes2023}. Valors més baixos indiquen major similitud entre la distribució de prominència del model i l'atenció humana.}
 \label{tab:ikhwantri_sd}
 \end{table}
 \fi
 
 Els resultats revelen tres fenòmens:
-En primer lloc, BETO presenta les SD més baixes (2,99--3,46), malgrat tenir una precisió (62,2\%) inferior a MrBERT-es (75,7\%).
+En primer lloc, BETO presenta les $SD_{KL}$ més baixes (3,10--3,57), malgrat tenir una precisió (62,2\%) inferior a MrBERT-es (75,7\%).
 Això suggereix que la similitud amb l'atenció humana no necessàriament implica millor rendiment en la tasca de classificació, un resultat consistent amb les conclusions d'\textcite{ikhwantriLookingDeepEyes2023}.
-En segon lloc, LRP produeix les SD més baixes en tots els models (2,99--4,12), seguit de Saliency (3,27--4,33), Input$\times$Gradient (3,46--4,31) i IG (3,34--4,59).
+En segon lloc, LRP produeix les $SD_{KL}$ més baixes en tots els models (3,10--4,20), seguit de Saliency (3,38--4,42), Input$\times$Gradient (3,57--4,41) i IG (3,45--4,70).
 Això indica que les atribucions LRP s'alineen més amb l'atenció humana que els altres mètodes, cosa que concorda amb la seva naturalesa de descomposició exacta del gradient.
-En tercer lloc, IG produeix consistentment les SD més altes, possiblement perquè les seves atribucions són més disperses i inclouen contribucions menys rellevant per a la tasca de classificació.
+En tercer lloc, IG produeix consistentment les $SD_{KL}$ més altes, possiblement perquè les seves atribucions són més disperses i inclouen contribucions menys rellevant per a la tasca de classificació.
 
 \subsection{Resum comparatiu: exactitud del model vs. divergència de distribucions}
 
-La \autoref{tab:sood_ikhwantri_summary} presenta un resum de l'exactitud del model i la divergència estàndard (SD) mitjana per model, promitjada entre mètodes d'interpretabilitat.
+La \autoref{tab:sood_ikhwantri_summary} resumeix la precisió de cada model juntament amb la Saliency Distance ($SD_{KL}$) respecte a l'atenció humana TFD, per cada mètode d'interpretabilitat de manera independent.
 
 \iftables
 \begin{table}[htbp]
 \centering
-\begin{tabular}{lrrr}
+\begin{tabular}{lrrrrr}
 \toprule
-Model & Precisió & SD (TFD) & SD (FC) \\
+\textbf{Model} & \textbf{Precisió (\%)} & \textbf{Saliency} & \textbf{In$\times$Grad} & \textbf{IG} & \textbf{LRP} \\
 \midrule
-MrBERT-es & 0,757 & 4,434 & 4,338 \\
-mBERT & 0,541 & 3,863 & 3,766 \\
-BETO & 0,622 & 3,373 & 3,266 \\
+MrBERT-es & 75,7 & 4,42 & 4,41 & 4,70 & 4,20 \\
+mBERT & 54,1 & 3,75 & 4,22 & 3,86 & 3,63 \\
+BETO & 62,2 & 3,38 & 3,57 & 3,45 & 3,10 \\
 \bottomrule
 \end{tabular}
-\caption{Resum: precisió del model i divergència estàndard mitjana (SD) entre distribucions de prominència del model i atenció humana (TFD i FC), promitjada entre mètodes d'interpretabilitat. BETO presenta les divergències més baixes malgrat tenir una precisió inferior a MrBERT-es.}
+\caption{Precisió del model i Saliency Distance ($SD_{KL}$) respecte a la TFD humana, per mètode d'interpretabilitat \parencite{ikhwantriLookingDeepEyes2023}. $SD_{KL}$ més baixa indica una distribució de prominència més propera a l'atenció humana.}
 \label{tab:sood_ikhwantri_summary}
 \end{table}
 \fi
 
-Els resultats són consistents amb les observacions de l'anterior subsecció, on LRP també mostrava les distribucions més properes a l'atenció humana (amb una JS mitjana de 0,78 per mBERT i BETO).
+La taula posa de manifest una paradoxa consistent: BETO, malgrat tenir una precisió inferior (62,2\%) a MrBERT (75,7\%), presenta les $SD_{KL}$ més baixes en tots els mètodes d'interpretabilitat (entre 3,10 i 3,57). Això indica que les atribucions de BETO s'alineen més amb l'atenció humana que les de MrBERT (entre 4,20 i 4,70).
+A més, els resultats confirmen que LRP produeix consistentment les $SD_{KL}$ més baixes en tots els models (3,10--4,20), seguit de Saliency (3,38--4,42), Input$\times$Gradient (3,57--4,41) i IG (3,45--4,70). La superioritat de LRP és coherent amb la seva naturalesa de descomposició exacta del gradient.
 
 Aquests resultats reflecteixen possibles biaixos en els models preentrenats.
 MrBERT, malgrat ser el model amb més precisió (75,7\%), presenta les divergències més altes amb l'atenció humana.
