@@ -62,7 +62,7 @@ Cada instància del corpus proporciona les variables següents, rellevants per a
 \subsection{Acord entre anotadors}
 
 La fiabilitat de les anotacions es va mesurar amb la $\kappa$ de Fleiss~\cite{fleiss1971measuring}.
-Per a l'anotació textual, s'obté una $\kappa=0,719$ (equip~1) i $0,717$ (equip~2), que augmenta fins a $0,834$ i $0,853$ respectivament en l'anotació del vídeo complet, indicant un acord \textit{substancial}~\cite{landis1977measurement}.
+Per a l'anotació textual, s'obté una $\kappa=0,719$ (equip~1) i $0,717$ (equip~2), que augmenta fins a $0,834$ i $0,853$ respectivament en l'anotació del vídeo complet, la qual cosa evidencia un acord \textit{substancial}~\cite{landis1977measurement}.
 La millora d'incorporar modalitats addicionals suggereix que el sexisme és, en alguns casos, difícil de detectar únicament a partir del text, a causa de la dificultat d'identificar formes implícites de sexisme o la possible contradicció entre contingut verbal i no verbal.
 Precisament aquest fet motiva el criteri de coherència entre modalitats descrit a la metodologia (\autoref{sec:filtratge}).
 
@@ -115,7 +115,7 @@ Demostra, doncs, que les respostes fisiològiques proporcionen un senyal que com
 La intersecció entre patrons d'atenció humans i mecanismes d'atenció computacionals ha emergit com un camp crític en interpretabilitat~\cite{lipton2018mythos} de la IA i lingüística cognitiva.
 \textcite{soodInterpretingAttentionModels2020} van proposar un mètode sistemàtic per comparar atenció humana i atenció computacional en tasques de comprensió lectora, utilitzant un nou corpus d'\textit{eye-tracking}, MQA-RC\footnote{MovieQA Reading Comprehension, QA=Question Answering}, amb 23 subjectes.
 Observen que models basats en LSTM i CNN tenen una correlació significativa entre la similitud amb l'atenció humana i el rendiment (Spearman $\rho = -0,73$ i $-0,72$ respectivament, $p < 0,001$), però aquesta relació no es manté per a models Transformer com XLNet~\cite{yang2019xlnet} ($\rho = -0,16$, $p = 0,381$).
-A més, la divergència de Kullback-Leibler (divergència KL) entre l'atenció LSTM i humana ($0,018$) és significativament menor que la de XLNet ($0,022$), suggerint que diferents arquitectures aprenen estratègies d'atenció diferents i que la similitud amb l'atenció humana no garanteix el millor rendiment.
+A més, la divergència de Kullback-Leibler (divergència KL) entre l'atenció LSTM i humana ($0,018$) és significativament menor que la de XLNet ($0,022$), fet que suggereix que diferents arquitectures aprenen estratègies d'atenció diferents i que la similitud amb l'atenció humana no garanteix el millor rendiment.
 Aquesta observació té implicacions directes per al nostre treball: si els models Transformer no mostren una correlació significativa amb l'atenció humana, és més rellevant explorar altres fonts d'informació complementària, com les anotacions humanes i les dades d'\textit{eye-tracking}.
 
 \textcite{ikhwantriLookingDeepEyes2023} estableixen el marc metodològic per a la comparació sistemàtica entre patrons d'atenció humans i computacionals en tasques de PLN.
@@ -149,7 +149,7 @@ Els humans mostren més acord en els tokens més rellevants, mentre que els mode
 Pel que fa a la sensibilitat a la classe de contingut, en textos d'opinió els humans tenen més acord, mentre que en textos de notícies són els models els que mostren major consistència.
 
 Aquesta variabilitat en les explicacions no és exclusiva de la comparació humà-model, sinó que també es manifesta entre models funcionalment equivalents.
-L'efecte Rashomon~\cite{breiman2003statistical} estableix que múltiples models amb rendiment similar poden produir explicacions radicalment diferents per a la mateixa predicció, la qual cosa qüestiona la noció de \textit{l'única} explicació correcta d'un model.
+L'efecte Rashomon~\cite{breiman2003statistical} estableix que models amb rendiment similar poden produir explicacions radicalment diferents per a la mateixa predicció i posa en dubte la noció de \textit{l'única} explicació correcta d'un model.
 Si els models poden arribar a la mateixa conclusió per camins diferents, l'alineament amb processos humans es converteix en un criteri de disseny explícit, i la variabilitat en les explicacions esdevé una propietat inherent a quantificar, no un soroll a eliminar.
 
 \subsection{Plausibilitat i fidelitat}

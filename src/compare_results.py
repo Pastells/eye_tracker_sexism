@@ -310,19 +310,29 @@ def compute_comparison_for_text(text_id, text, spans, eye_df, expl_df, method):
     rho_ffd, _ = safe_spearman(saliency, eye_ffd)
     rho_fc, _ = safe_spearman(saliency, eye_fc)
 
-    # Overlap with spans
+    # Overlap with spans (at multiple thresholds)
+    overlaps = {}
     if n_span_words > 0 and n_words > 0:
-        threshold = np.percentile(saliency, 80) if np.max(saliency) > 0 else 0
-        top_mask = saliency >= threshold
-        overlap = np.sum(top_mask & span_mask) / max(np.sum(top_mask), 1)
+        for pct in [1, 2, 3, 4, 5, 10, 20]:
+            threshold = np.percentile(saliency, 100 - pct) if np.max(saliency) > 0 else 0
+            top_mask = saliency >= threshold
+            overlaps[f"overlap_span_{pct}"] = np.sum(top_mask & span_mask) / max(np.sum(top_mask), 1)
     else:
-        overlap = np.nan
+        for pct in [1, 2, 3, 4, 5, 10, 20]:
+            overlaps[f"overlap_span_{pct}"] = np.nan
 
     return {
         "spearman_tfd": rho_tfd,
         "spearman_ffd": rho_ffd,
         "spearman_fc": rho_fc,
-        "overlap_span": overlap,
+        "overlap_span": overlaps["overlap_span_20"],  # keep for backwards compat
+        "overlap_span_1": overlaps["overlap_span_1"],
+        "overlap_span_2": overlaps["overlap_span_2"],
+        "overlap_span_3": overlaps["overlap_span_3"],
+        "overlap_span_4": overlaps["overlap_span_4"],
+        "overlap_span_5": overlaps["overlap_span_5"],
+        "overlap_span_10": overlaps["overlap_span_10"],
+        "overlap_span_20": overlaps["overlap_span_20"],
         "ce_model_span": ce_model_span,
         "kl_model_span": kl_model_span,
         "js_model_span": js_model_span,
@@ -555,6 +565,13 @@ def main():
                     "spearman_ffd_mean": df["spearman_ffd"].mean(),
                     "spearman_fc_mean": df["spearman_fc"].mean(),
                     "overlap_span_mean": df["overlap_span"].mean(),
+                    "overlap_span_1_mean": df["overlap_span_1"].mean(),
+                    "overlap_span_2_mean": df["overlap_span_2"].mean(),
+                    "overlap_span_3_mean": df["overlap_span_3"].mean(),
+                    "overlap_span_4_mean": df["overlap_span_4"].mean(),
+                    "overlap_span_5_mean": df["overlap_span_5"].mean(),
+                    "overlap_span_10_mean": df["overlap_span_10"].mean(),
+                    "overlap_span_20_mean": df["overlap_span_20"].mean(),
                     "ce_model_span_mean": df["ce_model_span"].mean(),
                     "kl_model_span_mean": df["kl_model_span"].mean(),
                     "js_model_span_mean": df["js_model_span"].mean(),
@@ -627,15 +644,19 @@ def main():
     )
     latex_parts.append("")
 
-    # Table 2: Overlap with spans
-    overlap_table = results_df[["checkpoint", "method", "overlap_span_mean"]]
+    # Table 2: Overlap with spans (at multiple thresholds)
+    overlap_table = results_df[["checkpoint", "method",
+        "overlap_span_1_mean", "overlap_span_3_mean",
+        "overlap_span_5_mean", "overlap_span_10_mean", "overlap_span_20_mean"]]
     latex_parts.append(
         generate_latex_table(
             overlap_table,
-            caption="Solapament: paraules amb saliència més alta vs. paraules dins dels spans anotats.",
+            caption="Superposició: paraules amb prominència més alta vs. paraules dins dels segments anotats, per a diferents llindars.",
             label="tab:model_vs_spans",
-            columns=["checkpoint", "method", "overlap_span_mean"],
-            col_names=["Checkpoint", "Mètode", "Solapament"],
+            columns=["checkpoint", "method",
+                "overlap_span_1_mean", "overlap_span_3_mean",
+                "overlap_span_5_mean", "overlap_span_10_mean", "overlap_span_20_mean"],
+            col_names=["Checkpoint", "Mètode", "1\\%", "3\\%", "5\\%", "10\\%", "20\\%"],
         )
     )
     latex_parts.append("")
