@@ -115,24 +115,24 @@ Demostra, doncs, que les respostes fisiològiques proporcionen un senyal que com
 La intersecció entre patrons d'atenció humans i mecanismes d'atenció computacionals ha emergit com un camp crític en interpretabilitat~\cite{lipton2018mythos} de la IA i lingüística cognitiva.
 \textcite{soodInterpretingAttentionModels2020} van proposar un mètode sistemàtic per comparar atenció humana i atenció computacional en tasques de comprensió lectora, utilitzant un nou corpus d'\textit{eye-tracking}, MQA-RC\footnote{MovieQA Reading Comprehension, QA=Question Answering}, amb 23 subjectes.
 Observen que models basats en LSTM i CNN tenen una correlació significativa entre la similitud amb l'atenció humana i el rendiment (Spearman $\rho = -0,73$ i $-0,72$ respectivament, $p < 0,001$), però aquesta relació no es manté per a models Transformer com XLNet~\cite{yang2019xlnet} ($\rho = -0,16$, $p = 0,381$).
-A més, la divergència de Kullback-Leibler (divergència KL) entre l'atenció LSTM i humana ($0,018$) és significativament menor que la de XLNet ($0,022$), fet que suggereix que diferents arquitectures aprenen estratègies d'atenció diferents i que la similitud amb l'atenció humana no garanteix el millor rendiment.
+A més, la divergència de Kullback-Leibler (KL) entre l'atenció LSTM i humana ($0,018$) és significativament menor que la de XLNet ($0,022$), fet que suggereix que diferents arquitectures aprenen estratègies d'atenció diferents i que la similitud amb l'atenció humana no garanteix el millor rendiment.
 Aquesta observació té implicacions directes per al nostre treball: si els models Transformer no mostren una correlació significativa amb l'atenció humana, és més rellevant explorar altres fonts d'informació complementària, com les anotacions humanes i les dades d'\textit{eye-tracking}.
 
 \textcite{ikhwantriLookingDeepEyes2023} estableixen el marc metodològic per a la comparació sistemàtica entre patrons d'atenció humans i computacionals en tasques de PLN.
 Analitzen tres tasques (anàlisi de sentiment, classificació de relacions, pregunta-resposta), quatre mètodes d'interpretabilitat (gradient simple, Integrated Gradients, pertorbació d'entrada i atenció) i tres arquitectures (LSTM, CNN i Transformer).
 Es basen en dos conjunts de dades d'\textit{eye-tracking}: ZuCo i MQA-RC.
 
-Per mesurar la conformitat entre la prominència del model i l'atenció humana, proposen la Saliency Distance, definida com la divergència KL entre la distribució de prominència sobre les paraules d'entrada (obtinguda d'un mètode d'interpretabilitat) i una característica d'\textit{eye-tracking} (FC o FFD).
-Una SD més petita indica major similitud entre les distribucions, és a dir, el model centra l'atenció en les mateixes paraules que els humans.
+Per mesurar la conformitat entre la prominència del model i l'atenció humana, proposen la divergència KL entre la distribució de prominència sobre les paraules d'entrada (obtinguda d'un mètode d'interpretabilitat) i una característica d'\textit{eye-tracking} (FC o FFD).
+Una KL més petita indica major similitud entre les distribucions, és a dir, el model centra l'atenció en les mateixes paraules que els humans.
 Els seus resultats principals són:
 
 \begin{itemize}
-    \item Les SD són consistentment més petites amb FFD que amb FC en gairebé totes les combinacions de tasques i mètodes. 
+    \item KL és consistentment més petita amb FFD que amb FC en gairebé totes les combinacions de tasques i mètodes. 
     % Això s'explica perquè la FFD captura la primera lectura d'una paraula, similar al comportament dels models que processen el text una sola vegada, mentre que el FC inclou relectures que els models no realitzen. % No és un bon anàleg. Un model no rellegeix.
-    \item Els mètodes basats en gradients obtenen SD més petites que els mètodes de pertorbació (\textit{input perturbation} IP) i atenció (Attn) en les tasques d'anàlisi de sentiment i classificació de relacions. En canvi, en la tasca de QA amb resposta múltiple (textos més llargs), l'atenció és el mètode que obté SD més petites.
-    \item El Transformer mostra les SD més petites en la majoria de les combinacions, excepte amb el mètode IP en anàlisi de sentiment i amb Attn en classificació de relacions.
+    \item Els mètodes basats en gradients obtenen menor KL que els mètodes de pertorbació (\textit{input perturbation} IP) i atenció (Attn) en les tasques d'anàlisi de sentiment i classificació de relacions. En canvi, en la tasca de QA amb resposta múltiple (textos més llargs), l'atenció és el mètode que obté KL més petita.
+    \item El Transformer mostra la KL més baixa en la majoria de les combinacions, excepte amb el mètode IP en anàlisi de sentiment i amb Attn en classificació de relacions.
     \item En anàlisi de sentiment, els humans centren l'atenció en noms propis, adjectius, noms, adverbis i nombres; els models amb el millor mètode (Grad-Transformer) sobrevaloren els adjectius, però subvaloren els noms propis i els nombres. En classificació de relacions, els models no capten bé els verbs i adjectius que indiquen relacions entre entitats.
-    \item Proposen les corbes SD-Performance (SDPC): en tasques de classificació aquestes corbes tendeixen a ser decreixents (major conformitat → millor rendiment), mentre que en QA són més planes o irregulars.
+    \item Proposen les corbes KL-Performance: en tasques de classificació aquestes corbes tendeixen a ser decreixents (major conformitat → millor rendiment), mentre que en QA són més planes o irregulars.
 \end{itemize}
 
 Els resultats d'\textcite{ikhwantriLookingDeepEyes2023} suggereixen que la relació entre conformitat humana i rendiment varia segons la tasca, el mètode d'interpretabilitat i l'arquitectura.

@@ -12,6 +12,7 @@ Els anotadors M3 i F5 són anotadors de MuSeD. Veiem que són els que obtenen ex
 
 \iftables
 \begin{table}[htbp]
+\small
 \centering
 \begin{tabular}{lcc}
 \toprule
@@ -34,16 +35,11 @@ F4 &  62,5\% & $= 0,077$ ns \\
 \end{table}
 \fi
 
-%La mitjana d'exactitud és del 82,7\%, la majoria dels participants identifiquen correctament el contingut sexista.
-%Això dona validesa a les dades de seguiment ocular recollides.
-
 \subsection{Diferències per gènere}
-
-La \autoref{tab:gender} presenta les comparacions basades en el gènere dels participants.
-La prova U de Mann-Whitney sobre l'exactitud per text mostra una diferència significativa, però de petita magnitud. No obstant això, aquesta diferència no es manté quan examinem específicament els errors en textos sexistes (prova exacta de Fisher).
 
 \iftables
 \begin{table}[htbp]
+\small
 \centering
 \begin{tabular}{lll}
 \toprule
@@ -57,6 +53,13 @@ Exacta de Fisher (errors en textos sexistes) & OR $= 0,72$ & $0,468$ ns \\
 \label{tab:gender}
 \end{table}
 \fi
+
+%La mitjana d'exactitud és del 82,7\%, la majoria dels participants identifiquen correctament el contingut sexista.
+%Això dona validesa a les dades de seguiment ocular recollides.
+
+
+La \autoref{tab:gender} presenta les comparacions basades en el gènere dels participants.
+La prova U de Mann-Whitney sobre l'exactitud per text mostra una diferència significativa, però de petita magnitud. No obstant això, aquesta diferència no es manté quan examinem específicament els errors en textos sexistes (prova exacta de Fisher).
 
 \subsection{Calibratge de la confiança}
 
@@ -218,6 +221,7 @@ F3 & $0,01 \pm 0,10$ & $10,07 \pm 2,06$ & $5,92 \pm 2,06$ & $0,28 \pm 0,07$ \\
 Les correlacions de Spearman són properes a zero per tots els participants, cosa que indica una concordança gairebé nul·la entre la distribució d'atenció i les anotacions de segments.
 La divergència JS mitjana és 0,25, fet que confirma una separació substancial entre les dues distribucions.
 La \autoref{fig:exemple_visual} mostra un exemple representatiu d'aquesta distribució per al text~30, on les zones d'alt TFD coincideixen amb les zones anotades com a sexistes.
+% TODO: mirar figura
 
 % \begin{figure}[htbp]
 % \centering
@@ -232,7 +236,7 @@ Analitzem l'alineament entre atenció humana i anotacions de segments de dues ma
 Primer, examinem les mètriques de distribució només dins dels segments anotats amb cada tipus d'etiqueta.
 La \autoref{tab:per_label_metrics} presenta els resultats.
 Les correlacions de Spearman són baixes per totes les etiquetes, però les divergències varien: la \textit{desig. ideol.} presenta la JS més alta (0,50), mentre que \textit{estereotips} (0,23) i \textit{objectificació} (0,24) són les més baixes. 
-Curiosament, categories implícites com \textit{sexisme implícit} (0,25), \textit{humor} (0,26) i \textit{ironia} (0,28) mostren un alineament relativament bo, superior al de categories explícites com \textit{desigualtat/discrim.} (0,37), \textit{sexisme reportat} (0,40) o \textit{desig. ideol.} (0,50).
+Curiosament, categories implícites com \textit{sexisme implícit}, \textit{humor} i \textit{ironia} mostren un alineament relativament bo, superior al de categories explícites com \textit{desigualtat/discrim.}, \textit{sexisme reportat} o \textit{desig. ideol.}.
 
 \iftables
 \begin{table}[htbp]
@@ -257,7 +261,7 @@ humor                   & $0,05 \pm 0,19$ & $9,70$ & $5,55$ & $0,26$ \\
 \end{table}
 \fi
 
-Seguidament, a la~\autoref{tab:binary_js} separem els texts segons les categories binàries del \textit{gold standard} i calculem la divergència JS per a cadascun.
+Seguidament, a la~\autoref{tab:binary_js} separem els texts segons les categories binàries del \textit{gold standard} i calculem la divergència JS per a cadascuna.
 La presència de \textit{desigualtat} augmenta la JS de 0,24 a 0,33, indicant dificultats especials.
 \textit{Humor} i \textit{ironia} mostren patrons inversos: quan estan presents, la JS disminueix (0,21), mentre que augmenta quan estan absents (0,26). \textit{Objectificació} i \textit{sexisme reportat} també mostren divergències més altes quan estan presents.
 
@@ -349,79 +353,7 @@ Entre tots els tokens significatius identificats, el 52,8\% són paraules buides
 Per a cadascun dels 40 textos, seleccionem els 10 tokens significatius amb \textit{z-score} més alt, prioritzant els que també són significatius per permutació (q $<$ 0,05). 
 %Quan no hi havia prou tokens significatius per permutació, es completaven amb tokens significatius només per \textit{z-score}.
 Anomenem aquests tokens \textit{punts focals}. 
-La \autoref{tab:top_hotspots} presenta els 40 punts focals lèxics més significatius (un per text), ordenats per \textit{z-score}. Observem que:
-
-\begin{itemize}
-    \item \textbf{Paraules temàtiques de gènere:} termes com ``lesbiana'', ``mujer'', ``patriarcal'', ``tóxica'', ``parejas'', ``mujeres'', ``hombres'', ``jerárquiques'', ``femenino'' apareixen recurrentment entre els punts focals, coherent amb el contingut sexista dels textos. En total, 28 tokens (9,3\%) fan referència directa a conceptes de gènere o relacions de poder.
-    \item \textbf{Distribució morfològica:} l'anàlisi de categories gramaticals dels 300 tokens no stopword revela que els punts focals són majoritàriament substantius (41,1\%), seguits de verbs (21,9\%), adjectius (16,6\%) i adverbis (8,6\%). Els adjectius són especialment rellevants en el context de gènere: molts descriuen qualitats o atributs de gènere (\textit{lesbiana}, \textit{tóxica}, \textit{patriarcal}, \textit{culturales}, \textit{jerárquiques}, \textit{femenino}). Els verbs sovint expressen accions o judicis (\textit{ahorita}, \textit{odian}, \textit{creen}, \textit{explicar}).
-    \item \textbf{Direcció de regressió:} la majoria dels punts focals són de destí (on els lectors hi regressionen més), cosa que suggereix que els lectors revisen tokens temàticament rellevants.
-\end{itemize}
-
-% \iftables
-% \begin{table}[htbp]
-% \centering
-% \footnotesize
-% \begin{tabular}{clrl}
-% \toprule
-% Text & Token més significatiu & $z$ & Direcció \\
-% \midrule
-% 4 & llegado     & $-6,64$ & destí \\
-% 5 & lesbiana     & $-7,11$ & destí \\
-% %23 & ¡Sígueme    & $-6,79$ & origen \\
-% 23 & Sígueme    & $-6,79$ & origen \\
-% 30 & forense      & $-5,75$ & destí \\
-% 37 & Imaginate    & $-3,41$ & origen \\
-% 45 & explicar     & $-5,89$ & origen \\
-% 55 & ahorita      & $-8,14$ & destí \\
-% %59 & miren,       & $-4,64$ & destí \\
-% 59 & miren       & $-4,64$ & destí \\
-% 60 & patriarcal   & $-3,06$ & destí \\
-% 62 & jugando      & $-5,74$ & origen \\
-% %76 & Administrativa. & $-8,00$ & origen \\
-% 76 & Administrativa & $-8,00$ & origen \\
-% 78 & Infojobs     & $-6,11$ & destí \\
-% 99 & jerárquicas  & $-6,61$ & origen \\
-% 106 & mujer       & $-5,65$ & destí \\
-% 107 & ley         & $-5,17$ & origen \\
-% 124 & pena        & $-6,95$ & origen \\
-% 133 & real        & $-6,43$ & destí \\
-% 136 & culturales  & $-6,66$ & destí \\
-% %143 & hermano,    & $-8,82$ & origen \\
-% 143 & hermano,    & $-8,82$ & origen \\
-% 144 & tóxica      & $-6,82$ & destí \\
-% %148 & parejas,    & $-6,43$ & destí \\
-% 148 & parejas,    & $-6,43$ & destí \\
-% 150 & pide        & $-5,75$ & destí \\
-% %151 & favor.      & $-8,06$ & origen \\
-% 151 & favor      & $-8,06$ & origen \\
-% %166 & sense.      & $-3,65$ & origen \\
-% 166 & sense      & $-3,65$ & origen \\
-% 201 & años        & $-7,00$ & destí \\
-% %214 & gracias.    & $-4,83$ & origen \\
-% 214 & gracias    & $-4,83$ & origen \\
-% 215 & beneficiado & $-7,00$ & origen \\
-% 217 & lecciones   & $-6,02$ & origen \\
-% 327 & voy         & $-6,22$ & origen \\
-% 352 & março       & $-5,91$ & destí \\
-% 356 & civilización & $-6,59$ & origen \\
-% 357 & cuenta      & $-6,48$ & origen \\
-% 359 & acceder     & $-5,43$ & destí \\
-% 362 & pasando     & $-7,36$ & origen \\
-% 364 & idiomas     & $-6,92$ & destí \\
-% 373 & verdad      & $-5,26$ & origen \\
-% 375 & tema        & $-6,33$ & destí \\
-% 383 & seguidor    & $-5,58$ & destí \\
-% %390 & patriarcado? & $-4,17$ & destí \\
-% 390 & patriarcado & $-4,17$ & destí \\
-% %399 & chamaquito, & $-5,75$ & destí \\
-% 399 & chamaquito & $-5,75$ & destí \\
-% \bottomrule
-% \end{tabular}
-% \caption{Token més significatiu per text (ordenat per \textit{z-score} descendent). Direcció: destí = tokens on els lectors hi regressionen més sovint; origen = tokens des dels quals els lectors fan més regressions. Els tokens en negreta indiquen paraules temàticament relacionades amb gènere i sexisme.}
-% \label{tab:top_hotspots}
-% \end{table}
-% \fi
-
+La \autoref{tab:top_hotspots} presenta els 40 punts focals lèxics més significatius (un per text), ordenats per \textit{z-score}. 
 \iftables
 \begin{table}[htbp]
 \centering
@@ -473,9 +405,17 @@ La \autoref{tab:top_hotspots} presenta els 40 punts focals lèxics més signific
 \bottomrule
 \end{tabular}
 \caption{Punts focals de destí i origen per text, sense puntuació. Destí = token on els lectors hi regressionen més sovint ($z$ més alt en direcció TO); Origen = token des del qual els lectors fan més regressions ($z$ més alt en direcció FROM).}
-\label{tab:top_hotspots_split}
+\label{tab:top_hotspots}
 \end{table}
 \fi
+
+Observem que:
+\begin{itemize}
+    \item \textbf{Paraules temàtiques de gènere:} termes com ``lesbiana'', ``mujer'', ``patriarcal'', ``tóxica'', ``parejas'', ``mujeres'', ``hombres'', ``jerárquiques'', ``femenino'' apareixen recurrentment entre els punts focals, coherent amb el contingut sexista dels textos. En total, 28 tokens (9,3\%) fan referència directa a conceptes de gènere o relacions de poder.
+    \item \textbf{Distribució morfològica:} l'anàlisi de categories gramaticals dels 300 tokens no stopword revela que els punts focals són majoritàriament substantius (41,1\%), seguits de verbs (21,9\%), adjectius (16,6\%) i adverbis (8,6\%). Els adjectius són especialment rellevants en el context de gènere: molts descriuen qualitats o atributs de gènere (\textit{lesbiana}, \textit{tóxica}, \textit{patriarcal}, \textit{culturales}, \textit{jerárquiques}, \textit{femenino}). Els verbs sovint expressen accions o judicis (\textit{ahorita}, \textit{odian}, \textit{creen}, \textit{explicar}).
+    \item \textbf{Direcció de regressió:} la majoria dels punts focals són de destí (on els lectors hi regressionen més), cosa que suggereix que els lectors revisen tokens temàticament rellevants.
+\end{itemize}
+
 
 \subsection{Superposició amb les anotacions de segments}
 
@@ -540,6 +480,7 @@ sexisme reportat        &  8 & $5,86$ & 53,8 & 53,8 \\
 \textit{Crítica} és l'etiqueta amb més punts focals (42), seguida d'\textit{estereotips} (30) i \textit{desigualtat/discriminació} (30).
 Els punts focals més significatius (en valor absolut) són:
 
+% TODO: millorar aquests exemples
 \begin{itemize}
     \item \textit{objectificació}, text 143, origen ``Cómo'' ($z = 6,65$, clúster de 9 tokens)
     \item \textit{estereotips}, text 143, origen ``Cómo'' ($z = 6,65$, clúster de 23 tokens)
@@ -572,7 +513,7 @@ FC       & $1,95 \pm 0,37$  & $2,03 \pm 0,37$  & 0,209 \\
 \end{table}
 \fi
 
-Cap de les tres mètriques mostra diferències estadísticament significatives entre textos sexistes i no sexistes.
+La \autoref{tab:ffd_fc_binary} mostra les mètriques mitjanes per text. Cap de les tres mètriques mostra diferències estadísticament significatives entre textos sexistes i no sexistes.
 Els textos no sexistes tendeixen a presentar una TFD, FFD i FC lleugerament més altes, però les diferències són petites i no significatives.
 
 \subsection{Superposició amb les anotacions de segments}
@@ -586,9 +527,9 @@ Per avaluar si els tokens dins dels segments anotats com a sexistes reben més a
 \toprule
 \textbf{Mètode} & \textbf{Dins segment} & \textbf{Fora segment} & \textbf{$p$} \\
 \midrule
-TFD z-score & $+0,045$ ($n = 18\,708$) & $-0,284$ ($n = 2\,973$) & $< 0,001$ *** \\
+TFD z-score & $+0,045$ ($n = 18\,708$) & $-0,284$ ($n = 2\,973$) & $< 0,001$ * \\
 FFD z-score & $+0,003$ ($n = 18\,708$) & $-0,018$ ($n = 2\,973$) & 0,741 \\
-FC z-score  & $+0,020$ ($n = 18\,708$) & $-0,126$ ($n = 2\,973$) & $< 0,001$ *** \\
+FC z-score  & $+0,020$ ($n = 18\,708$) & $-0,126$ ($n = 2\,973$) & $< 0,001$ * \\
 \bottomrule
 \end{tabular}
 \caption{Z-scores de TFD, FFD i FC per tokens dins vs.\ fora dels segments anotats (Mann-Whitney, bilateral).}
@@ -596,7 +537,7 @@ FC z-score  & $+0,020$ ($n = 18\,708$) & $-0,126$ ($n = 2\,973$) & $< 0,001$ ***
 \end{table}
 \fi
 
-La TFD i la FC mostren diferències altament significatives ($p < 0,001$): els tokens dins dels segments anotats com a sexistes reben significativament més temps total de fixació ($z = +0,045$) i més fixacions ($z = +0,020$) que els tokens fora dels segments ($z = -0,284$ i $z = -0,126$, respectivament).
+La \autoref{tab:ffd_fc_span} mostra els resultats. La TFD i la FC mostren diferències altament significatives ($p < 0,001$): els tokens dins dels segments anotats com a sexistes reben significativament més temps total de fixació ($z = +0,045$) i més fixacions ($z = +0,020$) que els tokens fora dels segments ($z = -0,284$ i $z = -0,126$, respectivament).
 En canvi, la FFD no mostra diferències significatives ($p = 0,741$).
 
 \subsection{Correlació entre les tres mètriques}
@@ -608,9 +549,9 @@ En canvi, la FFD no mostra diferències significatives ($p = 0,741$).
 \toprule
 \textbf{Parell} & \textbf{$\rho$ de Spearman} & \textbf{$p$} \\
 \midrule
-TFD vs.\ FFD & 0,318 & $< 0,001$ *** \\
-TFD vs.\ FC  & 0,623 & $< 0,001$ *** \\
-FFD vs.\ FC  & $-0,070$ & $< 0,001$ *** \\
+TFD vs.\ FFD & 0,318 & $< 0,001$ * \\
+TFD vs.\ FC  & 0,623 & $< 0,001$ * \\
+FFD vs.\ FC  & $-0,070$ & $< 0,001$ * \\
 \bottomrule
 \end{tabular}
 \caption{Correlació de Spearman entre les tres mètriques d'\textit{eye-tracking} per token.}
@@ -618,7 +559,7 @@ FFD vs.\ FC  & $-0,070$ & $< 0,001$ *** \\
 \end{table}
 \fi
 
-La TFD i la FC presenten una correlació forta i positiva ($\rho = 0,623$), cosa que és esperable, ja que totes dues mesuren atenció acumulada.
+La \autoref{tab:metrics_correlation} mostra les correlacions entre parelles de mètriques. La TFD i la FC presenten una correlació forta i positiva ($\rho = 0,623$), cosa que és esperable, ja que totes dues mesuren atenció acumulada.
 La correlació entre TFD i FFD és moderada ($\rho = 0,318$).
 La correlació feblement negativa entre FFD i la FC ($\rho = -0,070$) suggereix que els tokens que reben la primera fixació més llarga no són necessàriament els que reben més visites.
 
@@ -658,7 +599,7 @@ mBERT & Saliency & 0,076 & $-0,042$ & 0,124 \\
 \end{table}
 \fi
 
-Les correlacions són positives, però febles per a TFD ($\rho \approx 0,04$--$0,08$) i FC ($\rho \approx 0,08$--$0,13$).
+La \autoref{tab:model_vs_eye_tracking} presenta les correlacions de Spearman. Les correlacions són positives, però febles per a TFD ($\rho \approx 0,04$--$0,08$) i FC ($\rho \approx 0,08$--$0,13$).
 Per tant, els tokens on els models assignen més importància coincideixen parcialment amb els tokens que reben més atenció dels lectors.
 La FFD mostra correlació lleugerament negativa ($\rho \approx -0,04$--$-0,06$), consistent amb el fet que la primera fixació no discrimina entre zones sexistes i no sexistes (ja observat en l'anàlisi anterior).
 
@@ -861,7 +802,7 @@ Humà -- Segments   & 0,12 (ref.) & --- & --- \\
 La divergència JS més baixa és entre l'atenció humana i les anotacions de segments (0,12 amb stopwords filtrades), i confirma que els anotadors humans i els lectors comparteixen una visió similar del que és sexista.
 La divergència més alta és entre el model i les anotacions de segments (0,78--0,84), la qual cosa indica que els models de llenguatge distribueixen l'atenció de manera substancialment diferent dels humans.
 
-\subsection{Mètrica de Sood et al. i Saliency Distance}
+\subsection{Mètrica de Sood et al. i KL}
 
 \textcite{soodInterpretingAttentionModels2020} proposen que la correlació entre la divergència KL (model vs. humà) i el rendiment del model indica si el model aprèn atenció similar a la humana.
 
@@ -886,7 +827,7 @@ mBERT & LRP & 54,1 & $-0,249$ & $-0,249$ & $-0,254$ \\
 mBERT & Saliency & 54,1 & $-0,259$ & $-0,213$ & $-0,244$ \\
 \bottomrule
 \end{tabular}
-\caption{Correlació de Spearman entre divergència KL (model vs. humà) i rendiment del model per text, seguint la mètrica de \textcite{soodInterpretingAttentionModels2020}. Cap correlació és estadísticament significativa ($p > 0,05$).}
+\caption{Correlació de Spearman entre divergència KL (model vs. humà) i rendiment del model per text, seguint la mètrica de \textcite{soodInterpretingAttentionModels2020}. Cap correlació és estadísticament significativa.}
 \label{tab:sood_metric}
 \end{table}
 \fi
@@ -896,7 +837,7 @@ mBERT & Saliency & 54,1 & $-0,259$ & $-0,213$ & $-0,244$ \\
 \centering
 \begin{tabular}{llrrr}
 \toprule
-\textbf{Model} & \textbf{Mètode} & \textbf{$SD_{KL}$ (TFD)} & \textbf{$SD_{KL}$ (FFD)} & \textbf{$SD_{KL}$ (FC)} \\
+\textbf{Model} & \textbf{Mètode} & \textbf{KL (TFD)} & \textbf{KL (FFD)} & \textbf{KL (FC)} \\
 \midrule
 BETO & IG & 3,45 & 3,52 & 3,34 \\
 BETO & Input$\times$Gradient & 3,57 & 3,64 & 3,46 \\
@@ -912,21 +853,22 @@ mBERT & LRP & 3,63 & 3,75 & 3,53 \\
 mBERT & Saliency & 3,75 & 3,86 & 3,65 \\
 \bottomrule
 \end{tabular}
-\caption{Saliency Distance ($SD_{KL}$) = KL(P\textsubscript{sal} $\|$ P\textsubscript{eye}) per model i mètode, seguint la proposta d'\textcite{ikhwantriLookingDeepEyes2023}. Valors més baixos indiquen major similitud entre la distribució de prominència del model i l'atenció humana.}
+\caption{Divergència KL per model i mètode, seguint la proposta d'\textcite{ikhwantriLookingDeepEyes2023}. Valors més baixos indiquen major similitud entre la distribució de prominència del model i l'atenció humana.}
+\footnotetext{Ikhwantri et al.\ fan servir FFD i FC; nosaltres fem servir TFD.}
 \label{tab:ikhwantri_sd}
 \end{table}
 \fi
 
 Els resultats revelen tres fenòmens:
-En primer lloc, BETO presenta les $SD_{KL}$ més baixes (3,10--3,57), malgrat tenir una precisió (62,2\%) inferior a MrBERT-es (75,7\%).
+En primer lloc, BETO presenta la KL més baixa (3,10--3,57), malgrat tenir una precisió (62,2\%) inferior a MrBERT-es (75,7\%).
 Això suggereix que la similitud amb l'atenció humana no necessàriament implica millor rendiment en la tasca de classificació, un resultat consistent amb les conclusions d'\textcite{ikhwantriLookingDeepEyes2023}.
-En segon lloc, LRP produeix les $SD_{KL}$ més baixes en tots els models (3,10--4,20), seguit de Saliency (3,38--4,42), Input$\times$Gradient (3,57--4,41) i IG (3,45--4,70).
+En segon lloc, LRP produeix la KL més baixa en tots els models (3,10--4,20), seguit de Saliency (3,38--4,42), Input$\times$Gradient (3,57--4,41) i IG (3,45--4,70).
 Això indica que les atribucions LRP s'alineen més amb l'atenció humana que els altres mètodes, cosa que concorda amb la seva naturalesa de descomposició exacta del gradient.
-En tercer lloc, IG produeix consistentment les $SD_{KL}$ més altes, possiblement perquè les seves atribucions són més disperses i inclouen contribucions menys rellevants per a la tasca de classificació.
+En tercer lloc, IG produeix consistentment la KL més alta, possiblement perquè les seves atribucions són més disperses i inclouen contribucions menys rellevants per a la tasca de classificació.
 
 \subsection{Resum comparatiu: exactitud del model vs. divergència de distribucions}
 
-La \autoref{tab:sood_ikhwantri_summary} resumeix la precisió de cada model juntament amb la Saliency Distance ($SD_{KL}$) respecte a l'atenció humana TFD, per cada mètode d'interpretabilitat de manera independent.
+La \autoref{tab:sood_ikhwantri_summary} resumeix la precisió de cada model juntament amb la KL respecte a l'atenció humana TFD, per cada mètode d'interpretabilitat de manera independent.
 
 \iftables
 \begin{table}[htbp]
@@ -940,13 +882,13 @@ mBERT & 54,1 & 3,75 & 4,22 & 3,86 & 3,63 \\
 BETO & 62,2 & 3,38 & 3,57 & 3,45 & 3,10 \\
 \bottomrule
 \end{tabular}
-\caption{Precisió del model i Saliency Distance ($SD_{KL}$) respecte a la TFD humana, per mètode d'interpretabilitat \parencite{ikhwantriLookingDeepEyes2023}. $SD_{KL}$ més baixa indica una distribució de prominència més propera a l'atenció humana.}
+\caption{Precisió del model i KL respecte a la TFD humana, per mètode d'interpretabilitat \parencite{ikhwantriLookingDeepEyes2023}. Valors més baixos indiquen una distribució de prominència més propera a l'atenció humana.}
 \label{tab:sood_ikhwantri_summary}
 \end{table}
 \fi
 
-La taula posa de manifest una paradoxa consistent: BETO, malgrat tenir una precisió inferior (62,2\%) a MrBERT (75,7\%), presenta les $SD_{KL}$ més baixes en tots els mètodes d'interpretabilitat (entre 3,10 i 3,57). Això indica que les atribucions de BETO s'alineen més amb l'atenció humana que les de MrBERT (entre 4,20 i 4,70).
-A més, els resultats confirmen que LRP produeix consistentment les $SD_{KL}$ més baixes en tots els models (3,10--4,20), seguit de Saliency (3,38--4,42), Input$\times$Gradient (3,57--4,41) i IG (3,45--4,70). La superioritat de LRP és coherent amb la seva naturalesa de descomposició exacta del gradient.
+La taula posa de manifest una paradoxa consistent: BETO, malgrat tenir una precisió inferior (62,2\%) a MrBERT (75,7\%), presenta la KL més baixa en tots els mètodes d'interpretabilitat (entre 3,10 i 3,57). Això indica que les atribucions de BETO s'alineen més amb l'atenció humana que les de MrBERT (entre 4,20 i 4,70).
+A més, els resultats confirmen que LRP produeix consistentment la KL més baixa en tots els models (3,10--4,20), seguit de Saliency (3,38--4,42), Input$\times$Gradient (3,57--4,41) i IG (3,45--4,70). La superioritat de LRP és coherent amb la seva naturalesa de descomposició exacta del gradient.
 
 Aquests resultats reflecteixen possibles biaixos en els models preentrenats.
 MrBERT, malgrat ser el model amb més precisió (75,7\%), presenta les divergències més altes amb l'atenció humana.

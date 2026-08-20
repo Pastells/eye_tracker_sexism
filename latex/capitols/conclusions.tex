@@ -2,13 +2,13 @@ En aquest treball hem comparat els patrons d'atenció de lectors humans, obtingu
 La comparació tripartida entre atenció humana, anotacions de segments i atribucions del model ens ha permès caracteritzar fins a quin punt aquestes fonts convergeixen i on divergeixen.
 
 De l'anàlisi en destaquem quatre resultats principals.
-En primer lloc, observem el que anomenem la paradoxa de BETO: el model amb menor precisió (62,2\%) presenta les distribucions de prominència més properes a l'atenció humana ($SD_{KL}$: 3,10--3,57).
+En primer lloc, observem el que anomenem la paradoxa de BETO: el model amb menor precisió (62,2\%) presenta les distribucions de prominència més properes a l'atenció humana (KL = 3,10--3,57).
 Això suggereix que l'especialització en la tasca de classificació pot allunyar el model dels patrons de processament cognitiu natural, un resultat consistent amb les conclusions d'\textcite{ikhwantriLookingDeepEyes2023}.
-En segon lloc, LRP és el mètode d'interpretabilitat que produeix les distribucions més properes a l'atenció humana en tots els models ($SD_{KL}$: 3,10--4,20), possiblement per la seva naturalesa de descomposició exacta del gradient, que preserva la informació contributiva del model.
+En segon lloc, LRP és el mètode d'interpretabilitat que produeix les distribucions més properes a l'atenció humana en tots els models (KL = 3,10--4,20), possiblement per la seva naturalesa de descomposició exacta del gradient, que preserva la informació contributiva del model.
 En tercer lloc, l'anàlisi de regressions als 302 tokens lèxics més prominents mostra que els noms (41,1\%) i els verbs (21,9\%) són les categories morfològiques més representades. A més, el 9,3\% dels tokens són mots amb relació de gènere, cosa que indica una atenció selectiva cap als elements lingüístics relacionats amb el sexisme.
 En quart lloc, la correlació significativa entre la taxa de regressió i la classificació binària ($\rho = 0,429$, $p = 0,006$) indica que els lectors fan més regressions en textos sexistes, consistent amb la necessitat de reprocessament cognitiu davant de contingut polèmic.
 
-Cal destacar que la nostra expectativa inicial---que els mètodes basats en gradients estarien més alineats amb l'atenció humana---només es confirma parcialment: tot i que LRP produeix les $SD_{KL}$ més baixes, IG mostra les $SD_{KL}$ més altes, malgrat que ambdós mètodes es basen en gradients.
+Cal destacar que la nostra expectativa inicial---que els mètodes basats en gradients estarien més alineats amb l'atenció humana---només es confirma parcialment: tot i que LRP produeix les divergències KL més baixes, IG mostra les més altes, malgrat que ambdós mètodes es basen en gradients.
 Aquest resultat evidencia que la família de mètodes d'interpretabilitat no és, per si sola, un bon predictor de l'alineament amb l'atenció humana.
 
 A continuació, responem als objectius plantejats a la introducció i avaluem les hipòtesis formulades al marc teòric.
@@ -24,7 +24,7 @@ L'exactitud varia significativament entre models: MrBERT (75,7\%), BETO (62,2\%)
 Respecte al \textbf{tercer objectiu}, la comparació tripartida (model--segments, model--humà, humà--segments) revela divergències substancials.
 La divergència JS més baixa es dona entre l'atenció humana i les anotacions de segments (0,12), fet que confirma que lectors i anotadors comparteixen una visió similar del que és sexista.
 En canvi, la divergència entre el model i les anotacions és alta (0,78--0,84), fet que indica que els models distribueixen l'atenció de manera substancialment diferent.
-Coherentment amb la paradoxa de BETO, la Saliency Distance mostra que aquest model presenta les divergències més baixes amb l'atenció humana (2,99--3,46), malgrat tenir una precisió inferior a MrBERT.
+Coherentment amb la paradoxa de BETO, la KL mostra que aquest model presenta les divergències més baixes amb l'atenció humana (2,99--3,46), malgrat tenir una precisió inferior a MrBERT.
 
 Finalment, en relació amb el \textbf{quart objectiu}, no hem trobat cap correlació estadísticament significativa entre la similitud amb l'atenció humana i el rendiment del model en la classificació per text (prova de \textcite{soodInterpretingAttentionModels2020}).
 Això suggereix que la capacitat de detectar sexisme no depèn necessàriament de l'alineament amb els patrons de processament cognitiu humà, sinó de la capacitat del model per capturar patrons estadístics en les dades d'entrenament.
