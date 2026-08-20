@@ -316,7 +316,9 @@ def compute_comparison_for_text(text_id, text, spans, eye_df, expl_df, method):
         for pct in [1, 2, 3, 4, 5, 10, 20]:
             threshold = np.percentile(saliency, 100 - pct) if np.max(saliency) > 0 else 0
             top_mask = saliency >= threshold
-            overlaps[f"overlap_span_{pct}"] = np.sum(top_mask & span_mask) / max(np.sum(top_mask), 1)
+            overlaps[f"overlap_span_{pct}"] = np.sum(top_mask & span_mask) / max(
+                np.sum(top_mask), 1
+            )
     else:
         for pct in [1, 2, 3, 4, 5, 10, 20]:
             overlaps[f"overlap_span_{pct}"] = np.nan
@@ -645,17 +647,31 @@ def main():
     latex_parts.append("")
 
     # Table 2: Overlap with spans (at multiple thresholds)
-    overlap_table = results_df[["checkpoint", "method",
-        "overlap_span_1_mean", "overlap_span_3_mean",
-        "overlap_span_5_mean", "overlap_span_10_mean", "overlap_span_20_mean"]]
+    overlap_table = results_df[
+        [
+            "checkpoint",
+            "method",
+            "overlap_span_1_mean",
+            "overlap_span_3_mean",
+            "overlap_span_5_mean",
+            "overlap_span_10_mean",
+            "overlap_span_20_mean",
+        ]
+    ]
     latex_parts.append(
         generate_latex_table(
             overlap_table,
             caption="Superposició: paraules amb prominència més alta vs. paraules dins dels segments anotats, per a diferents llindars.",
             label="tab:model_vs_spans",
-            columns=["checkpoint", "method",
-                "overlap_span_1_mean", "overlap_span_3_mean",
-                "overlap_span_5_mean", "overlap_span_10_mean", "overlap_span_20_mean"],
+            columns=[
+                "checkpoint",
+                "method",
+                "overlap_span_1_mean",
+                "overlap_span_3_mean",
+                "overlap_span_5_mean",
+                "overlap_span_10_mean",
+                "overlap_span_20_mean",
+            ],
             col_names=["Checkpoint", "Mètode", "1\\%", "3\\%", "5\\%", "10\\%", "20\\%"],
         )
     )

@@ -27,6 +27,8 @@ from tqdm import tqdm
 
 from explain.explain_captum import (
     METHODS as ATTRIBUTION_METHODS,
+)
+from explain.explain_captum import (
     ModelWrapper,
     aggregate_to_words,
     get_tokenizer_model,

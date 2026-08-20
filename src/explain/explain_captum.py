@@ -22,6 +22,7 @@ import json
 import numpy as np
 import torch
 from captum.attr import (
+    LRP,
     DeepLift,
     FeatureAblation,
     GuidedBackprop,
@@ -30,7 +31,6 @@ from captum.attr import (
     IntegratedGradients,
     LayerGradCam,
     LayerLRP,
-    LRP,
     NoiseTunnel,
     Saliency,
 )
@@ -289,7 +289,9 @@ class _EmbeddingForwardModule(torch.nn.Module):
         embeddings = embeddings.requires_grad_(True)
         if attention_mask.device != embeddings.device:
             attention_mask = attention_mask.to(embeddings.device)
-        outputs = self.wrapper.model(inputs_embeds=embeddings, attention_mask=attention_mask)
+        outputs = self.wrapper.model(
+            inputs_embeds=embeddings, attention_mask=attention_mask
+        )
         return outputs.logits
 
 

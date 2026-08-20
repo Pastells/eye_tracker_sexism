@@ -802,7 +802,7 @@ Humà -- Segments   & 0,12 (ref.) & --- & --- \\
 La divergència JS més baixa és entre l'atenció humana i les anotacions de segments (0,12 amb stopwords filtrades), i confirma que els anotadors humans i els lectors comparteixen una visió similar del que és sexista.
 La divergència més alta és entre el model i les anotacions de segments (0,78--0,84), la qual cosa indica que els models de llenguatge distribueixen l'atenció de manera substancialment diferent dels humans.
 
-\subsection{Mètrica de Sood et al. i KL}
+\subsection{Precisió del model i divergència KL respecte a l'atenció humana}
 
 \textcite{soodInterpretingAttentionModels2020} proposen que la correlació entre la divergència KL (model vs. humà) i el rendiment del model indica si el model aprèn atenció similar a la humana.
 
@@ -865,6 +865,7 @@ Això suggereix que la similitud amb l'atenció humana no necessàriament implic
 En segon lloc, LRP produeix la KL més baixa en tots els models (3,10--4,20), seguit de Saliency (3,38--4,42), Input$\times$Gradient (3,57--4,41) i IG (3,45--4,70).
 Això indica que les atribucions LRP s'alineen més amb l'atenció humana que els altres mètodes, cosa que concorda amb la seva naturalesa de descomposició exacta del gradient.
 En tercer lloc, IG produeix consistentment la KL més alta, possiblement perquè les seves atribucions són més disperses i inclouen contribucions menys rellevants per a la tasca de classificació.
+L'annex~\ref{sec:pos_analysis} aprofundeix en aquesta comparació analitzant la distribució de prominència per categories gramaticals.
 
 \subsection{Resum comparatiu: exactitud del model vs. divergència de distribucions}
 

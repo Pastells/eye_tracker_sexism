@@ -717,6 +717,7 @@ def get_top_hotspots_per_text(
         combined["is_stopword"] = (
             combined["token"].str.lower().str.strip(".,;:!?()\"'¿¡").isin(es_stopwords)
         )
+
         # Filter speaker tag artifacts: HABLANTE, single digits, tokens with ]
         def _is_artifact(t):
             t = str(t)
@@ -725,6 +726,7 @@ def get_top_hotspots_per_text(
             core = re.sub(r"^[\[\(]?", "", t)
             core = re.sub(r"[\]\):\.,;!?]+$", "", core)
             return core.isdigit()
+
         is_artifact = combined["token"].apply(_is_artifact)
         combined["is_stopword"] = combined["is_stopword"] | is_artifact
         combined["perm_sig"] = combined.apply(
@@ -734,7 +736,15 @@ def get_top_hotspots_per_text(
 
         records.append(
             combined[
-                ["text_id", "direction", "token", "token_idx", "z_score", "is_stopword", "perm_sig"]
+                [
+                    "text_id",
+                    "direction",
+                    "token",
+                    "token_idx",
+                    "z_score",
+                    "is_stopword",
+                    "perm_sig",
+                ]
             ]
         )
 
@@ -759,15 +769,25 @@ def get_top_hotspots_per_text(
         tier1 = text_all[text_all["perm_sig"] & ~text_all["is_stopword"]].head(n_top)
         # Tier 2: remaining permutation-significant (stopwords)
         remaining_perm = n_top - len(tier1)
-        tier2 = text_all[text_all["perm_sig"] & text_all["is_stopword"]].head(remaining_perm)
+        tier2 = text_all[text_all["perm_sig"] & text_all["is_stopword"]].head(
+            remaining_perm
+        )
         # Tier 3: z-score significant non-stopwords
         remaining_z = n_top - len(tier1) - len(tier2)
         used_idx = set(tier1["token_idx"].tolist() + tier2["token_idx"].tolist())
-        tier3 = text_all[~text_all["perm_sig"] & ~text_all["is_stopword"] & ~text_all["token_idx"].isin(used_idx)].head(remaining_z)
+        tier3 = text_all[
+            ~text_all["perm_sig"]
+            & ~text_all["is_stopword"]
+            & ~text_all["token_idx"].isin(used_idx)
+        ].head(remaining_z)
         # Tier 4: remaining z-score significant stopwords
         remaining_sz = n_top - len(tier1) - len(tier2) - len(tier3)
         used_idx2 = used_idx | set(tier3["token_idx"].tolist())
-        tier4 = text_all[~text_all["perm_sig"] & text_all["is_stopword"] & ~text_all["token_idx"].isin(used_idx2)].head(remaining_sz)
+        tier4 = text_all[
+            ~text_all["perm_sig"]
+            & text_all["is_stopword"]
+            & ~text_all["token_idx"].isin(used_idx2)
+        ].head(remaining_sz)
 
         top_records.append(pd.concat([tier1, tier2, tier3, tier4]))
 

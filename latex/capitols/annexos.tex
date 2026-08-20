@@ -130,3 +130,23 @@ Les diferències són negligibles: la correlació de Spearman canvia en 0,01 i l
 El test parell de mostres emparellades (per text) no mostra diferències significatives per a Spearman ($p = 0,47$) ni per a la JS ($p = 0,11$).
 Concloem que l'exclusió de la participant F2 no altera els resultats de l'anàlisi de manera substancial. 
 Per tant, es conserven les seves dades en tots els resultats.
+
+\chapter{Prominència per categories gramaticals}\label{sec:pos_analysis}
+
+Seguint l'anàlisi de \textcite{ikhwantriLookingDeepEyes2023}, comparem la distribució de prominència del model segons categories gramaticals amb l'atenció humana (TFD).
+Per a cada text, calculem la mitjana de TFD pels 10 participants, etiquetem els tokens amb spaCy\footnote{https://spacy.io/} (\texttt{es\_core\_news\_sm}), sumem la prominència (o TFD) de tots els tokens de cada categoria i normalitzem perquè la suma sigui 1,0.
+La \autoref{fig:pos_distribution} mostra la distribució per al model millor alineat (BETO LRP), el pitjor (MrBERT IG) i l'atenció humana (TFD).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/pos_saliency_distribution.pdf}
+\caption{Distribució de prominència per categoria gramatical: atenció humana (TFD) vs.\ millor model (BETO LRP) i pitjor model (MrBERT IG).}
+\label{fig:pos_distribution}
+\end{figure}
+
+Els resultats mostren divergències interessants entre els models i l'atenció humana:
+Els lectors dediquen una proporció més alta de la seva atenció a determinants (\textit{DET}: 9,7\% vs.\ 6,0\%--6,4\%) i auxiliars (\textit{AUX}: 5,5\% vs.\ 3,2\%--3,5\%), categories funcionals que els models subvaloren.
+En canvi, BETO LRP sobrevalora els noms (\textit{NOM}: 20,4\% vs.\ 15,5\%) i adjectius (\textit{ADJ}: 8,6\% vs.\ 4,7\%), cosa que suggereix que el model centra l'atenció en elements lèxics de contingut mentre que els lectors distributeixen més l'atenció entre elements gramaticals.
+MrBERT IG presenta una distribució més propera als humans en noms (13,2\%) però subvalora els verbs (\textit{VERB}: 13,4\% vs.\ 14,0\%).
+Tots dos models subvaloren els adverbis (\textit{ADV}: 2,9\%--4,0\% vs.\ 5,2\%).
+Aquests resultats són coherents amb els d'Ikhwantri et al., que observen que els models tendeixen a sobreponderar adjectius i noms en comparació amb els humans.
