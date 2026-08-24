@@ -129,14 +129,14 @@ Els seus resultats principals són:
 \begin{itemize}
     \item KL és consistentment més petita amb FFD que amb FC en gairebé totes les combinacions de tasques i mètodes. 
     % Això s'explica perquè la FFD captura la primera lectura d'una paraula, similar al comportament dels models que processen el text una sola vegada, mentre que el FC inclou relectures que els models no realitzen. % No és un bon anàleg. Un model no rellegeix.
-    \item Els mètodes basats en gradients obtenen menor KL que els mètodes de pertorbació (\textit{input perturbation} IP) i atenció (Attn) en les tasques d'anàlisi de sentiment i classificació de relacions. En canvi, en la tasca de QA amb resposta múltiple (textos més llargs), l'atenció és el mètode que obté KL més petita.
+    \item Els mètodes basats en gradients obtenen menor KL que els mètodes de pertorbació (\textit{input perturbation} IP) i atenció (Attn) en les tasques d'anàlisi de sentiment i classificació de relacions. En canvi, en la tasca de QA amb resposta múltiple (texts més llargs), l'atenció és el mètode que obté KL més petita.
     \item El Transformer mostra la KL més baixa en la majoria de les combinacions, excepte amb el mètode IP en anàlisi de sentiment i amb Attn en classificació de relacions.
     \item En anàlisi de sentiment, els humans centren l'atenció en noms propis, adjectius, noms, adverbis i nombres; els models amb el millor mètode (Grad-Transformer) sobrevaloren els adjectius, però subvaloren els noms propis i els nombres. En classificació de relacions, els models no capten bé els verbs i adjectius que indiquen relacions entre entitats.
     \item Proposen les corbes KL-Performance: en tasques de classificació aquestes corbes tendeixen a ser decreixents (major conformitat → millor rendiment), mentre que en QA són més planes o irregulars.
 \end{itemize}
 
 Els resultats d'\textcite{ikhwantriLookingDeepEyes2023} suggereixen que la relació entre conformitat humana i rendiment varia segons la tasca, el mètode d'interpretabilitat i l'arquitectura.
-En el nostre cas, la classificació de textos és similar a les tasques de sentiment i relació. 
+En el nostre cas, la classificació de texts és similar a les tasques de sentiment i relació. 
 Esperem que els mètodes basats en gradients mostrin major alineament amb l'atenció humana.
 A més, la nostra aproximació tripartida (anotacions, eye-tracking i models) permet superar les limitacions identificades pels autors: la necessitat de considerar múltiples fonts d'informació per entendre completament el comportament dels models.
 
@@ -146,7 +146,7 @@ A més, la nostra aproximació tripartida (anotacions, eye-tracking i models) pe
 Identifiquen diferències notables en diferents àmbits. 
 Quant a granularitat, els humans destaquen segments més llargs i semànticament rellevants, mentre que els models produeixen atribucions més difuses a escala de token.
 Els humans mostren més acord en els tokens més rellevants, mentre que els models tendeixen a coincidir més quan es consideren tots els tokens.
-Pel que fa a la sensibilitat a la classe de contingut, en textos d'opinió els humans tenen més acord, mentre que en textos de notícies són els models els que mostren major consistència.
+Pel que fa a la sensibilitat a la classe de contingut, en texts d'opinió els humans tenen més acord, mentre que en texts de notícies són els models els que mostren major consistència.
 
 Aquesta variabilitat en les explicacions no és exclusiva de la comparació humà-model, sinó que també es manifesta entre models funcionalment equivalents.
 L'efecte Rashomon~\cite{breiman2003statistical} estableix que models amb rendiment similar poden produir explicacions radicalment diferents per a la mateixa predicció i posa en dubte la noció de \textit{l'única} explicació correcta d'un model.

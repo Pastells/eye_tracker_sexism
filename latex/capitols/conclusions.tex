@@ -1,4 +1,4 @@
-En aquest treball hem comparat els patrons d'atenció de lectors humans, obtinguts a partir de dades d'\textit{eye-tracking}, amb les explicacions computacionals de models de llenguatge preentrenats adaptats a la tasca de detecció de sexisme en textos en castellà.
+En aquest treball hem comparat els patrons d'atenció de lectors humans, obtinguts a partir de dades d'\textit{eye-tracking}, amb les explicacions computacionals de models de llenguatge preentrenats adaptats a la tasca de detecció de sexisme en texts en castellà.
 La comparació tripartida entre atenció humana, anotacions de segments i atribucions del model ens ha permès caracteritzar fins a quin punt aquestes fonts convergeixen i on divergeixen.
 
 De l'anàlisi en destaquem quatre resultats principals.
@@ -6,7 +6,7 @@ En primer lloc, observem el que anomenem la paradoxa de BETO: el model amb menor
 Això suggereix que l'especialització en la tasca de classificació pot allunyar el model dels patrons de processament cognitiu natural, un resultat consistent amb les conclusions d'\textcite{ikhwantriLookingDeepEyes2023}.
 En segon lloc, LRP és el mètode d'interpretabilitat que produeix les distribucions més properes a l'atenció humana en tots els models (KL = 3,10--4,20), possiblement per la seva naturalesa de descomposició exacta del gradient, que preserva la informació contributiva del model.
 En tercer lloc, l'anàlisi de regressions als 302 tokens lèxics més prominents mostra que els noms (41,1\%) i els verbs (21,9\%) són les categories morfològiques més representades. A més, el 9,3\% dels tokens són mots amb relació de gènere, cosa que indica una atenció selectiva cap als elements lingüístics relacionats amb el sexisme.
-En quart lloc, la correlació significativa entre la taxa de regressió i la classificació binària ($\rho = 0,429$, $p = 0,006$) indica que els lectors fan més regressions en textos sexistes, consistent amb la necessitat de reprocessament cognitiu davant de contingut polèmic.
+En quart lloc, la correlació significativa entre la taxa de regressió i la classificació binària ($\rho = 0,429$, $p = 0,006$) indica que els lectors fan més regressions en texts sexistes, consistent amb la necessitat de reprocessament cognitiu davant de contingut polèmic.
 
 Cal destacar que la nostra expectativa inicial---que els mètodes basats en gradients estarien més alineats amb l'atenció humana---només es confirma parcialment: tot i que LRP produeix les divergències KL més baixes, IG mostra les més altes, malgrat que ambdós mètodes es basen en gradients.
 Aquest resultat evidencia que la família de mètodes d'interpretabilitat no és, per si sola, un bon predictor de l'alineament amb l'atenció humana.
@@ -15,7 +15,7 @@ A continuació, responem als objectius plantejats a la introducció i avaluem le
 
 \subsection*{Objectius}
 
-Pel que fa al \textbf{primer objectiu}, hem recollit dades de seguiment ocular de 10 participants durant la lectura de 40 textos amb contingut sexista i no sexista del corpus MuSeD, obtenint un total de 34.754 fixacions.
+Pel que fa al \textbf{primer objectiu}, hem recollit dades de seguiment ocular de 10 participants durant la lectura de 40 texts amb contingut sexista i no sexista del corpus MuSeD, obtenint un total de 34.754 fixacions.
 Les dades mostren que els participants detecten correctament el sexisme amb una exactitud mitjana del 82,7\%, cosa que aporta validesa a les dades recollides, amb una taxa de regressió del 15--25\%.
 
 Quant al \textbf{segon objectiu}, hem adaptat tres models preentrenats a la tasca de detecció de sexisme (MrBERT, mBERT i BETO) i n'hem extret explicacions amb quatre mètodes d'interpretabilitat (Saliency, Input$\times$Gradient, Integrated Gradients i LRP).
@@ -51,8 +51,8 @@ La comparació tripartida mostra que cap font per si sola no ofereix una visió 
 
 \subsection*{Limitacions i treballs futurs}
 
-La principal limitació d'aquest treball és la mida de mostra reduïda (10 participants, 40 textos), que limita la potència estadística.
+La principal limitació d'aquest treball és la mida de mostra reduïda (10 participants, 40 texts), que limita la potència estadística.
 Els resultats no significatius (com la prova de Fisher per text o les correlacions per categoria individual) no impliquen absència d'efecte, sinó manca de potència per detectar-lo.
 A més, les dades de seguiment ocular s'han recollit en condicions controlades de laboratori, que poden no reflectir completament els patrons de lectura naturals.
 
-Com a treballs futurs, proposem: (1) augmentar la mida de la mostra amb més participants i textos; (2) explorar models de llenguatge extensos (\textit{Large Language Model}, LLM en anglès); (3) investigar la relació entre les atribucions del model i les categories lingüístiques de manera més granular; (4) aplicar les mètriques de distribució a altres tasques de PLN amb dades d'\textit{eye-tracking} disponibles.
+Com a treballs futurs, proposem: (1) augmentar la mida de la mostra amb més participants i texts; (2) explorar models de llenguatge extensos (\textit{Large Language Model}, LLM en anglès); (3) investigar la relació entre les atribucions del model i les categories lingüístiques de manera més granular; (4) aplicar les mètriques de distribució a altres tasques de PLN amb dades d'\textit{eye-tracking} disponibles.

@@ -1,34 +1,35 @@
-\section{Selecció de textos de MuSeD}\label{sec:filtratge}
+\section{Selecció de texts de MuSeD}\label{sec:filtratge}
 
 \subsection{Estudi pilot}
 
-Prèviament a la selecció final, vam dur a terme un estudi pilot amb 6 voluntaris (3 homes i 3 dones), que van llegir 11 textos de MuSeD seleccionats per contenir humor o ironia.
-El pilot va resultar útil per identificar dues limitacions del disseny inicial: els textos seleccionats eren massa llargs (els participants tardaven uns 10 minuts a llegir-los tots), i calia refinar el protocol experimental (vegeu \autoref{sec:procediment}).
-Aquestes observacions van motivar els criteris de selecció que descrivim a continuació, orientats a reduir la longitud dels textos i garantir una durada de sessió raonable.
+Prèviament a la selecció final, vam dur a terme un estudi pilot amb 6 voluntaris (3 homes i 3 dones), que van llegir 11 texts de MuSeD seleccionats per contenir humor o ironia.
+El pilot va resultar útil per identificar dues limitacions del disseny inicial: els texts seleccionats eren massa llargs (els participants tardaven uns 10 minuts a llegir-los tots), i calia refinar el protocol experimental (vegeu \autoref{sec:procediment}).
+Aquestes observacions van motivar els criteris de selecció que descrivim a continuació, orientats a reduir la longitud dels texts i garantir una durada de sessió raonable.
 
 \subsection{Criteris de selecció}
 
-A partir del corpus MuSeD, es van seleccionar 40 textos (20 sexistes i 20 no sexistes) seguint els criteris següents:
+A partir del corpus MuSeD, es van seleccionar 40 texts (20 sexistes i 20 no sexistes) seguint els criteris següents:
 
 \begin{enumerate}
     \item \textbf{Coherència entre modalitats}: només es van conservar les instàncies en què l'etiqueta textual i la multimodal coincideixen (\texttt{sexist\_text} $=$ \texttt{sexist\_video}).
     \item \textbf{Acord total entre anotadors}: es van descartar les instàncies amb valors intermedis de \texttt{sexist\_soft}, mantenint només aquelles amb consens ($\texttt{sexist\_soft} \in \{0, 1\}$).
-    \item \textbf{Longitud}: es van prioritzar els textos més curts o amb segments anotats més curts per tal de mantenir una durada raonable de la sessió experimental i tenir major explicabilitat a l'hora de fer l'anàlisi.
-    Considerant una velocitat de lectura aproximada de 1.000 caràcters per minut, els 40 textos seleccionats suposen aproximadament 17 minuts de lectura, als quals cal afegir el temps de calibratge i de \textit{stimulated recall} (vegeu \autoref{sec:procediment}).
-    \item \textbf{Comprensibilitat autònoma}: es van descartar textos amb vocabulari estrany (per un oient català).
+    \item \textbf{Longitud}: es van prioritzar els texts més curts o amb segments anotats més curts per tal de mantenir una durada raonable de la sessió experimental i tenir major explicabilitat a l'hora de fer l'anàlisi.
+    Considerant una velocitat de lectura aproximada de 1.000 caràcters per minut, els 40 texts seleccionats suposen aproximadament 17 minuts de lectura, als quals cal afegir el temps de calibratge i de \textit{stimulated recall} (vegeu \autoref{sec:procediment}).
+    \item \textbf{Comprensibilitat autònoma}: es van descartar texts amb vocabulari estrany (per un oient català).
     Quan era necessari, es van fer petites edicions per millorar-ne la llegibilitat (afegir cometes, indicar qui parla en fragments dialogats, etc.).
     \item \textbf{Validació manual}: cada text candidat es va revisar individualment, escoltant l'àudio original i inspeccionant visualment les anotacions de segment per confirmar-ne l'adequació (vegeu l'\autoref{sec:spans_viz}).
 \end{enumerate}
 
 
-Val a dir que els textos sexistes tendeixen a ser més llargs que els no sexistes, i que les anotacions dels segments cobreixen una proporció considerable dels textos.
-Les taules~\ref{tab:corpus_stats} i~\ref{tab:corpus_labels} resumeixen les estadístiques descriptives i la distribució de categories dels textos seleccionats.
-En total, els 40 textos contenen 2.901 paraules.
-Observem que la llargada dels segments constitueix un alt percentatge de la llargada total dels textos.
-La llista completa dels textos, amb les categories binàries assignades, es troba a l'\autoref{sec:appendix_texts}.
+Val a dir que els texts sexistes tendeixen a ser més llargs que els no sexistes, i que les anotacions dels segments cobreixen una proporció considerable dels texts.
+Les taules~\ref{tab:corpus_stats} i~\ref{tab:corpus_labels} resumeixen les estadístiques descriptives i la distribució de categories dels texts seleccionats.
+En total, els 40 texts contenen 2.901 paraules.
+Observem que la llargada dels segments constitueix un alt percentatge de la llargada total dels texts.
+La llista completa dels texts, amb les categories binàries assignades, es troba a l'\autoref{sec:appendix_texts}.
 
 \iftables
 \begin{table}[ht]
+\small
     \centering
     \begin{tabular}{lcccc}
         \toprule & \multicolumn{2}{c}{No sexistes} &
@@ -41,13 +42,14 @@ La llista completa dels textos, amb les categories binàries assignades, es trob
         Longitud dels segments & 255,7 & 139,6 & 362,7 & 205,3 \\
         \bottomrule
     \end{tabular}
-    \caption{Estadístiques descriptives dels 40 textos seleccionats (D.E.:
+    \caption{Estadístiques descriptives dels 40 texts seleccionats (D.E.:
     desviació estàndard).}\label{tab:corpus_stats}
 \end{table}
 \fi
 
 \iftables
 \begin{table}[ht]
+\small
     \centering
     \begin{tabular}{llc}
         \toprule & Categoria & $n$ \\
@@ -69,16 +71,16 @@ La llista completa dels textos, amb les categories binàries assignades, es trob
         & Objectificació    &  0 \\
         \bottomrule
     \end{tabular}
-    \caption{Distribució de categories dels textos seleccionats.
-    \textsuperscript{a}~Els 2 textos amb sexisme implícit també presenten estereotips.
-    \textsuperscript{b}~Els 2 textos sexistes amb humor també presenten discriminació.
+    \caption{Distribució de categories dels texts seleccionats.
+    \textsuperscript{a}~Els 2 texts amb sexisme implícit també presenten estereotips.
+    \textsuperscript{b}~Els 2 texts sexistes amb humor també presenten discriminació.
     }\label{tab:corpus_labels}
 \end{table}
 \fi
 
 
 % TODO: no es va fer, però té sentit per més endavant
-% Addicionalment, es van incloure 4 textos de pràctica (no comptabilitzats a
+% Addicionalment, es van incloure 4 texts de pràctica (no comptabilitzats a
 % la Taula~\ref{tab:corpus_stats}) que no s'empren en l'anàlisi principal, sinó
 % que serveixen per familiaritzar els participants amb la dinàmica de la sessió
 % i permetre el calibratge de l'eye-tracker abans de l'inici de l'experiment
@@ -102,10 +104,10 @@ L'estudi va tenir un total de 10 participants voluntaris (5 homes i 5 dones).
 Dos dels voluntaris van ser anotadors del corpus MuSeD.
 Tots treballadors o estudiants de la Universitat de Barcelona majors d'edat, entre 22 i 28 anys.
 
-Cada participant va ser informat dels objectius de l'estudi i va firmar un consentiment informat abans de llegir els textos.
-Es començava explicant que havien de llegir 40 textos en castellà extrets de vídeos de xarxes socials amb la intenció de determinar si eren sexistes.
+Cada participant va ser informat dels objectius de l'estudi i va firmar un consentiment informat abans de llegir els texts.
+Es començava explicant que havien de llegir 40 texts en castellà extrets de vídeos de xarxes socials amb la intenció de determinar si eren sexistes.
 Primer de tot, es feia el procés de calibratge, per tal que l'eye-tracker funcionés adequadament (vegeu \autoref{app:calibration})
-Els textos es mostraven en ordre aleatori.
+Els texts es mostraven en ordre aleatori.
 Podien llegir cada text les vegades que els fos necessari i un cop havien pensat la resposta premien 0 per no sexista o 1 per sexista en un teclat d'ordinador.
 Havien de valorar si el contingut era sexista segons la seva pròpia visió del món.
 S'explicava que no hi havia una única resposta correcta, sinó que és una tasca subjectiva.
@@ -115,12 +117,12 @@ Els participants podien fer preguntes o esmenar equivocacions durant la pregunta
 
 \subsection{\textit{Stimulated Recall}}
 
-Un cop acabada la lectura, es feien breus entrevistes mentre es mostrava el procés de lectura de certs textos amb Tobii Pro Lab, on es veuen les fixacions i regressions.
+Un cop acabada la lectura, es feien breus entrevistes mentre es mostrava el procés de lectura de certs texts amb Tobii Pro Lab, on es veuen les fixacions i regressions.
 Es gravava la pantalla d'ordinador i l'àudio de la conversa amb OBS Studio.
-Es van seleccionar 7 textos que representaven casos interessants.
+Es van seleccionar 7 texts que representaven casos interessants.
 Tot i que el corpus MuSeD disposa d'etiquetes de consens (\textit{gold standard}), les etiquetes de cada anotador revelen que el consens entre anotadors no sempre és absolut.
 Per exemple, el text~4 té unanimitat en discriminació (1,0) però desacord en humor (0,67) i ironia (0,33); el text~30 mostra desacord en humor (0,67) i ironia (0,33); i el text~375 en desigualtat (0,67) i múltiples categories (0,33 cadascuna).
-Els textos seleccionats van ser:
+Els texts seleccionats van ser:
 \begin{itemize}
     \item \textbf{Text 4} (sexista): ironia i humor amb desacord, discriminació unànime.
     \item \textbf{Text 30} (sexista): humor i ironia amb desacord, desigualtat.
@@ -131,7 +133,7 @@ Els textos seleccionats van ser:
     \item \textbf{Text 399} (no sexista): crítica, estereotips i sexisme reportat, tots amb desacord.
 \end{itemize}
 
-Es va utilitzar la llengua en que cada participant se sentia més còmode per conversar sobre els textos, català o castellà.
+Es va utilitzar la llengua en que cada participant se sentia més còmode per conversar sobre els texts, català o castellà.
 Durant aquest procés es preguntava si el participant s'havia fixat en alguna paraula o frase en concret per algun motiu, o si havia pensat quelcom en concret sobre el text. 
 Per exemple, si havia trobat difícil alguna paraula o li havia sobtat un concepte.
 
@@ -145,7 +147,7 @@ Utilitzem mBERT (la versió multilingüe del BERT original), BETO~\cite{canete20
 
 El procés d'adaptació (\textit{finetuning}) consisteix a modificar aquests models preentrenats per la nostra tasca específica de detecció de sexisme.
 Vegeu el codi per a més detalls sobre la implementació, que inclou la preparació de les dades, la configuració del model i l'entrenament amb la llibreria \textit{transformers} de HuggingFace\footnote{https://huggingface.co/docs/transformers/en/index}.
-També vam entrenar els models amb només les dades amb acord total d'anotadors, però les diferències respecte a les dades completes van ser negligibles.%, de manera que en aquest treball usem només els models entrenats amb el conjunt complet, excepte els 40 textos que guardem com a test.
+També vam entrenar els models amb només les dades amb acord total d'anotadors, però les diferències respecte a les dades completes van ser negligibles.%, de manera que en aquest treball usem només els models entrenats amb el conjunt complet, excepte els 40 texts que guardem com a test.
 
 % \subsection{Models de llenguatge extensos}
 %
