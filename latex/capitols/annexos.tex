@@ -152,3 +152,49 @@ En canvi, BETO LRP sobrevalora els noms (\textit{NOM}: 20,4\% vs.\ 15,5\%) i adj
 MrBERT IG presenta una distribució més propera als humans en noms (13,2\%) però subvalora els verbs (\textit{VERB}: 13,4\% vs.\ 14,0\%).
 Tots dos models subvaloren els adverbis (\textit{ADV}: 2,9\%--4,0\% vs.\ 5,2\%).
 Aquests resultats són coherents amb els d'Ikhwantri et al., que observen que els models tendeixen a sobreponderar adjectius i noms en comparació amb els humans.
+
+\chapter{Ablació del filtratge de paraules buides}\label{sec:stopword_ablation}
+
+Avaluem l'impacte del filtratge de paraules buides (stopwords) sobre les mètriques de distribució utilitzant la TFD com a característica d'\textit{eye-tracking}.
+La \autoref{tab:stopword_ablation} mostra la divergència JS per a les tres parelles de distribucions (TFD–segments, model–segments i model–TFD), amb filtratge de paraules buides i sense.
+El filtratge redueix la JS en tots els casos, amb l'efecte més accentuat en la comparació TFD–segments (26,5\%), ja que les paraules buides reben atenció similar dels lectors però no contribueixen a la discriminació entre zones sexistes i no sexistes.
+L'efecte és menor però consistent en les comparacions que inclouen el model (5,3\%--8,3\%), confirmant que el filtratge millora la discriminació a totes les parelles.
+Per aquest motiu, totes les comparacions amb el model que es presenten al capítol de resultats utilitzen distribucions filtrades de paraules buides.
+\iftables
+\begin{table}[htbp]
+\small
+\centering
+\begin{tabular}{lccr}
+\toprule
+\textbf{Parella} & \textbf{JS (tots)} & \textbf{JS (filtrat)} & \textbf{$\Delta$} \\
+\midrule
+TFD–Segments (TFD)               & 0,137 & 0,100 & $-26,5$\% \\
+Model–Segments (BETO LRP)      & 0,827 & 0,768 & $-7,1$\% \\
+Model–TFD (BETO LRP)           & 0,827 & 0,783 & $-5,3$\% \\
+Model–Segments (MrBERT IG)     & 0,859 & 0,788 & $-8,3$\% \\
+Model–TFD (MrBERT IG)          & 0,865 & 0,804 & $-7,0$\% \\
+\bottomrule
+\end{tabular}
+\caption{Ablació: efecte del filtratge de paraules buides sobre la divergència JS per a les tres parelles de distribucions (TFD com a característica d'\textit{eye-tracking}).}
+\label{tab:stopword_ablation}
+\end{table}
+\fi
+
+\chapter{Dispersió KL–precisió}\label{sec:sd_performance}
+
+\textcite{ikhwantriLookingDeepEyes2023} proposen una anàlisi de la relació entre la divergència KL (model vs. TFD) i la precisió del model.
+Cada punt representa una combinació de model i mètode d'interpretabilitat.
+La \autoref{fig:sd_performance} mostra aquesta dispersió per als nostres tres models.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/sd_performance_curve.pdf}
+\caption{Dispersió KL–precisió: cada punt és una combinació de model i mètode d'interpretabilitat. Colors = models; formes = mètodes.}
+\label{fig:sd_performance}
+\end{figure}
+
+Els resultats evidencien un patró contraintuïtiu respecte a la hipòtesi d'Ikhwantri et al.:
+MrBERT, amb la precisió més alta (74,2\%--75,7\%), presenta la KL més alta (4,20--4,70), és a dir, la menor similitud amb l'atenció humana.
+En canvi, BETO, amb precisió intermèdia (61,1\%--62,2\%), mostra la KL més baixa (3,10--3,57).
+mBERT obté valors intermedis de KL (3,63--4,22) però la pitjor precisió (54,1\%--57,6\%).
+Això confirma que la similitud amb l'atenció humana no implica millor rendiment en la tasca de classificació, un resultat consistent amb les conclusions d'\textcite{ikhwantriLookingDeepEyes2023} i amb les nostres troballes de l'apartat~\ref{sec:kl_ikhwantri}.

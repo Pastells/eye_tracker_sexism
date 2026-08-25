@@ -182,7 +182,7 @@ Per a cada parell (participant, text), calculem quatre mètriques que comparen l
 \begin{itemize}
     \item \textbf{Correlació de Spearman:} mesura de concordança monòtona entre distribucions.
     \item \textbf{Entropia creuada (\textit{cross-entropy}, CE):} mesura de divergència probabilística.
-    \item \textbf{Divergència de Kullback-Leibler (KL):} divergència informacional de la distribució humana respecte a l'anotació.
+    \item \textbf{Divergència de Kullback-Leibler (KL):} divergència informacional de la TFD respecte a l'anotació.
     \item \textbf{Divergència de Jensen-Shannon (JS):} versió simètrica de KL, més interpretable.
 \end{itemize}
 La correlació de Spearman varia entre $-1$ i $1$ (més alta = millor alineament). 
@@ -562,10 +562,9 @@ FFD vs.\ FC  & $-0,070$ & $< 0,001$ * \\
 \end{table}
 \fi
 
-\subsection{Prominència dels models vs. mètriques d'eye-tracking}
+\subsection{Prominència dels models vs.\ mètriques d'eye-tracking}
 
-Calculem la correlació de Spearman entre la prominència de cada token (valor absolut de l'atribució del model) i les tres mètriques d'eye-tracking (TFD, FFD, FC) promitjades entre participants, pels 40 texts.
-
+La \autoref{tab:model_vs_eye_tracking} presenta la correlació de Spearman entre la prominència de cada token (valor absolut de l'atribució del model) i les tres mètriques d'eye-tracking (TFD, FFD, FC) promitjades entre participants, pels 40 texts.
 \iftables
 \begin{table}[htbp]
 \small
@@ -592,10 +591,9 @@ mBERT & Saliency & 0,076 & $-0,042$ & 0,124 \\
 \label{tab:model_vs_eye_tracking}
 \end{table}
 \fi
-
-La \autoref{tab:model_vs_eye_tracking} presenta les correlacions de Spearman. Les correlacions són positives, però febles per a TFD ($\rho \approx 0,04$--$0,08$) i FC ($\rho \approx 0,08$--$0,13$).
+Les correlacions són positives, però febles per a TFD i FC.
 Per tant, els tokens on els models assignen més importància coincideixen parcialment amb els tokens que reben més atenció dels lectors.
-La FFD mostra correlació lleugerament negativa ($\rho \approx -0,04$--$-0,06$), consistent amb el fet que la primera fixació no discrimina entre zones sexistes i no sexistes (ja observat en l'anàlisi anterior).
+La FFD mostra correlació lleugerament negativa, consistent amb el fet que la primera fixació no discrimina entre zones sexistes i no sexistes (ja observat en l'anàlisi anterior).
 
 mBERT obté les correlacions més altes ($\rho = 0,076$ per TFD, $\rho = 0,124$ per FC amb Saliency), seguit de BETO ($\rho = 0,075$ / $0,122$) i MrBERT-es ($\rho = 0,049$ / $0,092$).
 LRP mostra correlacions similars o lleugerament superiors a Saliency per a mBERT ($\rho = 0,081$ per FC) i comparable per a la resta de models.
@@ -604,9 +602,9 @@ LRP mostra correlacions similars o lleugerament superiors a Saliency per a mBERT
 
 En aquesta secció comparem les distribucions de prominència de tres models preentrenats (mBERT, BETO i MrBERT-es) amb les anotacions de segments del \textit{gold standard} i amb l'atenció humana mesurada amb \textit{eye-tracking}.
 Extraiem la prominència dels models amb quatre mètodes d'interpretabilitat: Saliency, Input$\times$Gradient, Integrated Gradients (IG) i Layer-wise Relevance Propagation (LRP).
-Totes les comparacions de distribucions utilitzen filtratge de paraules buides (vegeu l'ablació de l'apartat~\ref{sec:stopword_ablation}).
+Totes les comparacions de distribucions utilitzen filtratge de paraules buides (vegeu l'ablació a l'Apèndix~\ref{sec:stopword_ablation}).
 
-\subsection{Prominència del model vs. anotacions de segments}
+\subsection{Prominència del model vs.\ anotacions de segments}
 
 En primer lloc, comparem les distribucions de prominència del model amb les anotacions de segments sexistes del corpus MuSeD.
 
@@ -680,10 +678,11 @@ La divergència és esperable: els segments marquen només una part del text com
 Les diferències entre mètodes d'interpretabilitat són petites i suggereixen que la distribució de prominència és similar independentment del mètode utilitzat.
 
 \subsubsection{Alineament per tipologia d'etiqueta}
-% TODO: quin model i mètode de prominència s'ha fet servir aquí? 
-% TODO: Si només és un com s'ha triat?
 
 La \autoref{tab:model_typology} desglossa l'alineament entre prominència del model i atenció humana per tipus d'etiqueta de segment.
+Les xifres són una mitjana sobre les 12 combinacions de model i mètode.
+La variabilitat entre combinacions és moderada: el rang de JS dins de cada model entre mètodes varia de 0,16 (MrBERT) a 0,27 (BETO), i el rang entre models dins de cada mètode varia de 0,19 (Input$\times$Gradient) a 0,28 (LRP).
+La combinació que produeix la JS més baixa és BETO amb LRP (0,789), i la més alta és MrBERT amb IG (0,866), cosa que indica que l'elecció del model té més pes que la del mètode.
 
 \iftables
 \begin{table}[htbp]
@@ -709,19 +708,11 @@ desig. ideol.           & 0,035 & 0,027 & --- & --- & 0,818 \\
 \end{table}
 \fi
 
-Les principals observacions són:
-% TODO: estructura molt repetitiva
-\begin{itemize}
-    \item \textbf{\textit{crítica} i \textit{humor}:} presenten la prominència més alta dins del segment i zero fora, cosa que indica que els models identifiquen clarament aquestes categories.
-    \item \textbf{\textit{sexisme implícit}:} mostra la correlació més alta amb FC i TFD, la qual cosa suggereix que els models i els lectors coincideixen més en aquesta tipologia subtil.
-    \item \textbf{\textit{ironia}:} mostra correlacions relativament altes, i això indica que els models capturen ironia de manera similar als lectors.
-    \item \textbf{\textit{sexisme reportat} i \textit{objectificació}:} presenten prominència més baixa dins del segment que fora, cosa que suggereix que els models tenen dificultats per identificar aquestes categories més explícites.
-    \item La \textbf{JS} més baixa és per \textit{crítica}, fet que evidencia la concordança més alta entre distribucions dins/fora del segment.
-\end{itemize}
+Les principals observacions són que \textit{crítica} i \textit{humor} concentren la prominència més alta dins del segment i zero fora, indicant que els models identifiquen clarament aquestes categories. En canvi, \textit{sexisme reportat} i \textit{objectificació} presenten una prominència més baixa dins del segment que fora, la qual cosa suggereix que els models tenen dificultats per identificar-les. Pel que fa a les correlacions amb les mètriques d'\textit{eye-tracking}, \textit{sexisme implícit} mostra la més alta amb FC i TFD, és a dir, els models i els lectors coincideixen més en aquesta tipologia subtil; \textit{ironia} també presenta correlacions relativament altes, consistent amb una captura similar de la ironia. Finalment, la JS més baixa és per \textit{crítica}, evidenciant la concordança més alta entre distribucions dins i fora del segment.
 
-\subsection{Prominència del model vs. atenció humana}
+\subsection{Prominència del model vs.\ TFD}
 
-En segon lloc, comparem les distribucions de prominència del model amb l'atenció humana mesurada amb \textit{eye-tracking}, centrant-nos en la TFD.
+En segon lloc, a la \autoref{tab:model_vs_human_dist} comparem les distribucions de prominència del model amb l'atenció humana (TFD).
 
 \iftables
 \begin{table}[htbp]
@@ -755,33 +746,9 @@ Les diferències entre mètodes són igualment petites.
 % la qual cosa suggereix que la distribució de prominència del model s'apropa més a l'atenció humana que a les anotacions de segments discretes.
 % Això és consistent amb l'observació que els lectors presten atenció a zones més àmplies que els segments estrictament anotats.
 
-\subsection{Convergència entre les tres fonts d'informació}\label{sec:stopword_ablation}
+\subsection{Resum de les tres comparacions}\label{sec:resum_tripartit}
 
-% TODO: moure a apèndix i tenir en compte referència a sec:stopword_ablation
-Abans de resumir les tres comparacions, avaluem l'impacte del filtratge de paraules buides (stopwords) sobre les mètriques de distribució.
-La \autoref{tab:stopword_ablation} mostra la divergència JS entre l'atenció humana i les anotacions de segments, amb filtratge i sense.
-El filtratge redueix la JS un 22\% (de 0,154 a 0,120), ja que les paraules buides reben atenció similar dels lectors i dels models, però, no contribueixen a la discriminació entre zones sexistes i no sexistes.
-L'efecte és consistent en totes les categories d'etiqueta, amb reduccions que van del 17\% (\textit{objectificació}) al 43\% (\textit{ironia}).
-Per aquest motiu, totes les comparacions amb el model que es presenten a continuació utilitzen distribucions filtrades de paraules buides.
-\iftables
-\begin{table}[htbp]
-\small
-\centering
-\begin{tabular}{lcc}
-\toprule
-\textbf{Condició} & \textbf{JS mitja} & \textbf{Desv. est.} \\
-\midrule
-Tots els tokens & 0,154 & 0,101 \\
-Stopwords filtrats & 0,120 & 0,113 \\
-\bottomrule
-\end{tabular}
-\caption{Ablació: efecte del filtratge de paraules buides sobre la divergència JS entre atenció humana (TFD) i anotacions de segments.}
-\label{tab:stopword_ablation}
-\end{table}
-\fi
-
-% TODO: començar secció aquí.
-La \autoref{tab:tripartite_summary} resumeix les tres comparacions: model--segments, model--humà, humà--segments.
+La \autoref{tab:tripartite_summary} resumeix les tres comparacions: model--segments, model--TFD, TFD--segments.
 
 \iftables
 \begin{table}[htbp]
@@ -792,21 +759,22 @@ La \autoref{tab:tripartite_summary} resumeix les tres comparacions: model--segme
 \textbf{Parell} & \textbf{JS (Saliency)} & \textbf{JS (IG)} & \textbf{JS (LRP)} \\
 \midrule
 Model -- Segments  & 0,78--0,83 & 0,78--0,83 & 0,79--0,83 \\
-Model -- Humà      & 0,77--0,83 & 0,78--0,83 & 0,78--0,84 \\
-Humà -- Segments   & 0,12 (ref.) & --- & --- \\
+Model -- TFD        & 0,77--0,83 & 0,78--0,83 & 0,78--0,84 \\
+TFD -- Segments     & 0,12 (ref.) & --- & --- \\
 \bottomrule
 \end{tabular}
-\caption{Resum de divergència JS per als tres parells de distribucions, amb paraules buides filtrades. L'atenció humana vs.\ segments prové de l'ablació~\ref{tab:stopword_ablation} (JS mitjana = 0,12).}
+\caption{Resum de divergència JS per als tres parells de distribucions, amb paraules buides filtrades. La TFD vs.\ segments prové de l'ablació~\ref{tab:stopword_ablation} (JS mitjana = 0,12).}
 \label{tab:tripartite_summary}
 \end{table}
 \fi
 
-La divergència JS més baixa és entre l'atenció humana i les anotacions de segments (0,12), i confirma que els anotadors humans i els lectors comparteixen una visió similar del que és sexista.
+La divergència JS més baixa és entre l'atenció humana i les anotacions de segments (0,12), i confirma que els anotadors i els lectors comparteixen una visió similar del que és sexista.
 La divergència més alta és entre el model i les anotacions de segments (0,78--0,84), la qual cosa indica que els models de llenguatge distribueixen l'atenció de manera substancialment diferent dels humans.
 
 \subsection{Precisió del model i divergència KL respecte a l'atenció humana}\label{sec:kl_ikhwantri}
 
-\textcite{soodInterpretingAttentionModels2020} proposen que la correlació entre la divergència KL (model vs. humà) i el rendiment del model indica si el model aprèn atenció similar a la humana.
+% TODO: ajuntar amb apèndix Dispersió KL–precisió. es repeteixen bastant
+\textcite{soodInterpretingAttentionModels2020} proposen que la correlació entre la divergència KL (model vs.\ TFD) i el rendiment del model indica si el model aprèn atenció similar a la dels lectors.
 
 \iftables
 \begin{table}[htbp]
@@ -830,7 +798,7 @@ mBERT & LRP & 54,1 & $-0,249$ & $-0,249$ & $-0,254$ \\
 mBERT & Saliency & 54,1 & $-0,259$ & $-0,213$ & $-0,244$ \\
 \bottomrule
 \end{tabular}
-\caption{Correlació de Spearman entre divergència KL (model vs. humà) i rendiment del model per text, seguint la mètrica de \textcite{soodInterpretingAttentionModels2020}. Cap correlació és estadísticament significativa.}
+\caption{Correlació de Spearman entre divergència KL (model vs.\ TFD) i rendiment del model per text, seguint la mètrica \parencite{soodInterpretingAttentionModels2020}. Cap correlació és estadísticament significativa.}
 \label{tab:sood_metric}
 \end{table}
 \fi
@@ -857,23 +825,26 @@ mBERT & LRP & 3,63 & 3,75 & 3,53 \\
 mBERT & Saliency & 3,75 & 3,86 & 3,65 \\
 \bottomrule
 \end{tabular}
-\caption{Divergència KL per model i mètode, seguint la proposta d'\textcite{ikhwantriLookingDeepEyes2023}. Valors més baixos indiquen major similitud entre la distribució de prominència del model i l'atenció humana.}
+\caption{Divergència KL per model i mètode, seguint la proposta \parencite{ikhwantriLookingDeepEyes2023}. Valors més baixos indiquen major similitud entre la distribució de prominència del model i l'atenció humana.}
 \footnotetext{Ikhwantri et al.\ fan servir FFD i FC; nosaltres fem servir TFD.}
 \label{tab:ikhwantri_sd}
 \end{table}
 \fi
 
-Els resultats revelen tres fenòmens:
+% TODO: revisar que això vagi aquí
+Abans d'analitzar-los, cal justificar la tria de TFD com a característica d'\textit{eye-tracking}. La \autoref{tab:ikhwantri_sd} mostra la KL per a les tres característiques: FC, TFD i FFD. La KL amb FC és consistentment la més baixa, cosa que sembla indicar major conformitat; no obstant això, FC només compta el nombre de visites a un token, sense capturar la durada de cada fixació. La FFD, que mesura només la primera fixació, presenta la KL més alta, possiblement perquè ignora les relectures deliberades que són precisament el patró que els lectors presenten en zones sexistes (ja observat a l'Apèndix~\ref{sec:stopword_ablation}). La TFD, que acumula el temps total de fixació, és la mètrica més complementària a la prominència del model: ambdues reflecteixen atenció acumulada al llarg del procés de lectura. A més, Ikhwantri et al.\ troben que la FFD produeix KL més baixa que la FC, patró que no es reprodueix en les nostres dades (FC < TFD < FFD), possiblement per les diferències entre tasques (comprensió lectora vs.\ detecció de sexisme) i idiomes (anglès vs.\ castellà). Per aquestes raons, fem servir TFD com a característica de referència en l'anàlisi següent.
+
+Els resultats, que es mostren a la \autoref{tab:ikhwantri_sd} revelen tres fenòmens:
 En primer lloc, BETO presenta la KL més baixa (3,10--3,57), malgrat tenir una precisió (62,2\%) inferior a MrBERT-es (75,7\%).
-Això suggereix que la similitud amb l'atenció humana no necessàriament implica millor rendiment en la tasca de classificació, un resultat consistent amb les conclusions d'\textcite{ikhwantriLookingDeepEyes2023}.
+Això suggereix que la similitud amb l'atenció humana no necessàriament implica millor rendiment en la tasca de classificació, un resultat consistent amb les conclusions d'\textcite{ikhwantriLookingDeepEyes2023} i il·lustrat a la dispersió KL--precisió de l'annex~\ref{sec:sd_performance}.
 En segon lloc, LRP produeix la KL més baixa en tots els models (3,10--4,20), seguit de Saliency (3,38--4,42), Input$\times$Gradient (3,57--4,41) i IG (3,45--4,70).
 Això indica que les atribucions LRP s'alineen més amb l'atenció humana que els altres mètodes, cosa que concorda amb la seva naturalesa de descomposició exacta del gradient.
 En tercer lloc, IG produeix consistentment la KL més alta, possiblement perquè les seves atribucions són més disperses i inclouen contribucions menys rellevants per a la tasca de classificació.
 L'annex~\ref{sec:pos_analysis} aprofundeix en aquesta comparació analitzant la distribució de prominència per categories gramaticals.
 
-\subsection{Resum comparatiu: exactitud del model vs. divergència de distribucions}
+\subsection{Resum comparatiu: exactitud del model vs.\ divergència de distribucions}
 
-La \autoref{tab:sood_ikhwantri_summary} resumeix la precisió de cada model juntament amb la KL respecte a l'atenció humana TFD, per cada mètode d'interpretabilitat de manera independent.
+La \autoref{tab:sood_ikhwantri_summary} resumeix la precisió de cada model juntament amb la KL respecte a l'atenció humana (TFD), per cada mètode d'interpretabilitat de manera independent.
 
 \iftables
 \begin{table}[htbp]
@@ -888,7 +859,7 @@ mBERT & 54,1 & 3,75 & 4,22 & 3,86 & 3,63 \\
 BETO & 62,2 & 3,38 & 3,57 & 3,45 & 3,10 \\
 \bottomrule
 \end{tabular}
-\caption{Precisió del model i KL respecte a la TFD humana, per mètode d'interpretabilitat \parencite{ikhwantriLookingDeepEyes2023}. Valors més baixos indiquen una distribució de prominència més propera a l'atenció humana.}
+\caption{Precisió del model i KL respecte a l'atenció humana (TFD), per mètode d'interpretabilitat \parencite{ikhwantriLookingDeepEyes2023}. Valors més baixos indiquen una distribució de prominència més propera a l'atenció humana.}
 \label{tab:sood_ikhwantri_summary}
 \end{table}
 \fi

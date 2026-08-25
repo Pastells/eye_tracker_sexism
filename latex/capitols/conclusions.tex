@@ -1,5 +1,5 @@
-En aquest treball hem comparat els patrons d'atenció de lectors humans, obtinguts a partir de dades d'\textit{eye-tracking}, amb les explicacions computacionals de models de llenguatge preentrenats adaptats a la tasca de detecció de sexisme en texts en castellà.
-La comparació tripartida entre atenció humana, anotacions de segments i atribucions del model ens ha permès caracteritzar fins a quin punt aquestes fonts convergeixen i on divergeixen.
+En aquest treball hem comparat els patrons d'atenció de lectors, obtinguts a partir de dades d'\textit{eye-tracking}, amb les explicacions computacionals de models de llenguatge preentrenats adaptats a la tasca de detecció de sexisme en texts en castellà.
+La comparació tripartida entre TFD, anotacions de segments i atribucions del model ens ha permès caracteritzar fins a quin punt aquestes fonts convergeixen i on divergeixen.
 
 De l'anàlisi en destaquem quatre resultats principals.
 En primer lloc, observem el que anomenem la paradoxa de BETO: el model amb menor precisió (62,2\%) presenta les distribucions de prominència més properes a l'atenció humana (KL = 3,10--3,57).
@@ -21,17 +21,17 @@ Les dades mostren que els participants detecten correctament el sexisme amb una 
 Quant al \textbf{segon objectiu}, hem adaptat tres models preentrenats a la tasca de detecció de sexisme (MrBERT, mBERT i BETO) i n'hem extret explicacions amb quatre mètodes d'interpretabilitat (Saliency, Input$\times$Gradient, Integrated Gradients i LRP).
 L'exactitud varia significativament entre models: MrBERT (75,7\%), BETO (62,2\%) i mBERT (54,1\%).
 
-Respecte al \textbf{tercer objectiu}, la comparació tripartida (model--segments, model--humà, humà--segments) revela divergències substancials.
+Respecte al \textbf{tercer objectiu}, la comparació tripartida (model--segments, model--TFD, TFD--segments) revela divergències substancials.
 La divergència JS més baixa es dona entre l'atenció humana i les anotacions de segments (0,12), fet que confirma que lectors i anotadors comparteixen una visió similar del que és sexista.
 En canvi, la divergència entre el model i les anotacions és alta (0,78--0,84), fet que indica que els models distribueixen l'atenció de manera substancialment diferent.
 Coherentment amb la paradoxa de BETO, la KL mostra que aquest model presenta les divergències més baixes amb l'atenció humana (2,99--3,46), malgrat tenir una precisió inferior a MrBERT.
 
 Finalment, en relació amb el \textbf{quart objectiu}, no hem trobat cap correlació estadísticament significativa entre la similitud amb l'atenció humana i el rendiment del model en la classificació per text (prova de \textcite{soodInterpretingAttentionModels2020}).
-Això suggereix que la capacitat de detectar sexisme no depèn necessàriament de l'alineament amb els patrons de processament cognitiu humà, sinó de la capacitat del model per capturar patrons estadístics en les dades d'entrenament.
+Això suggereix que la capacitat de detectar sexisme no depèn necessàriament de l'alineament amb els patrons de processament cognitiu, sinó de la capacitat del model per capturar patrons estadístics en les dades d'entrenament.
 
 \subsection*{Hipòtesis}
 
-\textbf{H1: Els models adaptats mostren un alineament moderat amb els patrons humans.}
+\textbf{H1: Els models adaptats mostren un alineament moderat amb els patrons de lectura.}
 
 \noindent La hipòtesi es confirma parcialment.
 La superposició de \textit{punts focals} entre atenció humana i segments anotats és alta (60,7\%--71,9\%), però la distribució de prominència del model divergeix de l'atenció humana (JS: 0,78--0,84).
