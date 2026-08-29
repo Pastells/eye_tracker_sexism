@@ -81,7 +81,6 @@ Els més difícils, és a dir, els que presenten menys acord amb el \textit{gold
     \item Text 107: 60\% acord -- sexista amb desigualtat
 \end{itemize}
 
-% TODO: fer aquesta anàlisi més detallada
 Aquests texts són bons candidats per a una anàlisi més detallada, ja que podrien representar casos límit o ambigus.
 Dels 10 texts amb 100\% d'acord, 5 són sexistes i 5 no.
 Els sexistes presenten majoritàriament categories explícites: \textit{estereotips} (3 texts), \textit{desigualtat} (2) i \textit{discriminació} (1).
@@ -92,6 +91,7 @@ En canvi, cap dels texts amb \textit{ironia} o \textit{humor} apareix en aquest 
 
 La \autoref{tab:error_analysis} mostra la taxa d'error individual en la detecció de cadascuna de les subcategories de sexisme definides en el \textit{gold standard}.
 L'\textit{humor} presenta la taxa d'error més alta, del 30\%, seguida de \textit{discriminació} (23\%) i \textit{desigualtat} (23\%).
+El text~5, classificat com a sexista amb \textit{ironia} i \textit{discriminació}, n'és un exemple il·lustratiu: es tracta d'un diàleg sobre identitat de gènere on l'ús d'ironia (\textit{``Soy un hombre lesbiana''}) fa que la meitat dels participants el classifiquin com a no sexista.
 
 \iftables
 \begin{table}[htbp]
@@ -470,14 +470,13 @@ sexisme reportat        &  8 & $5,86$ & 53,8 & 53,8 \\
 \fi
 
 \textit{Crítica} és l'etiqueta amb més punts focals (42), seguida d'\textit{estereotips} (30) i de les categories \textit{desigualtat} i \textit{discriminació} (30 en conjunt).
-Els punts focals amb les puntuacions z més altes són:
+Els punts focals amb les puntuacions z més altes il·lustren com els lectors reprocessen regions clau del text:
 
-\begin{itemize}
-    \item \textit{objectificació}, text 143, origen ``Cómo'' ($z = 6,65$, clúster de 9 tokens)
-    \item \textit{estereotips}, text 143, origen ``Cómo'' ($z = 6,65$, clúster de 23 tokens)
-    \item \textit{crítica}, text 55, destí ``ahorita'' ($z = 8,14$, clúster de 98 tokens)
-    \item \textit{desigualtat/discrim.}, text 76, origen ``Administrativa'' ($z = 8,00$, clúster de 73 tokens)
-\end{itemize}
+\ex. \label{ex:hotspot143} \textbf{Text 143, objectificació i estereotips} (origen ``Cómo'', $z = 6{,}65$): el text comença amb ``¿Cómo ser gracioso y conquistar sin hacer el ridículo?'', un consell de seducció. Els lectors interrompen la lectura a l'inici i tornen enrere després de llegir les situacions exemples (la dona dient ``és hora d'anar al llit''), com si necessitessin verificar si la tècnica de malinterpretació intencional és realment el que es descriu. El clúster més petit per a \textit{objectificació} (9 tokens) vs.\ \textit{estereotips} (23 tokens) suggereix que la relectura per identificar l'objectificació és més localitzada, mentre que per als estereotips abasta un radi més ampli.
+
+\ex. \label{ex:hotspot55} \textbf{Text 55, crítica} (destí ``ahorita'', $z = 8{,}14$, clúster de 98 tokens): el text critica el feminisme dient que ``no és res més que odiar als homes''. ``Ahorita'' és un marcador temporal que ancora la crítica al present. Els lectors tornen a rellegir des de punts posteriors fins a aquesta paraula, possiblement per situar temporalment la comparació amb els feminicidis diaris i verificar si la coherència argumentativa es manté.
+
+\ex. \label{ex:hotspot76} \textbf{Text 76, desigualtat/discriminació} (origen ``Administrativa'', $z = 8{,}00$, clúster de 73 tokens): el text planteja àrees de treball (minería, construcció, plataformes petrolíferes) i conclou amb ``Administrativa per nosaltres''. Els lectors regressen des d'aquesta conclusió discriminatòria fins a les preguntes anteriors, reclamant el context complet de la comparació per confirmar que la ironia és efectivament sexista.
 
 \section{Mètriques d'eye-tracking}
 
@@ -700,6 +699,8 @@ desig. ideol.           & 0,035 & 0,027 & --- & --- & 0,818 \\
 
 Les principals observacions són les següents. \textit{Crítica} i \textit{humor} concentren la prominència dins del segment i no en presenten fora, cosa que suggereix que els models identifiquen clarament aquestes categories.
 En canvi, \textit{sexisme reportat} i \textit{objectificació} presenten menys prominència dins del segment que fora, fet que apunta a dificultats per identificar-les.
+El text~144 (\textit{``mujer tóxica''}) n'és un cas representatiu: malgrat estar anotat com a sexista amb \textit{estereotips} i \textit{desigualtat}, els models no concentren la prominència en el segment, cosa que confirma la dificultat de detectar estereotips sense marcadors explícits de discriminació.
+
 Pel que fa a les correlacions amb les mètriques d'eye-tracking, \textit{sexisme implícit} mostra els valors més alts amb FC i TFD. Això indica que els models i els lectors coincideixen més en aquesta tipologia subtil.
 \textit{Ironia} també presenta correlacions relativament altes, compatibles amb una captura similar del fenomen.
 Finalment, la JS més baixa correspon a \textit{crítica}, que mostra la concordança més alta entre les distribucions dins i fora del segment.
