@@ -179,22 +179,3 @@ Model–TFD (MrBERT IG)          & 0,865 & 0,804 & $-7,0$\% \\
 \label{tab:stopword_ablation}
 \end{table}
 \fi
-
-\chapter{Dispersió KL–precisió}\label{sec:sd_performance}
-
-\textcite{ikhwantriLookingDeepEyes2023} proposen una anàlisi de la relació entre la divergència KL (model vs. TFD) i la precisió del model.
-Cada punt representa una combinació de model i mètode d'interpretabilitat.
-La \autoref{fig:sd_performance} mostra aquesta dispersió per als nostres tres models.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.85\textwidth]{figures/sd_performance_curve.pdf}
-\caption{Dispersió KL–precisió: cada punt és una combinació de model i mètode d'interpretabilitat. Colors = models; formes = mètodes.}
-\label{fig:sd_performance}
-\end{figure}
-
-Els resultats evidencien un patró contraintuïtiu respecte a la hipòtesi d'Ikhwantri et al.:
-MrBERT, amb la precisió més alta (74,2\%--75,7\%), presenta la KL més alta (4,20--4,70), és a dir, la menor similitud amb l'atenció humana.
-En canvi, BETO, amb precisió intermèdia (61,1\%--62,2\%), mostra la KL més baixa (3,10--3,57).
-mBERT obté valors intermedis de KL (3,63--4,22) però la pitjor precisió (54,1\%--57,6\%).
-Això confirma que la similitud amb l'atenció humana no implica millor rendiment en la tasca de classificació, un resultat consistent amb les conclusions d'\textcite{ikhwantriLookingDeepEyes2023} i amb les nostres troballes de l'apartat~\ref{sec:kl_ikhwantri}.

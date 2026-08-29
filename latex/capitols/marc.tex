@@ -83,8 +83,8 @@ En el nostre cas, treballarem amb paraules.
 Les mètriques d'\textit{eye-tracking} més utilitzades en la recerca sobre lectura inclouen:
 
 \begin{itemize}
+    \item \textbf{Durada total de fixació (TFD, \textit{Total Fixation Duration})}: suma de la duració de les fixacions sobre una paraula al llarg de tota la lectura, incloent-hi relectures. Capta l'atenció acumulada i el processament deliberat, i és especialment sensible a la dificultat semàntica i pragmàtica del text. En aquest treball la prenem com a mètrica principal per comparar l'atenció humana amb les distribucions de prominència dels models, ja que totes dues representen l'atenció acumulada sobre els tokens. Treballem amb la TFD normalitzada pel temps total de fixacions de cada text.
     \item \textbf{Durada de la primera fixació (FFD, \textit{First Fixation Duration})}: durada de la primera fixació sobre una paraula. Capta la reacció inicial al contingut, i reflecteix el processament superficial i el reconeixement lèxic ràpid \cite{rayner2009eye}. Una FFD més llarga indica una paraula menys predictable o més cognitivament complexa.
-    \item \textbf{Durada total de fixació (TFD, \textit{Total Fixation Duration})}: suma de la duració de les fixacions sobre una paraula al llarg de tota la lectura, incloent-hi relectures. Capta l'atenció acumulada i el processament deliberat, i és especialment sensible a la dificultat semàntica i pragmàtica del text. A aquest treball treballem amb la TFD normalitzada pel temps total de fixacions de cada text.
     \item \textbf{Nombre de fixacions (FC, \textit{Fixation Count})}: nombre total de fixacions sobre una paraula o. Reflecteix l'atenció acumulada, incloent-hi relectures i processament deliberat \cite{rayner2009eye}.
     \item \textbf{Regressions}: moviments oculars cap enrere (dreta a esquerra en escrits d'esquerra a dreta) que reflecteixen reprocessament, verificació o resolució d'ambigüitat. Taxes més altes de regressió indiquen fragments del text que generen més dificultat de processament.
 \end{itemize}
@@ -170,4 +170,3 @@ A partir d'aquest marc, plantegem tres hipòtesis:
     \item \textbf{H2}: L'alineament serà major per a sexisme explícit que per a casos de sexisme implícit, humor o ironia.
     \item \textbf{H3}: Les tres fonts de dades proporcionaran informació complementària entre si.
 \end{itemize}
-

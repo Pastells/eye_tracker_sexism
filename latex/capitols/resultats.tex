@@ -177,7 +177,9 @@ Una participant es fixa en els sinònims (\textit{``nena, abuelita, doña''}) qu
 
 %\subsection{Mètriques de distribució ocular}
 
-Per a cada parell (participant, text), calculem quatre mètriques que comparen la distribució d'atenció del participant (TFD normalitzat per token, explicat a l'\autoref{app:tfd} i justificat a l'apartat~\ref{sec:kl_ikhwantri}) amb les anotacions del \textit{gold standard} (distribució normalitzada):
+D'acord amb la justificació del marc teòric, en les comparacions següents prenem la TFD com a mètrica principal d'eye-tracking; la FFD i la FC s'hi incorporen posteriorment com a mesures complementàries de robustesa.
+
+Per a cada parell (participant, text), calculem quatre mètriques que comparen la distribució d'atenció del participant (TFD normalitzat per token, explicat a l'\autoref{app:tfd}; les comparacions amb FFD i FC es presenten a l'apartat~\ref{sec:kl_ikhwantri}) amb les anotacions del \textit{gold standard} (distribució normalitzada):
 
 \begin{itemize}
     \item \textbf{Correlació de Spearman:} mesura de concordança monòtona entre distribucions.
@@ -749,7 +751,6 @@ Les diferències entre mètodes són igualment petites.
 \subsection{Resum de les tres comparacions}\label{sec:resum_tripartit}
 
 La \autoref{tab:tripartite_summary} resumeix les tres comparacions: model--segments, model--TFD, TFD--segments.
-
 \iftables
 \begin{table}[htbp]
 \small
@@ -767,15 +768,13 @@ TFD -- Segments     & 0,12 (ref.) & --- & --- \\
 \label{tab:tripartite_summary}
 \end{table}
 \fi
-
-La divergència JS més baixa és entre l'atenció humana i les anotacions de segments (0,12), i confirma que els anotadors i els lectors comparteixen una visió similar del que és sexista.
+La divergència JS més baixa és entre TFD i les anotacions de segments (0,12), i confirma que els anotadors i els lectors comparteixen una visió similar del que és sexista.
 La divergència més alta és entre el model i les anotacions de segments (0,78--0,84), la qual cosa indica que els models de llenguatge distribueixen l'atenció de manera substancialment diferent dels humans.
 
 \subsection{Precisió del model i divergència KL respecte a l'atenció humana}\label{sec:kl_ikhwantri}
 
-% TODO: ajuntar amb apèndix Dispersió KL–precisió. es repeteixen bastant
-\textcite{soodInterpretingAttentionModels2020} proposen que la correlació entre la divergència KL (model vs.\ TFD) i el rendiment del model indica si el model aprèn atenció similar a la dels lectors.
-
+Per comprovar si l'alineament amb l'atenció humana es relaciona amb el rendiment de classificació, seguim la proposta de \textcite{soodInterpretingAttentionModels2020} i calculem, per a cada combinació de model i mètode, la correlació entre la divergència KL respecte a la TFD i la precisió per text.
+La \autoref{tab:sood_metric} recull aquestes correlacions.
 \iftables
 \begin{table}[htbp]
 \small
@@ -798,13 +797,26 @@ mBERT & LRP & 54,1 & $-0,249$ & $-0,249$ & $-0,254$ \\
 mBERT & Saliency & 54,1 & $-0,259$ & $-0,213$ & $-0,244$ \\
 \bottomrule
 \end{tabular}
-\caption{Correlació de Spearman entre divergència KL (model vs.\ TFD) i rendiment del model per text, seguint la mètrica \parencite{soodInterpretingAttentionModels2020}. Cap correlació és estadísticament significativa.}
+\caption{Correlació de Spearman entre divergència KL (model vs.\ TFD) i rendiment del model per text. Cap correlació és estadísticament significativa.}
 \label{tab:sood_metric}
 \end{table}
 \fi
 
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/sd_performance_curve.pdf}
+\caption{Dispersió KL--precisió: cada punt representa una combinació de model i mètode d'interpretabilitat. Els colors indiquen els models i les formes, els mètodes.}
+\label{fig:sd_performance}
+\end{figure}
+La \autoref{tab:sood_metric} i la \autoref{fig:sd_performance} mostren una mateixa conclusió des de dues perspectives.
+Cap correlació és estadísticament significativa: BETO i MrBERT-es presenten correlacions generalment positives, mentre que mBERT presenta correlacions negatives, però la variabilitat entre mètodes no permet establir una relació sistemàtica.
+La figura fa explícita aquesta dissociació: MrBERT-es combina una precisió més alta amb valors de KL més grans, mentre que BETO mostra el patró contrari.
+Per tant, la similitud amb l'atenció humana i el rendiment de classificació semblen mesurar propietats diferents, en línia amb \textcite{ikhwantriLookingDeepEyes2023}.
+
+Per comprovar que aquesta conclusió no depèn de la mètrica ocular escollida, comparem la divergència KL obtinguda amb TFD, FFD i FC, seguint la proposta d'\textcite{ikhwantriLookingDeepEyes2023}.
+La \autoref{tab:ikhwantri_sd} presenta aquesta anàlisi de robustesa.
 \iftables
-\begin{table}[htbp]
+\begin{table}[!ht]
 \small
 \centering
 \begin{tabular}{llrrr}
@@ -825,50 +837,9 @@ mBERT & LRP & 3,63 & 3,75 & 3,53 \\
 mBERT & Saliency & 3,75 & 3,86 & 3,65 \\
 \bottomrule
 \end{tabular}
-\caption{Divergència KL per model i mètode, seguint la proposta \parencite{ikhwantriLookingDeepEyes2023}. Valors més baixos indiquen major similitud entre la distribució de prominència del model i l'atenció humana.}
-\footnotetext{Ikhwantri et al.\ fan servir FFD i FC; nosaltres fem servir TFD.}
+\caption{Divergència KL per model, mètode i mètrica ocular. Valors més baixos indiquen major similitud entre la distribució de prominència del model i l'atenció humana.}
 \label{tab:ikhwantri_sd}
 \end{table}
 \fi
-
-% TODO: revisar que això vagi aquí
-Abans d'analitzar-los, cal justificar la tria de TFD com a característica d'\textit{eye-tracking}. La \autoref{tab:ikhwantri_sd} mostra la KL per a les tres característiques: FC, TFD i FFD. La KL amb FC és consistentment la més baixa, cosa que sembla indicar major conformitat; no obstant això, FC només compta el nombre de visites a un token, sense capturar la durada de cada fixació. La FFD, que mesura només la primera fixació, presenta la KL més alta, possiblement perquè ignora les relectures deliberades que són precisament el patró que els lectors presenten en zones sexistes (ja observat a l'Apèndix~\ref{sec:stopword_ablation}). La TFD, que acumula el temps total de fixació, és la mètrica més complementària a la prominència del model: ambdues reflecteixen atenció acumulada al llarg del procés de lectura. A més, Ikhwantri et al.\ troben que la FFD produeix KL més baixa que la FC, patró que no es reprodueix en les nostres dades (FC < TFD < FFD), possiblement per les diferències entre tasques (comprensió lectora vs.\ detecció de sexisme) i idiomes (anglès vs.\ castellà). Per aquestes raons, fem servir TFD com a característica de referència en l'anàlisi següent.
-
-Els resultats, que es mostren a la \autoref{tab:ikhwantri_sd} revelen tres fenòmens:
-En primer lloc, BETO presenta la KL més baixa (3,10--3,57), malgrat tenir una precisió (62,2\%) inferior a MrBERT-es (75,7\%).
-Això suggereix que la similitud amb l'atenció humana no necessàriament implica millor rendiment en la tasca de classificació, un resultat consistent amb les conclusions d'\textcite{ikhwantriLookingDeepEyes2023} i il·lustrat a la dispersió KL--precisió de l'annex~\ref{sec:sd_performance}.
-En segon lloc, LRP produeix la KL més baixa en tots els models (3,10--4,20), seguit de Saliency (3,38--4,42), Input$\times$Gradient (3,57--4,41) i IG (3,45--4,70).
-Això indica que les atribucions LRP s'alineen més amb l'atenció humana que els altres mètodes, cosa que concorda amb la seva naturalesa de descomposició exacta del gradient.
-En tercer lloc, IG produeix consistentment la KL més alta, possiblement perquè les seves atribucions són més disperses i inclouen contribucions menys rellevants per a la tasca de classificació.
-L'annex~\ref{sec:pos_analysis} aprofundeix en aquesta comparació analitzant la distribució de prominència per categories gramaticals.
-
-\subsection{Resum comparatiu: exactitud del model vs.\ divergència de distribucions}
-
-La \autoref{tab:sood_ikhwantri_summary} resumeix la precisió de cada model juntament amb la KL respecte a l'atenció humana (TFD), per cada mètode d'interpretabilitat de manera independent.
-
-\iftables
-\begin{table}[htbp]
-\small
-\centering
-\begin{tabular}{lrrrrr}
-\toprule
-\textbf{Model} & \textbf{Precisió (\%)} & \textbf{Saliency} & \textbf{In$\times$Grad} & \textbf{IG} & \textbf{LRP} \\
-\midrule
-MrBERT-es & 75,7 & 4,42 & 4,41 & 4,70 & 4,20 \\
-mBERT & 54,1 & 3,75 & 4,22 & 3,86 & 3,63 \\
-BETO & 62,2 & 3,38 & 3,57 & 3,45 & 3,10 \\
-\bottomrule
-\end{tabular}
-\caption{Precisió del model i KL respecte a l'atenció humana (TFD), per mètode d'interpretabilitat \parencite{ikhwantriLookingDeepEyes2023}. Valors més baixos indiquen una distribució de prominència més propera a l'atenció humana.}
-\label{tab:sood_ikhwantri_summary}
-\end{table}
-\fi
-
-La taula posa de manifest una paradoxa consistent: BETO, malgrat tenir una precisió inferior (62,2\%) a MrBERT (75,7\%), presenta la KL més baixa en tots els mètodes d'interpretabilitat (entre 3,10 i 3,57). Això indica que les atribucions de BETO s'alineen més amb l'atenció humana que les de MrBERT (entre 4,20 i 4,70).
-A més, els resultats confirmen que LRP produeix consistentment la KL més baixa en tots els models (3,10--4,20), seguit de Saliency (3,38--4,42), Input$\times$Gradient (3,57--4,41) i IG (3,45--4,70). La superioritat de LRP és coherent amb la seva naturalesa de descomposició exacta del gradient.
-
-Aquests resultats reflecteixen possibles biaixos en els models preentrenats.
-MrBERT, malgrat ser el model amb més precisió (75,7\%), presenta les divergències més altes amb l'atenció humana.
-Això pot deure's al fet que el model ha après patrons específics de la tasca de classificació que no necessàriament coincideixen amb els mecanismes cognitius humans, com ja va observar \textcite{garrido2024maria} en l'anàlisi de biaixos de models de llenguatge per a la detecció de continguts discriminatoris.
-En canvi, BETO, amb menor precisió (62,2\%), mostra una distribució de prominència més propera a l'atenció humana, suggerint que el fet de no haver-se especialitzat tant en la tasca de classificació pot mantenir el model més a prop dels patrons de processament cognitiu natural.
-
+La FC produeix valors lleugerament més baixos i la FFD més alts en totes les combinacions, mentre que la TFD queda en una posició intermèdia.
+Tanmateix, no triem la TFD només perquè minimitzi la KL, sinó també perquè acumula la durada de totes les fixacions i és, per tant, la mètrica més comparable amb una distribució de prominència acumulada.
