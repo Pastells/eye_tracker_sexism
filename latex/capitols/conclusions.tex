@@ -1,58 +1,65 @@
-En aquest treball hem comparat els patrons d'atenció de lectors, obtinguts a partir de dades d'\textit{eye-tracking}, amb les explicacions computacionals de models de llenguatge preentrenats adaptats a la tasca de detecció de sexisme en texts en castellà.
-La comparació tripartida entre TFD, anotacions de segments i atribucions del model ens ha permès caracteritzar fins a quin punt aquestes fonts convergeixen i on divergeixen.
+En aquest treball hem comparat els patrons d'atenció dels lectors, obtinguts a partir de dades d'eye-tracking, amb les explicacions computacionals de models de llenguatge preentrenats adaptats a la detecció de sexisme en texts en castellà.
+La comparació tripartida entre TFD, anotacions de segments i atribucions dels models ens ha permès caracteritzar fins a quin punt aquestes fonts convergeixen.
 
 De l'anàlisi en destaquem quatre resultats principals.
 En primer lloc, observem el que anomenem la paradoxa de BETO: el model amb menor precisió (62,2\%) presenta les distribucions de prominència més properes a l'atenció humana (KL = 3,10--3,57).
-Això suggereix que l'especialització en la tasca de classificació pot allunyar el model dels patrons de processament cognitiu natural, un resultat consistent amb les conclusions d'\textcite{ikhwantriLookingDeepEyes2023}.
-En segon lloc, LRP és el mètode d'interpretabilitat que produeix les distribucions més properes a l'atenció humana en tots els models (KL = 3,10--4,20), possiblement per la seva naturalesa de descomposició exacta del gradient, que preserva la informació contributiva del model.
-En tercer lloc, l'anàlisi de regressions als 302 tokens lèxics més prominents mostra que els noms (41,1\%) i els verbs (21,9\%) són les categories morfològiques més representades. A més, el 9,3\% dels tokens són mots amb relació de gènere, cosa que indica una atenció selectiva cap als elements lingüístics relacionats amb el sexisme.
-En quart lloc, la correlació significativa entre la taxa de regressió i la classificació binària ($\rho = 0,429$, $p = 0,006$) indica que els lectors fan més regressions en texts sexistes, consistent amb la necessitat de reprocessament cognitiu davant de contingut polèmic.
+Això suggereix que l'especialització en la tasca de classificació pot allunyar el model dels patrons de processament cognitiu natural, en línia amb les conclusions d'\textcite{ikhwantriLookingDeepEyes2023}.
+En segon lloc, LRP és el mètode d'interpretabilitat que produeix les distribucions més properes a l'atenció humana en tots els models (KL = 3,10--4,20). Una possible explicació és la seva naturalesa de redistribució de la rellevància, que conserva informació sobre la contribució de les diferents parts de l'entrada.
+En tercer lloc, l'anàlisi de regressions dels 300 tokens lèxics més prominents mostra que els noms (41,1\%) i els verbs (21,9\%) són les categories morfològiques més representades. A més, el 9,3\% dels tokens està relacionat amb el gènere, cosa que indica una atenció selectiva cap als elements lingüístics vinculats al sexisme.
+En quart lloc, la correlació significativa entre la taxa de regressió i la classificació binària ($\rho = 0,429$, $p = 0,006$) indica que els lectors fan més regressions en texts sexistes. Aquest resultat és coherent amb la necessitat de reprocessar contingut polèmic.
 
-Cal destacar que la nostra expectativa inicial---que els mètodes basats en gradients estarien més alineats amb l'atenció humana---només es confirma parcialment: tot i que LRP produeix les divergències KL més baixes, IG mostra les més altes, malgrat que ambdós mètodes es basen en gradients.
-Aquest resultat evidencia que la família de mètodes d'interpretabilitat no és, per si sola, un bon predictor de l'alineament amb l'atenció humana.
+La nostra expectativa inicial---que els mètodes basats en gradients estarien més alineats amb l'atenció humana---només es confirma parcialment.
+Tot i que LRP produeix les divergències KL més baixes, IG mostra les més altes, malgrat que tots dos mètodes es basen en gradients.
+Això indica que la família de mètodes d'interpretabilitat no és, per si sola, un bon predictor de l'alineament amb l'atenció humana.
 
 A continuació, responem als objectius plantejats a la introducció i avaluem les hipòtesis formulades al marc teòric.
 
 \subsection*{Objectius}
 
-Pel que fa al \textbf{primer objectiu}, hem recollit dades de seguiment ocular de 10 participants durant la lectura de 40 texts amb contingut sexista i no sexista del corpus MuSeD, obtenint un total de 34.754 fixacions.
-Les dades mostren que els participants detecten correctament el sexisme amb una exactitud mitjana del 82,7\%, cosa que aporta validesa a les dades recollides, amb una taxa de regressió del 15--25\%.
+Pel que fa al \textbf{primer objectiu}, hem recollit dades de seguiment ocular de 10 participants durant la lectura de 40 texts del corpus MuSeD, amb contingut sexista i no sexista. En total, hem obtingut 34.754 fixacions.
+Les dades mostren que els participants detecten correctament el sexisme amb una exactitud mitjana del 82,7\%, fet que dona suport a la qualitat de les dades recollides. La taxa de regressió se situa entre el 15\% i el 25\%.
 
-Quant al \textbf{segon objectiu}, hem adaptat tres models preentrenats a la tasca de detecció de sexisme (MrBERT, mBERT i BETO) i n'hem extret explicacions amb quatre mètodes d'interpretabilitat (Saliency, Input$\times$Gradient, Integrated Gradients i LRP).
-L'exactitud varia significativament entre models: MrBERT (75,7\%), BETO (62,2\%) i mBERT (54,1\%).
+Quant al \textbf{segon objectiu}, hem adaptat tres models preentrenats a la tasca de detecció de sexisme (MrBERT-es, mBERT i BETO) i n'hem extret explicacions amb quatre mètodes d'interpretabilitat (Saliency, Input$\times$Gradient, Integrated Gradients i LRP).
+L'exactitud varia entre models: MrBERT-es (75,7\%), BETO (62,2\%) i mBERT (54,1\%).
 
-Respecte al \textbf{tercer objectiu}, la comparació tripartida (model--segments, model--TFD, TFD--segments) revela divergències substancials.
-La divergència JS més baixa es dona entre l'atenció humana i les anotacions de segments (0,12), fet que confirma que lectors i anotadors comparteixen una visió similar del que és sexista.
-En canvi, la divergència entre el model i les anotacions és alta (0,78--0,84), fet que indica que els models distribueixen l'atenció de manera substancialment diferent.
-Coherentment amb la paradoxa de BETO, la KL mostra que aquest model presenta les divergències més baixes amb l'atenció humana (2,99--3,46), malgrat tenir una precisió inferior a MrBERT.
+Respecte al \textbf{tercer objectiu}, la comparació tripartida (models--segments, models--TFD i TFD--segments) revela divergències substancials.
+La divergència JS més baixa s'observa entre l'atenció humana i les anotacions de segments (aproximadament 0,1). Això indica que lectors i anotadors comparteixen una visió similar del que és sexista.
+En canvi, la divergència entre els models i les anotacions és alta (0,78--0,84), cosa que indica que els models distribueixen la prominència de manera substancialment diferent.
+D'acord amb la paradoxa de BETO, la KL mostra que aquest model presenta les divergències més baixes amb l'atenció humana (2,99--3,46), malgrat tenir una precisió inferior a MrBERT-es.
 
-Finalment, en relació amb el \textbf{quart objectiu}, no hem trobat cap correlació estadísticament significativa entre la similitud amb l'atenció humana i el rendiment del model en la classificació per text (prova de \textcite{soodInterpretingAttentionModels2020}).
-Això suggereix que la capacitat de detectar sexisme no depèn necessàriament de l'alineament amb els patrons de processament cognitiu, sinó de la capacitat del model per capturar patrons estadístics en les dades d'entrenament.
+Finalment, en relació amb el \textbf{quart objectiu}, no hem trobat cap correlació estadísticament significativa entre la similitud amb l'atenció humana i el rendiment del model en la classificació per text, d'acord amb la prova de \textcite{soodInterpretingAttentionModels2020}.
+Això suggereix que la capacitat de detectar sexisme no depèn necessàriament de l'alineament amb els patrons de processament cognitiu. També pot dependre de la capacitat del model per capturar patrons estadístics de les dades d'entrenament.
 
 \subsection*{Hipòtesis}
 
 \textbf{H1: Els models adaptats mostren un alineament moderat amb els patrons de lectura.}
 
 \noindent La hipòtesi es confirma parcialment.
-La superposició de \textit{punts focals} entre atenció humana i segments anotats és alta (60,7\%--71,9\%), però la distribució de prominència del model divergeix de l'atenció humana (JS: 0,78--0,84).
-Les diferències de granularitat observades per \textcite{bogaert_explanation_2026} es confirmen: els lectors presten atenció a zones més àmplies que les anotacions de segments, i els models distribueixen la prominència de manera encara més difusa.
+La superposició de \textit{punts focals} entre l'atenció humana i els segments anotats és alta (60,7\%--71,9\%), però la distribució de prominència dels models divergeix de l'atenció humana (JS: 0,78--0,84).
+Es confirmen les diferències de granularitat observades per \textcite{bogaert_explanation_2026}: els lectors presten atenció a zones més àmplies que les anotacions de segments, mentre que els models distribueixen la prominència de manera encara més difusa.
 
 \textbf{H2: L'alineament és major per al sexisme explícit que per a l'implícit.}
 
-\noindent La hipòtesi es confirma parcialment.
-Les correlacions de Spearman són properes a zero per a totes les categories, però les divergències varien: els estereotips (JS 0,23) i l'objectificació (JS 0,24) presenten les divergències més baixes amb l'atenció humana, mentre que la desigualtat ideològica (JS 0,50) és la més alta. Curiosament, categories implícites com el sexisme implícit (JS 0,25), l'humor (JS 0,26) i la ironia (JS 0,28) també mostren un alineament relativament bo, superior al de categories explícites com la desigualtat (JS 0,37) o el sexisme reportat (JS 0,40).
+\noindent La hipòtesi no es confirma de manera general.
+Les correlacions de Spearman són properes a zero per a totes les categories, però les divergències varien.
+Els estereotips (JS 0,23) i l'objectificació (JS 0,24) presenten les divergències més baixes amb l'atenció humana, mentre que la desigualtat ideològica (JS 0,50) presenta la més alta.
+Alhora, categories implícites com el sexisme implícit (JS 0,25), l'humor (JS 0,26) i la ironia (JS 0,28) mostren un alineament relativament bo, superior al de categories explícites com la desigualtat (JS 0,37) o el sexisme reportat (JS 0,40).
 
 \textbf{H3: Les tres fonts de dades proporcionen informació complementària entre si.}
 
 \noindent La hipòtesi es confirma.
-Les anotacions de segments, l'atenció humana i les explicacions del model ofereixen perspectives diferents però compatibles.
-L'ablació de paraules buides demostra que el filtratge redueix la divergència JS un 22\% entre atenció humana i segments, revelant que les paraules buides contribueixen a la divergència aparent.
-La comparació tripartida mostra que cap font per si sola no ofereix una visió completa del fenomen.
+Les anotacions de segments, l'atenció humana i les explicacions dels models ofereixen perspectives diferents però compatibles.
+L'ablació de paraules buides mostra que el filtratge redueix la divergència JS un 26,5\% entre l'atenció humana i els segments. Això indica que les paraules buides contribueixen a la divergència aparent.
+La comparació tripartida mostra que cap font, per si sola, ofereix una visió completa del fenomen.
 
 \subsection*{Limitacions i treballs futurs}
 
-La principal limitació d'aquest treball és la mida de mostra reduïda (10 participants, 40 texts), que limita la potència estadística.
-Els resultats no significatius (com la prova de Fisher per text o les correlacions per categoria individual) no impliquen absència d'efecte, sinó manca de potència per detectar-lo.
-A més, les dades de seguiment ocular s'han recollit en condicions controlades de laboratori, que poden no reflectir completament els patrons de lectura naturals.
+La principal limitació d'aquest treball és la mida reduïda de la mostra (10 participants i 40 texts), que limita la potència estadística.
+Per tant, els resultats no significatius, com la prova de Fisher per text o les correlacions per categoria individual, no impliquen necessàriament l'absència d'un efecte.
+També cal tenir en compte que les dades de seguiment ocular s'han recollit en condicions controlades de laboratori, que poden no reflectir completament els patrons de lectura naturals.
 
-Com a treballs futurs, proposem: (1) augmentar la mida de la mostra amb més participants i texts; (2) explorar models de llenguatge extensos (\textit{Large Language Model}, LLM en anglès); (3) investigar la relació entre les atribucions del model i les categories lingüístiques de manera més granular; (4) aplicar les mètriques de distribució a altres tasques de PLN amb dades d'\textit{eye-tracking} disponibles.
+Com a treballs futurs, proposem quatre línies:
+(1) augmentar la mostra amb més participants i texts;
+(2) explorar models de llenguatge extensos (\textit{Large Language Model}, LLM en anglès);
+(3) investigar amb més detall la relació entre les atribucions dels models i les categories lingüístiques; i
+(4) aplicar les mètriques de distribució a altres tasques de PLN amb dades d'eye-tracking disponibles.

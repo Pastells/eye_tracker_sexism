@@ -2,26 +2,26 @@
 
 \subsection{Estudi pilot}
 
-Prèviament a la selecció final, vam dur a terme un estudi pilot amb 6 voluntaris (3 homes i 3 dones), que van llegir 11 texts de MuSeD seleccionats per contenir humor o ironia.
-El pilot va resultar útil per identificar dues limitacions del disseny inicial: els texts seleccionats eren massa llargs (els participants tardaven uns 10 minuts a llegir-los tots), i calia refinar el protocol experimental (vegeu \autoref{sec:procediment}).
-Aquestes observacions van motivar els criteris de selecció que descrivim a continuació, orientats a reduir la longitud dels texts i garantir una durada de sessió raonable.
+Abans de la selecció final, vam dur a terme un estudi pilot amb 6 voluntaris (3 homes i 3 dones), que van llegir 11 texts de MuSeD seleccionats perquè contenien humor o ironia.
+El pilot va permetre identificar dues limitacions del disseny inicial: els texts eren massa llargs, ja que els participants tardaven uns 10 minuts a llegir-los tots, i calia refinar el protocol experimental (vegeu \autoref{sec:procediment}).
+Aquestes observacions van motivar els criteris de selecció que descrivim a continuació, orientats a reduir la longitud dels texts i a garantir una durada raonable de la sessió.
 
 \subsection{Criteris de selecció}
 
 A partir del corpus MuSeD, es van seleccionar 40 texts (20 sexistes i 20 no sexistes) seguint els criteris següents:
 
 \begin{enumerate}
-    \item \textbf{Coherència entre modalitats}: només es van conservar les instàncies en què l'etiqueta textual i la multimodal coincideixen (\texttt{sexist\_text} $=$ \texttt{sexist\_video}).
-    \item \textbf{Acord total entre anotadors}: es van descartar les instàncies amb valors intermedis de \texttt{sexist\_soft}, mantenint només aquelles amb consens ($\texttt{sexist\_soft} \in \{0, 1\}$).
-    \item \textbf{Longitud}: es van prioritzar els texts més curts o amb segments anotats més curts per tal de mantenir una durada raonable de la sessió experimental i tenir major explicabilitat a l'hora de fer l'anàlisi.
-    Considerant una velocitat de lectura aproximada de 1.000 caràcters per minut, els 40 texts seleccionats suposen aproximadament 17 minuts de lectura, als quals cal afegir el temps de calibratge i de \textit{stimulated recall} (vegeu \autoref{sec:procediment}).
-    \item \textbf{Comprensibilitat autònoma}: es van descartar texts amb vocabulari estrany (per un oient català).
-    Quan era necessari, es van fer petites edicions per millorar-ne la llegibilitat (afegir cometes, indicar qui parla en fragments dialogats, etc.).
-    \item \textbf{Validació manual}: cada text candidat es va revisar individualment, escoltant l'àudio original i inspeccionant visualment les anotacions de segment per confirmar-ne l'adequació (vegeu l'\autoref{sec:spans_viz}).
+    \item \textbf{Coherència entre modalitats}: només es van conservar les instàncies en què les etiquetes textual i multimodal coincidien (\texttt{sexist\_text} $=$ \texttt{sexist\_video}).
+    \item \textbf{Acord total entre anotadors}: es van descartar les instàncies amb valors intermedis de \texttt{sexist\_soft} i només es van mantenir les que presentaven consens ($\texttt{sexist\_soft} \in \{0, 1\}$).
+    \item \textbf{Longitud}: es van prioritzar els texts més curts o amb segments anotats més curts, per mantenir una durada raonable de la sessió experimental i facilitar l'anàlisi.
+    Considerant una velocitat de lectura aproximada de 1.000 caràcters per minut, els 40 texts seleccionats suposen aproximadament 17 minuts de lectura. A aquest temps cal afegir-hi el calibratge i les entrevistes de \textit{stimulated recall} (vegeu \autoref{sec:procediment}).
+    \item \textbf{Comprensibilitat autònoma}: es van descartar els texts amb vocabulari estrany per a un oient catalanoparlant.
+    Quan era necessari, es van fer petites edicions per millorar-ne la llegibilitat, com ara afegir cometes o indicar qui parla en fragments dialogats.
+    \item \textbf{Validació manual}: cada text candidat es va revisar individualment. Es va escoltar l'àudio original i es van inspeccionar visualment les anotacions de segments per confirmar-ne l'adequació (vegeu l'\autoref{sec:spans_viz}).
 \end{enumerate}
 
 
-Val a dir que els texts sexistes tendeixen a ser més llargs que els no sexistes, i que les anotacions dels segments cobreixen una proporció considerable dels texts.
+Els texts sexistes tendeixen a ser més llargs que els no sexistes, i les anotacions de segments en cobreixen una proporció considerable.
 Les taules~\ref{tab:corpus_stats} i~\ref{tab:corpus_labels} resumeixen les estadístiques descriptives i la distribució de categories dels texts seleccionats.
 En total, els 40 texts contenen 2.901 paraules.
 Observem que la llargada dels segments constitueix un alt percentatge de la llargada total dels texts.
@@ -78,8 +78,7 @@ La llista completa dels texts, amb les categories binàries assignades, es troba
 \end{table}
 \fi
 
-
-% todo: triar figura
+% TODO: triar figura
 % \begin{figure}[ht]
 %     \centering
 %     \includegraphics[width=\linewidth]{figures/exemple_anotacio.pdf}
@@ -89,31 +88,29 @@ La llista completa dels texts, amb les categories binàries assignades, es troba
 %     \label{fig:exemple_anotacio}
 % \end{figure}
 
-
-\section{Procediment experiment}\label{sec:procediment}
+\section{Procediment experimental}\label{sec:procediment}
 
 % \section{Participants}
-L'estudi va tenir un total de 10 participants voluntaris (5 homes i 5 dones).
-Dos dels voluntaris van ser anotadors del corpus MuSeD.
-Tots treballadors o estudiants de la Universitat de Barcelona majors d'edat, entre 22 i 28 anys.
+L'estudi va comptar amb 10 participants voluntaris (5 homes i 5 dones).
+Tots eren estudiants o treballadors de la Universitat de Barcelona, majors d'edat i d'entre 22 i 28 anys.
+Dos dels participants també havien estat anotadors del corpus MuSeD.
 
-Cada participant va ser informat dels objectius de l'estudi i va firmar un consentiment informat abans de llegir els texts.
-Es començava explicant que havien de llegir 40 texts en castellà extrets de vídeos de xarxes socials amb la intenció de determinar si eren sexistes.
-Primer de tot, es feia el procés de calibratge, per tal que l'eye-tracker funcionés adequadament (vegeu \autoref{app:calibration})
-Els texts es mostraven en ordre aleatori.
-Podien llegir cada text les vegades que els fos necessari i un cop havien pensat la resposta premien 0 per no sexista o 1 per sexista en un teclat d'ordinador.
-Havien de valorar si el contingut era sexista segons la seva pròpia visió del món.
-S'explicava que no hi havia una única resposta correcta, sinó que és una tasca subjectiva.
-Seguidament, es mostrava una altra pantalla on es preguntava quina confiança tenien en la seva elecció (1 - poca confiança, 2 - confiança mitjana, 3 - molta confiança).
-Abans de mostrar el següent text, apareixia una pantalla en blanc durant 500\,ms.
-Els participants podien fer preguntes o esmenar equivocacions durant la pregunta de la confiança.
+Abans de començar, es va informar cada participant dels objectius de l'estudi i es va obtenir el consentiment informat.
+Se'ls va explicar que haurien de llegir 40 texts en castellà, extrets de vídeos de xarxes socials, i determinar si eren sexistes.
+Primer es va calibrar el dispositiu perquè l'eye-tracker funcionés adequadament (vegeu l'\autoref{app:calibration}).
+Els texts es van mostrar en ordre aleatori.
+Els participants podien llegir cada text tantes vegades com fos necessari i, quan havien decidit la resposta, premien 0 per indicar ``no sexista'' i 1 per indicar ``sexista'' en un teclat d'ordinador.
+Se'ls demanava que valoressin el contingut d'acord amb la seva pròpia visió del món i se'ls explicava que no hi havia una única resposta correcta, perquè la tasca era subjectiva.
+Després, apareixia una pantalla en què havien d'indicar la confiança en la seva elecció: 1 (poca confiança), 2 (confiança mitjana) o 3 (molta confiança).
+Abans de mostrar el text següent, apareixia una pantalla en blanc durant 500\,ms.
+Els participants podien fer preguntes o corregir errors durant aquesta fase.
 
 \subsection{\textit{Stimulated Recall}}
 
-Un cop acabada la lectura, es feien breus entrevistes mentre es mostrava el procés de lectura de certs texts amb Tobii Pro Lab, on es veuen les fixacions i regressions.
-Es gravava la pantalla d'ordinador i l'àudio de la conversa amb OBS Studio.
+Un cop acabada la lectura, es feien entrevistes breus mentre es mostrava el procés de lectura d'alguns texts amb Tobii Pro Lab, on es podien veure les fixacions i les regressions.
+La pantalla de l'ordinador i l'àudio de la conversa es van enregistrar amb OBS Studio.
 Es van seleccionar 7 texts que representaven casos interessants.
-Tot i que el corpus MuSeD disposa d'etiquetes de consens (\textit{gold standard}), les etiquetes de cada anotador revelen que el consens entre anotadors no sempre és absolut.
+Tot i que el corpus MuSeD disposa d'etiquetes de consens (\textit{gold standard}), les etiquetes individuals revelen que l'acord entre anotadors no sempre és absolut.
 Per exemple, el text~4 té unanimitat en discriminació (1,0) però desacord en humor (0,67) i ironia (0,33); el text~30 mostra desacord en humor (0,67) i ironia (0,33); i el text~375 en desigualtat (0,67) i múltiples categories (0,33 cadascuna).
 Els texts seleccionats van ser:
 \begin{itemize}
@@ -126,21 +123,21 @@ Els texts seleccionats van ser:
     \item \textbf{Text 399} (no sexista): crítica, estereotips i sexisme reportat, tots amb desacord.
 \end{itemize}
 
-Es va utilitzar la llengua en que cada participant se sentia més còmode per conversar sobre els texts, català o castellà.
-Durant aquest procés es preguntava si el participant s'havia fixat en alguna paraula o frase en concret per algun motiu, o si havia pensat quelcom en concret sobre el text. 
-Per exemple, si havia trobat difícil alguna paraula o li havia sobtat un concepte.
+Es va utilitzar la llengua amb què cada participant se sentia més còmode per conversar sobre els texts: català o castellà.
+Durant aquesta fase, se'ls preguntava si s'havien fixat en alguna paraula o frase per un motiu concret, o si havien pensat alguna cosa determinada sobre el text.
+També se'ls demanava si havien trobat difícil alguna paraula o si els havia sorprès algun concepte.
 
 \section{Models de llenguatge}
 
 %\subsection{Models BERT adaptats}
 
-En aquest treball fem ús de diferents models basats en l'arquitectura \textit{transformer} \cite{vaswaniAttentionAllYou2017}, concretament del tipus BERT (\textit{Bidirectional Encoder Representations from Transformers})~\cite{devlin2019bert}.
-Són models \textit{encoder-only} que han demostrat bon rendiment en tasques de classificació de text.
-Utilitzem mBERT (la versió multilingüe del BERT original), BETO~\cite{canete2023spanish} (un dels primers models adaptats només al castellà) i el més recent MrBERT-es~\cite{tamayo2026mrbert} (basat en ModerBERT).
+En aquest treball utilitzem diversos models basats en l'arquitectura \textit{transformer}~\cite{vaswaniAttentionAllYou2017}, concretament models del tipus BERT (\textit{Bidirectional Encoder Representations from Transformers})~\cite{devlin2019bert}.
+Són models \textit{encoder-only} que han assolit un bon rendiment en tasques de classificació de texts.
+Usem mBERT, la versió multilingüe del BERT original; BETO~\cite{canete2023spanish}, un dels primers models adaptats específicament al castellà; i el més recent MrBERT-es~\cite{tamayo2026mrbert}, basat en ModerBERT.
 
-El procés d'adaptació (\textit{finetuning}) consisteix a modificar aquests models preentrenats per la nostra tasca específica de detecció de sexisme.
-Vegeu el codi per a més detalls sobre la implementació, que inclou la preparació de les dades, la configuració del model i l'entrenament amb la llibreria \textit{transformers} de HuggingFace\footnote{https://huggingface.co/docs/transformers/en/index}.
-També vam entrenar els models amb només les dades amb acord total d'anotadors, però les diferències respecte a les dades completes van ser negligibles.%, de manera que en aquest treball usem només els models entrenats amb el conjunt complet, excepte els 40 texts que guardem com a test.
+El procés d'adaptació (\textit{fine-tuning}) consisteix a modificar aquests models preentrenats per a la tasca específica de detecció de sexisme.
+La implementació inclou la preparació de les dades, la configuració del model i l'entrenament amb la biblioteca \textit{transformers} de Hugging Face\footnote{https://huggingface.co/docs/transformers/en/index}.
+També vam entrenar els models només amb les dades que tenien acord total entre anotadors, però les diferències respecte dels models entrenats amb totes les dades van ser negligibles.
 
 % \subsection{Models de llenguatge extensos}
 %
@@ -152,16 +149,16 @@ També vam entrenar els models amb només les dades amb acord total d'anotadors,
 
 \section{Mètodes d'interpretabilitat}\label{sec:metodes}
 
-Per comprendre els patrons d'atenció dels models i comparar-los amb els patrons humans, fem servir la llibreria Captum \cite{captum}, que proporciona una suite completa de mètodes d'atribució.
-Hem implementat quatre mètodes d'atribució:
+Per comprendre els patrons d'atenció dels models i comparar-los amb els patrons humans, fem servir la biblioteca Captum~\cite{captum}, que proporciona diversos mètodes d'atribució.
+N'hem implementat quatre:
 
 \begin{itemize}
-    \item \textbf{Saliency}~\cite{simonyan2013deep}: Mètode basat en gradients que calcula la derivada de la sortida respecte als \textit{embeddings} d'entrada. És útil per identificar quins tokens tenen major impacte en la decisió del model.
-    \item \textbf{Input X Gradient}~\cite{shrikumar2016not}: Multiplica l'entrada pels gradients per obtenir una mesura de la importància de cada característica, proporcionant atribucions més estables que el saliency simple.
-    \item \textbf{Integrated Gradients (IG)}~\cite{sundararajan2017axiomatic}: Aquest mètode calcula la integral dels gradients al llarg d'un camí des d'una línia base (normalment zeros) fins a l'entrada real.
-    Proporciona una atribució més robusta que el \textit{saliency} simple i inclou una mètrica de convergència (\textit{delta}) que indica la qualitat de l'atribució.
-\item \textbf{Layer-wise Relevance Propagation (LRP)}~\cite{LRP}: atribueix la predicció a característiques d'entrada mitjançant la redistribució de puntuacions de rellevància des de la capa de sortida fins a l'entrada.
-    LRP és determinista, en el sentit que garanteix la reproductibilitat de les explicacions per a una mateixa entrada.
+    \item \textbf{Saliency}~\cite{simonyan2013deep}: mètode basat en gradients que calcula la derivada de la sortida respecte dels \textit{embeddings} d'entrada. És útil per identificar els tokens que tenen més impacte en la decisió del model.
+    \item \textbf{Input $\times$ Gradient}~\cite{shrikumar2016not}: multiplica l'entrada pels gradients per obtenir una mesura de la importància de cada característica. Pot proporcionar atribucions més estables que el \textit{saliency} simple.
+    \item \textbf{Integrated Gradients (IG)}~\cite{sundararajan2017axiomatic}: calcula la integral dels gradients al llarg d'un camí que va des d'una línia base, normalment el vector nul, fins a l'entrada real.
+    També proporciona una mètrica de convergència (\textit{delta}) que indica la qualitat de l'atribució.
+    \item \textbf{Layer-wise Relevance Propagation (LRP)}~\cite{LRP}: atribueix la predicció a les característiques d'entrada mitjançant la redistribució de puntuacions de rellevància des de la sortida fins a l'entrada.
+    Per a una mateixa entrada, LRP produeix explicacions reproduïbles.
 \end{itemize}
 
 % \subsection{Implementació pràctica}
@@ -177,17 +174,17 @@ Hem implementat quatre mètodes d'atribució:
 % \end{enumerate}
 %
 % El codi inclou funcions per generar visualitzacions HTML amb els tokens ressaltats segons la seva importància per a la predicció del model.
-% \todo{afegir exemples}
 
 \section{Comparació amb patrons humans}
 
-L'objectiu final d'aquest treball és comparar i) els patrons d'atenció obtinguts amb els mètodes d'interpretabilitat esmentats amb ii) els patrons humans registrats amb l'\textit{eye-tracker} i iii) les anotacions inicials del corpus.
-Aquesta comparació permetrà avaluar si els models se centren en les mateixes parts del text que els humans, identificar possibles biaixos o limitacions en els models computacionals, i explorar si les divergències entre atenció humana i computacional es relacionen amb errors de classificació.
+L'objectiu final d'aquest treball és comparar tres fonts d'informació: (i) els patrons obtinguts amb els mètodes d'interpretabilitat, (ii) els patrons humans registrats amb l'eye-tracker i (iii) les anotacions inicials del corpus.
+Aquesta comparació permet avaluar si els models se centren en les mateixes parts dels texts que les persones, identificar possibles biaixos o limitacions dels models i explorar si les divergències entre l'atenció humana i la computacional es relacionen amb errors de classificació.
 
-Cal tenir en compte que els tokens d'\textit{eye-tracking} corresponden a paraules senceres, mentre que els models de llenguatge treballen amb tokens sub-paraula.
+Cal tenir en compte que els tokens d'eye-tracking corresponen a paraules senceres, mentre que els models de llenguatge treballen amb tokens subparaula.
 Quan una paraula es divideix en múltiples tokens, les atribucions d'aquests se sumen.
 
-L'anàlisi comparativa es farà amb les dades d'\textit{eye-tracking} recollides pel dispositiu Tobii, tal com es descriu a l'\autoref{sec:tobii}, i els resultats s'analitzaran quantitativament i qualitativament per obtenir conclusions sobre la similitud entre ambdós tipus d'atenció.
+L'anàlisi comparativa es basa en les dades d'eye-tracking recollides amb el dispositiu Tobii, tal com es descriu a l'\autoref{sec:tobii}.
+Els resultats s'analitzen quantitativament i qualitativament per caracteritzar la similitud entre els dos tipus d'atenció.
 
 % \section{Disponibilitat del codi}
 

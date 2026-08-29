@@ -1,24 +1,24 @@
 %\section{Context i justificació}
 
 El sexisme és una forma de discriminació basada en el sexe o el gènere que afecta tots els àmbits de la societat.
-Amb l'auge de les xarxes socials, el contingut sexista s'ha amplificat i diversificat, fent que la seva detecció automàtica sigui una necessitat creixent en l'àmbit de la moderació de continguts~\cite{mused}.
+Amb l'auge de les xarxes socials, el contingut sexista s'ha amplificat i diversificat. Per això, la detecció automàtica és cada vegada més necessària en l'àmbit de la moderació de continguts~\cite{mused}.
 
-En paral·lel, els models de processament del llenguatge natural (PLN) basats en l'arquitectura \textit{transformer}~\cite{vaswaniAttentionAllYou2017} han assolit resultats notables en tasques de classificació de text, inclosa la detecció de discurs d'odi i sexisme~\cite{malik2025deep,gandhi2024hate,plaza2025overview}.
+En paral·lel, els models de processament del llenguatge natural (PLN) basats en l'arquitectura \textit{transformer}~\cite{vaswaniAttentionAllYou2017} han assolit resultats notables en tasques de classificació de texts, com ara la detecció de discurs d'odi i de sexisme~\cite{malik2025deep,gandhi2024hate,plaza2025overview}.
 Aquests models incorporen mecanismes d'atenció que determinen quines parts del text reben més pes durant el processament.
 Tanmateix, fins a quin punt aquests patrons d'atenció reflecteixen els processos cognitius humans continua sent una qüestió oberta~\cite{jainAttentionNotExplanation2019,wiegreffeAttentionNotNot2019}.
 
-La tecnologia de seguiment ocular (\textit{eye-tracking}) ofereix una finestra directa als processos atencionals humans durant la lectura~\cite{rayner1998eye,rayner2009eye}.
-Mètriques com la durada total de fixació, el temps de primera passada o el nombre de regressions permeten identificar quins elements lingüístics capten l'atenció del lector i quins requereixen un processament més profund~\cite{clifton2007eye}.
-La intersecció entre l'atenció humana---mesurada amb \textit{eye-tracking}---i l'atenció computacional---extreta dels mecanismes d'atenció dels \textit{transformers}---constitueix un camp emergent que pot aportar llum tant a la interpretabilitat dels models com a la comprensió dels processos cognitius subjacents a la detecció de contingut ofensiu.
+La tecnologia de seguiment ocular (eye-tracking) ofereix una finestra als processos atencionals humans durant la lectura~\cite{rayner1998eye,rayner2009eye}.
+Mètriques com la durada total de fixació, la durada de la primera fixació o el nombre de regressions permeten identificar quins elements lingüístics capten l'atenció del lector i quins requereixen un processament més profund~\cite{clifton2007eye}.
+La comparació entre l'atenció humana---mesurada amb eye-tracking---i les explicacions computacionals dels \textit{transformers} constitueix un camp emergent. Pot aportar informació tant sobre la interpretabilitat dels models com sobre els processos cognitius implicats en la detecció de contingut ofensiu.
 
 %\section{Objectius}
 
-L'objectiu principal d'aquest treball és comparar els patrons d'atenció humans i computacionals durant la tasca de detecció de sexisme en texts.
+L'objectiu principal d'aquest treball és comparar els patrons d'atenció humans i computacionals durant la detecció de sexisme en texts.
 Concretament, es plantegen els objectius següents:
 
 \begin{enumerate}
     \item Recollir dades de seguiment ocular de participants humans durant la lectura de texts amb contingut sexista i no sexista.
-    \item Extraure els pesos d'atenció de models \textit{transformer} preentrenats davant els mateixos texts.
-    \item Analitzar i comparar els patrons d'atenció humans i computacionals per determinar el grau d'alineació entre ambdós.
+    \item Extreure les atribucions de models \textit{transformer} preentrenats davant dels mateixos texts.
+    \item Analitzar i comparar els patrons d'atenció humans i computacionals per determinar el grau d'alineament entre tots dos.
     \item Explorar si les divergències entre atenció humana i computacional es relacionen amb les dificultats de classificació dels models.
 \end{enumerate}
