@@ -1,4 +1,4 @@
-Aquest capítol presenta l'anàlisi de les dades de seguiment ocular---fixacions i regressions---i la seva relació amb les anotacions del \textit{gold standard} i les explicacions dels models de llenguatge. També analitza les decisions dels participants durant l'experiment.
+Aquest capítol presenta l'anàlisi de les dades de seguiment ocular---fixacions i regressions---i la seva relació amb les anotacions del \textit{gold standard} provinents del corpus MuSeD i les explicacions dels models de llenguatge. També analitza les decisions dels participants durant l'experiment.
 
 \section{Anotacions dels participants}
 
@@ -176,7 +176,7 @@ Per a cada parell (participant, text), calculem quatre mètriques que comparen l
     \item \textbf{Divergència de Jensen--Shannon (JS):} versió simètrica de la KL, més interpretable.
 \end{itemize}
 La correlació de Spearman varia entre $-1$ i $1$ (més alta = millor alineament). 
-La CE té com a mínim l'entropia de la distribució de referència i varia entre aquesta i $+\infty$. 
+La CE té com a mínim l'entropia de la distribució de referència. 
 La divergència KL és positiva i la JS és simètrica i està acotada a $[0, 1]$.
 La CE i les dues divergències indiquen millor alineament com menor és el valor.
 
@@ -210,7 +210,7 @@ F3 & $0,01 \pm 0,10$ & $10,07 \pm 2,06$ & $5,92 \pm 2,06$ & $0,28 \pm 0,07$ \\
 \fi
 
 Les correlacions de Spearman són properes a zero per a tots els participants, cosa que indica una concordança gairebé nul·la entre la distribució d'atenció i les anotacions de segments.
-La divergència JS mitjana és 0,25, fet que apunta a una separació substancial entre les dues distribucions.
+La divergència JS mitjana és 0,25 (en una escala de 0 = distribucions idèntiques a 1 = totalment diferents), fet que indica una separació moderada: no tan baixa com la que s'observa entre lectors i anotadors (0,12), però molt lluny de la divergència total (0,78--0,84) que es troba entre els models i els segments.
 % TODO: mirar figura
 % La \autoref{fig:exemple_visual} mostra un exemple representatiu d'aquesta distribució per al text~30, on les zones d'alt TFD coincideixen amb les zones anotades com a sexistes.
 % \begin{figure}[htbp]
@@ -289,6 +289,7 @@ sexisme reportat & 0,26 & 0,32 \\
 
 En el conjunt de parells participant--text, detectem un total de 8.642 regressions, amb una mitjana de $216 \pm 77$ regressions per text.
 La majoria són regressions dins de la mateixa línia (\textit{within-line}), que representen el 89,8\%; les regressions entre línies (\textit{between-line}) constitueixen el 10,2\% restant.
+En l'anàlisi seguim la convenció de \textcite{rayner2009eye}: el token de destí és aquell cap al qual es dirigeix la regressió (on torna el lector per reprocessar), i el token d'origen és aquell des del qual es produeix (on s'interromp la lectura per tornar enrere). Vegeu l'\autoref{app:tfd} per a la definició completa.
 
 \subsection{\textit{Baselines} individuals per participant}
 
@@ -325,7 +326,7 @@ Aquesta variabilitat és compatible amb les diferències individuals en les estr
 \subsection{Tokens significatius}
 
 Calculem la puntuació z (unitat tipificada) per a cada token, comparant el nombre de regressions amb la línia de base del participant.
-Després d'aplicar la correcció de Benjamini--Hochberg, identifiquem 2.797 tokens de destí i 2.795 tokens d'origen significatius.
+Després d'aplicar la correcció de Benjamini--Hochberg\footnote{Controla la taxa de descobriment fals ajustant els p-valors per limitar la proporció esperada de falsos positius entre tots els resultats significatius.}, identifiquem 2.797 tokens de destí i 2.795 tokens d'origen significatius.
 És a dir, són tokens als quals els participants tornen significativament més sovint del que esperaríem per atzar.
 
 Per validar els resultats de la puntuació z, fem 10.000 permutacions per a cada parell (participant, text), mantenint l'estructura de les dades.
@@ -552,6 +553,7 @@ FFD vs.\ FC  & $-0,070$ & $< 0,001$ * \\
 
 \subsection{Prominència dels models vs.\ mètriques d'eye-tracking}
 
+Per extreure la prominència de cada model, fem servir quatre mètodes d'interpretabilitat: N'extraiem la prominència amb quatre mètodes d'interpretabilitat: Saliency, Input$\times$Gradient, Integrated Gradients (IG) i Layer-wise Relevance Propagation (LRP).
 La \autoref{tab:model_vs_eye_tracking} presenta la correlació de Spearman entre la prominència de cada token---el valor absolut de l'atribució del model---i les tres mètriques d'eye-tracking (TFD, FFD i FC), promitjades entre participants per als 40 texts.
 \iftables
 \begin{table}[htbp]
@@ -589,7 +591,8 @@ En mBERT, LRP mostra correlacions similars o lleugerament superiors a les de Sal
 \section{Comparació entre atenció humana i prominència de models}
 
 En aquesta secció comparem tres models preentrenats (mBERT, BETO i MrBERT-es) amb dues referències: les anotacions de segments del \textit{gold standard} i l'atenció humana mesurada amb eye-tracking.
-N'extraiem la prominència amb quatre mètodes d'interpretabilitat: Saliency, Input$\times$Gradient, Integrated Gradients (IG) i Layer-wise Relevance Propagation (LRP).
+N'extraiem la prominència amb Saliency, Input$\times$Gradient, IG i LRP.
+
 Totes les comparacions de distribucions utilitzen filtratge de paraules buides (vegeu l'ablació a l'Apèndix~\ref{sec:stopword_ablation}).
 
 \subsection{Prominència del model vs.\ anotacions de segments}
@@ -705,10 +708,12 @@ Pel que fa a les correlacions amb les mètriques d'eye-tracking, \textit{sexisme
 \textit{Ironia} també presenta correlacions relativament altes, compatibles amb una captura similar del fenomen.
 Finalment, la JS més baixa correspon a \textit{crítica}, que mostra la concordança més alta entre les distribucions dins i fora del segment.
 
+\newpage
 \subsection{Prominència del model vs.\ TFD}
 
-En segon lloc, a la \autoref{tab:model_vs_human_dist} comparem les distribucions de prominència dels models amb l'atenció humana (TFD).
-
+En segon lloc, la \autoref{tab:model_vs_human_dist} compara les distribucions de prominència dels models amb l'atenció humana (TFD).
+La JS entre els models i la TFD (0,77--0,84) és pràcticament la mateixa que entre els models i els segments (0,78--0,84).
+Les diferències entre mètodes són igualment petites.
 \iftables
 \begin{table}[htbp]
 \small
@@ -736,14 +741,12 @@ mBERT & Saliency & 24,47 & 21,17 & 0,770 \\
 \end{table}
 \fi
 
-La JS entre els models i l'atenció humana (0,77--0,84) és pràcticament la mateixa que entre els models i els segments (0,78--0,84).
-Les diferències entre mètodes són igualment petites.
-% la qual cosa suggereix que la distribució de prominència del model s'apropa més a l'atenció humana que a les anotacions de segments discretes.
-% Això és consistent amb l'observació que els lectors presten atenció a zones més àmplies que els segments estrictament anotats.
-
 \subsection{Resum de les tres comparacions}\label{sec:resum_tripartit}
 
 La \autoref{tab:tripartite_summary} resumeix les tres comparacions: models--segments, models--TFD i TFD--segments.
+La divergència JS més baixa és la que s'observa entre la TFD i les anotacions de segments.
+Llavors, anotadors i lectors comparteixen una visió similar de sexisme.
+La divergència més alta és la que es dona entre els models i les anotacions de segments, cosa que indica que els models de llenguatge distribueixen la prominència de manera substancialment diferent de les persones.
 \iftables
 \begin{table}[htbp]
 \small
@@ -761,8 +764,6 @@ TFD -- Segments     & 0,12 (ref.) & --- & --- \\
 \label{tab:tripartite_summary}
 \end{table}
 \fi
-La divergència JS més baixa és la que s'observa entre la TFD i les anotacions de segments (0,12). Això indica que els anotadors i els lectors comparteixen una visió similar del que és sexista.
-La divergència més alta és la que es dona entre els models i les anotacions de segments (0,78--0,84), cosa que indica que els models de llenguatge distribueixen la prominència de manera substancialment diferent de les persones.
 
 \subsection{Precisió del model i divergència KL respecte a l'atenció humana}\label{sec:kl_ikhwantri}
 
@@ -798,7 +799,7 @@ mBERT & Saliency & 54,1 & $-0,259$ & $-0,213$ & $-0,244$ \\
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.75\textwidth]{figures/sd_performance_curve.pdf}
+\includegraphics[width=\textwidth]{figures/sd_performance_curve.pdf}
 \caption{Dispersió KL--precisió: cada punt representa una combinació de model i mètode d'interpretabilitat. Els colors indiquen els models i les formes, els mètodes.}
 \label{fig:sd_performance}
 \end{figure}
@@ -835,5 +836,6 @@ mBERT & Saliency & 3,75 & 3,86 & 3,65 \\
 \label{tab:ikhwantri_sd}
 \end{table}
 \fi
+
 La FC produeix valors lleugerament més baixos i la FFD, més alts en totes les combinacions, mentre que la TFD queda en una posició intermèdia.
 Tanmateix, no triem la TFD només perquè minimitzi la KL, sinó també perquè acumula la durada de totes les fixacions i és, per tant, la mètrica més comparable amb una distribució de prominència acumulada.
